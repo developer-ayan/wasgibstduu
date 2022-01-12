@@ -9,12 +9,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 export default function App() {
   return (
-    <ScrollView style={{
-      flex: 1,
-    }}>
-
-
-
+    <ScrollView style={{flex: 1,}}>
       <View style={{
         paddingLeft: 13,
         paddingRight: 13,
