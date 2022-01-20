@@ -9,7 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 
 
-export default function ManageAds() {
+export default function manageAds() {
   return (
     <ScrollView style={{
       flex: 1,
@@ -17,6 +17,7 @@ export default function ManageAds() {
       paddingLeft: 13,
       paddingRight: 13,
     }}>
+
       <View style={{
 
       }}>
@@ -59,7 +60,7 @@ export default function ManageAds() {
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
             <Image
               style={{ width: 200, height: 200 }}
-              source={require("./src/assets/premiumImages/img1.png")}
+              source={require("../../assets/premiumImages/img1.png")}
             />
           </View>
           <View style={{ paddingHorizontal: 10 }}>
@@ -90,9 +91,9 @@ export default function ManageAds() {
         }}>
 
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
-            <Image
+          <Image
               style={{ width: 200, height: 200 }}
-              source={require("./src/assets/premiumImages/img1.png")}
+              source={require("../../assets/premiumImages/img1.png")}
             />
           </View>
           <View style={{ paddingHorizontal: 10 }}>

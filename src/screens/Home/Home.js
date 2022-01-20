@@ -7,7 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-export default function App() {
+export default function Home() {
   return (
     <View style={{
       flex: 1,
@@ -20,9 +20,7 @@ export default function App() {
 
       }}>
         {/* icon back */}
-        <View style={{ marginTop: 10 }}>
-          <Ionicons name="reorder-three" size={25} color="black" />
-        </View>
+
       </View>
       <View style={{ backgroundColor: '#01a949', height: 300 }}>
         <View style={{
@@ -41,10 +39,7 @@ export default function App() {
         <View style={{ paddingHorizontal: 15, borderRadius: 10, marginTop: 20 }}>
 
           <View style={{
-            flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',
-            //  borderTopRightRadius: 10 ,
-            //   borderTopLeftRadius : 10
-          }}>
+            flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',}}>
             <View style={{
               padding: 10, paddingVertical: 20, width: 110,
               borderWidth: 1, borderColor: '#F8F8F8'
@@ -133,11 +128,11 @@ export default function App() {
           <View style={{ marginTop: 20 , flexDirection : 'row' , justifyContent : 'space-between'}}>
             <Image
               style={{ width: 150, height: 150 }}
-              source={require("./src/assets/premiumImages/img1.png")}
+              source={require("../../assets/premiumImages/img1.png")}
             />
              <Image
               style={{ width: 150, height: 150 }}
-              source={require("./src/assets/premiumImages/img1.png")}
+              source={require("../../assets/premiumImages/img1.png")}
             />
           </View>
           </ScrollView>

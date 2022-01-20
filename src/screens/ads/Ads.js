@@ -1,61 +1,92 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView } from "react-native";
+import { View, Text, TextInput, ScrollView, StyleSheet } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 
+export default function Ads() {
 
-
-
-
-
-export default function App() {
   return (
-    <ScrollView style={{flex: 1,}}>
-      <View style={{
-        paddingLeft: 13,
-        paddingRight: 13,
-        backgroundColor: 'white'
-      }}>
+    <ScrollView style={{ flex: 1, }}>
+      <View style={styles.MainView}>
         {/* icon back */}
-
         <View>
-          <Text style={{ marginTop: 10 }}>
-            <Feather name="arrow-left" size={25} color="black" />
-          </Text>
-          <Text style={{ marginTop: 10, color: 'black', fontSize: 25 }}>
-            Create Ad
-          </Text>
-          <Text style={{ marginTop: 5, color: '#b1b1b1', fontWeight: 'bold' }}>
-            Create new advertisement
-          </Text>
+          <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
+          <Text style={styles.CreateAd}>Create Ad</Text>
+          <Text style={styles.Advertisments}>Create new advertisement</Text>
         </View>
-
-        <View style={{ marginTop: 30 }}>
-          <Text style={{ color: 'gray', marginBottom: 5, fontSize: 13, opacity: 0.7, fontWeight: 'bold' }}>CATEGORY</Text>
-          <TextInput placeholder='Select a category' style={{ padding: 15, backgroundColor: '#f7f7f7', fontWeight: 'bold', opacity: 0.7, color: '#ababab', fontSize: 15, fontFamily: 'Roboto' }} />
+        <View style={styles.Categories}>
+          <Text style={styles.CategoriesHeading}>CATEGORY</Text>
+          <TextInput placeholder='Select a category' style={styles.Input} />
         </View>
-
         <View style={{ marginTop: 20 }}>
-          <Text style={{ color: '#8B8B8B', marginBottom: 5, fontWeight: 'bold', fontSize: 13, opacity: 0.7 }}>AD TITLE</Text>
-          <TextInput style={{ padding: 15, backgroundColor: '#f7f7f7', fontWeight: '700', color: '#ababab', fontSize: 16, fontFamily: 'Roboto' }} />
+          <Text style={styles.AdTitle}>AD TITLE</Text>
+          <TextInput style={styles.Input} />
         </View>
-
         <View style={{ marginTop: 20 }}>
-          <Text style={{ color: '#8B8B8B', marginBottom: 5, fontWeight: '700', fontSize: 13, opacity: 0.7 }}>DISCRIPTION</Text>
-          <TextInput style={{ padding: 15, backgroundColor: '#f7f7f7', fontWeight: '700', color: '#ababab', fontSize: 16, fontFamily: 'Roboto', height: 130 }} />
+          <Text style={styles.AdTitle}>DISCRIPTION</Text>
+          <TextInput style={styles.Input} />
         </View>
-
         <View style={{ marginTop: 20 }}>
-          <Text style={{ color: '#8B8B8B', marginBottom: 5, fontWeight: '700', fontSize: 13, opacity: 0.7 }}>PRICE</Text>
-          <TextInput style={{ padding: 15, backgroundColor: '#f7f7f7', fontWeight: '700', color: '#ababab', fontSize: 16, fontFamily: 'Roboto' }} />
+          <Text style={styles.AdTitle}>PRICE</Text>
+          <TextInput style={styles.Input} />
         </View>
-
         <View style={{ marginTop: 20, marginBottom: 40 }}>
-          <Text style={{ color: '#8B8B8B', marginBottom: 5, fontWeight: '700', fontSize: 13, opacity: 0.7 }}>CITY</Text>
-          <TextInput placeholder='Select City' style={{ padding: 15, backgroundColor: '#f7f7f7', fontWeight: 'bold', opacity: 0.7, color: '#ababab', fontSize: 15, fontFamily: 'Roboto' }} />
+          <Text style={styles.AdTitle}>CITY</Text>
+          <TextInput placeholder='Select City' style={styles.Input} />
         </View>
-
       </View>
 
-    </ScrollView>
+    </ScrollView >
   )
 }
+
+
+const styles = StyleSheet.create({
+  MainView: {
+    paddingLeft: 13,
+    paddingRight: 13,
+    backgroundColor: 'white'
+  },
+  IconView: {
+    marginTop: 10
+  },
+  BackIcon: {
+    color: 'black'
+  },
+  CreateAd: {
+    marginTop: 10,
+    color: 'black',
+    fontSize: 25
+  },
+  Advertisments: {
+    marginTop: 5,
+    color: '#b1b1b1',
+    fontWeight: 'bold'
+  },
+  Categories: {
+    marginTop: 30
+  },
+  CategoriesHeading: {
+    color: '#8B8B8B',
+    marginBottom: 5,
+    fontSize: 13,
+    opacity: 0.7,
+    fontWeight: 'bold'
+  },
+  Input: {
+    padding: 15,
+    backgroundColor: '#f7f7f7',
+    fontWeight: 'bold',
+    opacity: 0.7,
+    color: '#ababab',
+    fontSize: 15,
+    fontFamily: 'Roboto'
+  },
+  AdTitle: {
+    color: '#8B8B8B',
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 13,
+    opacity: 0.7
+  }
+
+})
