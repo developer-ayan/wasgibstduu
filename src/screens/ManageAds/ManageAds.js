@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, Image, Button } from "react-native";
+import { View, Text, TextInput, ScrollView, Image, TouchableOpacity } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 
 
-export default function manageAds() {
+export default function manageAds({navigation}) {
   return (
     <ScrollView style={{
       flex: 1,
@@ -18,13 +18,13 @@ export default function manageAds() {
       paddingRight: 13,
     }}>
 
-      <View style={{
-
-      }}>
+      <View>
         {/* icon back */}
-        <View style={{ marginTop: 10 }}>
-          <Feather name="arrow-left" size={25} color="black" />
-        </View>
+        <TouchableOpacity onPress={navigation.goBack}>
+            <Text style={{ color: 'white', fontSize: 20, marginTop: 10, }}>
+              <Feather name="arrow-left" size={25} color="black" />
+            </Text>
+          </TouchableOpacity>
       </View>
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15 }}>

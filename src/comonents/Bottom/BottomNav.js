@@ -9,6 +9,7 @@ import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsMan
 import Ads from '../../screens/Ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
+import Drawer from '../Drawer/Drawer';
 
 
 
@@ -18,10 +19,10 @@ export default function BottomNav() {
         <Tab.Navigator
             initialRouteName="Home"
             activeColor="black"
-            barStyle={{ backgroundColor: '#ffffff', marginTop: 10 }}>
+            barStyle={{ backgroundColor: '#ffffff' }}>
             <Tab.Screen
                 name="Home"
-                component={Home}
+                component={Drawer}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
                     tabBarIcon: ({ color }) => (

@@ -1,15 +1,19 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, StyleSheet } from "react-native";
+import { View, Text, TextInput, ScrollView, StyleSheet , TouchableOpacity } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 
-export default function Ads() {
+export default function Ads({navigation}) {
 
   return (
     <ScrollView style={{ flex: 1, }}>
       <View style={styles.MainView}>
         {/* icon back */}
         <View>
+        <View>
+          <TouchableOpacity onPress={navigation.goBack}>
           <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
+          </TouchableOpacity>
+        </View>
           <Text style={styles.CreateAd}>Create Ad</Text>
           <Text style={styles.Advertisments}>Create new advertisement</Text>
         </View>
