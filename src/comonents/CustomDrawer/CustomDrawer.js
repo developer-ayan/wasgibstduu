@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, ImageBackground, Image } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 
 function CustomDrawer(props) {

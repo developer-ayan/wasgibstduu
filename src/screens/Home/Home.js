@@ -6,8 +6,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import auth from '@react-native-firebase/auth';
 
 export default function Home() {
+
+ const LOGOUT = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('User signed out!'));
+  }
+
   return (
     <View style={{
       flex: 1,
@@ -39,10 +47,11 @@ export default function Home() {
         <View style={{ paddingHorizontal: 15, borderRadius: 10, marginTop: 20 }}>
 
           <View style={{
-            flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',}}>
+            flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',
+          }}>
             <View style={{
               padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
+              borderWidth: 1, borderColor: '#F8F8F8',
             }}>
               <AntDesign name='car' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
               <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Auto Mobiles</Text>
@@ -121,20 +130,20 @@ export default function Home() {
           {/* Sponsored Ads   */}
 
           <ScrollView>
-          <View style={{ marginTop: 20 }}>
-            <Text style={{ color: "black", fontSize: 18, fontFamily: "Arial" }}>SPONSORED ADS</Text>
-          </View>
+            <View style={{ marginTop: 20 }}>
+              <Text style={{ color: "black", fontSize: 18, fontFamily: "Arial" }}>SPONSORED ADS</Text>
+            </View>
 
-          <View style={{ marginTop: 20 , flexDirection : 'row' , justifyContent : 'space-between'}}>
-            <Image
-              style={{ width: 150, height: 150 }}
-              source={require("../../assets/premiumImages/img1.png")}
-            />
-             <Image
-              style={{ width: 150, height: 150 }}
-              source={require("../../assets/premiumImages/img1.png")}
-            />
-          </View>
+            <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Image
+                style={{ width: 150, height: 150 }}
+                source={require("../../assets/premiumImages/img1.png")}
+              />
+              <Image
+                style={{ width: 150, height: 150 }}
+                source={require("../../assets/premiumImages/img1.png")}
+              />
+            </View>
           </ScrollView>
 
 

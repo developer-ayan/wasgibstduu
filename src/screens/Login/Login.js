@@ -6,6 +6,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
+
+
+
+
 
 
 
@@ -23,14 +29,18 @@ export default function Login({ navigation }) {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
-        Alert.alert("Your Account Has Been Logged in");
+        firestore()
+          .collection('Users')
+          .doc(res.user.uid)
+          .onSnapshot(documentSnapshot => {
+            console.log(documentSnapshot.id);
+          });
+          navigation.navigate('Home')
       })
       .catch(error => {
         if (error.code === 'auth/operation-not-allowed') {
           console.log('Enable anonymous in your firebase console.');
         }
-
-        console.error(error);
       });
   }
 

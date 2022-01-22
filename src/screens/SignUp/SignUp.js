@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 
 
@@ -13,17 +14,27 @@ import auth from '@react-native-firebase/auth';
 export default function SignUp({ navigation }) {
 
 
+  const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
+  const [phoneNumber, setPhoneNumber] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [modalVisible, setModalVisible] = React.useState('')
-
-
+  const [confirm, setConfirm] = React.useState('')
 
   const sign_up = () => {
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        Alert.alert("Your Account Has Been Created");
+      .then((res) => {
+        firestore()
+          .collection('Users')
+          .doc(res.user.uid)
+          .set({
+            USER_ID: res.user.uid,
+            NAME: name,
+            EMAIL: email,
+            PHONE: phoneNumber,
+            PASSWORD: password,
+            CONFIRM: confirm,
+          })
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -33,7 +44,6 @@ export default function SignUp({ navigation }) {
         if (error.code === 'auth/invalid-email') {
           Alert.alert('That email address is invalid!');
         }
-
         console.error(error);
       });
   }
@@ -82,6 +92,8 @@ export default function SignUp({ navigation }) {
             <View style={{ flexDirection: 'row', alignItem: 'center', borderBottomWidth: 1, borderBottomColor: '#FBFBFB', justifyContent: 'space-between', }}>
               <TextInput
                 placeholder="Name"
+                onChangeText={(text) => setName(text)}
+                value={name}
                 keyboardType='default'
                 underlineColorAndroid="transparent"
                 style={{ padding: 15, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
@@ -106,6 +118,8 @@ export default function SignUp({ navigation }) {
             <View style={{ flexDirection: 'row', alignItem: 'center', borderBottomWidth: 1, borderBottomColor: '#FBFBFB', justifyContent: 'space-between', }}>
               <TextInput
                 placeholder="Phone Number"
+                onChangeText={(text) => setPhoneNumber(text)}
+                value={phoneNumber}
                 keyboardType='numeric'
                 underlineColorAndroid="transparent"
                 style={{ padding: 15, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
@@ -129,6 +143,8 @@ export default function SignUp({ navigation }) {
             <View style={{ flexDirection: 'row', alignItem: 'center', borderBottomWidth: 1, borderBottomColor: '#FBFBFB', justifyContent: 'space-between', }}>
               <TextInput
                 placeholder="Confirm Password"
+                onChangeText={(text) => setConfirm(text)}
+                value={confirm}
                 underlineColorAndroid="transparent"
                 style={{ padding: 15, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
               />
@@ -161,7 +177,7 @@ export default function SignUp({ navigation }) {
             onPress={() => navigation.navigate('Login')}
           >
 
-          <Text style={{ fontSize: 14, textAlign: 'center', marginTop: 20 }}>Login</Text>
+            <Text style={{ fontSize: 14, textAlign: 'center', marginTop: 20 }}>Login</Text>
           </TouchableOpacity>
 
         </View>
