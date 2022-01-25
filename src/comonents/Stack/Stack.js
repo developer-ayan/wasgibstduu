@@ -1,8 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../../screens/Home/Home';
-// import Drawer from '../Drawer/Drawer';
-// import BottomNav from '../Bottom/BottomNav';
+import BottomNav from '../Bottom/BottomNav';
 import Ads from '../../screens/Ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Login from '../../screens/Login/Login';
@@ -15,15 +14,15 @@ const Stack = createStackNavigator();
 function MyStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="BottomNav" component={BottomNav} />
+            <Stack.Screen name="signup" component={SignUp} />
             <Stack.Screen name="Home" component={Home} />
-            {/* <Stack.Screen name="BottomNav" component={BottomNav} />
             <Stack.Screen name="Inbox" component={Inbox} />
             <Stack.Screen name="Ads" component={Ads} />
             <Stack.Screen name="manageAds" component={manageAds} />
             <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} />
-            <Stack.Screen name="Profile" component={Profile} /> */}
+            <Stack.Screen name="Profile" component={Profile} />
         </Stack.Navigator>
     );
 }

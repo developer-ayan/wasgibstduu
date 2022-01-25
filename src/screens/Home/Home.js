@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, Image } from "react-native";
+import { View, Text, TextInput, ScrollView, Image, TouchableOpacity } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -7,14 +7,29 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { useSelector } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function Home() {
 
- const LOGOUT = () => {
-    auth()
-      .signOut()
-      .then(() => console.log('User signed out!'));
-  }
+export default function Home({navigation}) {
+  const [data, setData] = React.useState([])
+  const state = useSelector(state => state)
+  // console.log("state data",state.user.UID)
+
+  const UID = state.user.USER_ID
+
+  React.useEffect(() => {
+
+    firestore()
+      .collection('Users')
+      .doc(UID)
+      .onSnapshot(documentSnapshot => {
+        setData(documentSnapshot.data());
+      });
+  }, [])
+
+
 
   return (
     <View style={{
@@ -42,8 +57,6 @@ export default function Home() {
           <TextInput style={{ width: '60%', backgroundColor: '#ffffff', padding: 10, height: 50, color: '#b1b1b1', fontWeight: 'bold' }} placeholder='Type your search here' />
           <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
         </View>
-
-
         <View style={{ paddingHorizontal: 15, borderRadius: 10, marginTop: 20 }}>
 
           <View style={{
@@ -54,15 +67,20 @@ export default function Home() {
               borderWidth: 1, borderColor: '#F8F8F8',
             }}>
               <AntDesign name='car' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Auto Mobiles</Text>
+              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>{data ? `${state.user.NAME}` : "guest"}</Text>
             </View>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Login')
             }}>
-              <MaterialCommunityIcons name='tablet-cellphone' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Phone & tablets</Text>
-            </View>
+
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <MaterialCommunityIcons name='tablet-cellphone' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Phone & tablets</Text>
+              </View>
+            </TouchableOpacity>
             <View style={{
               padding: 10, paddingVertical: 20, width: 110,
               borderWidth: 1, borderColor: '#F8F8F8'
@@ -139,10 +157,15 @@ export default function Home() {
                 style={{ width: 150, height: 150 }}
                 source={require("../../assets/premiumImages/img1.png")}
               />
-              <Image
-                style={{ width: 150, height: 150 }}
-                source={require("../../assets/premiumImages/img1.png")}
-              />
+              <TouchableOpacity onPress={() => {
+                NavigationContainer.navigate('Login')
+              }}>
+
+                <Image
+                  style={{ width: 150, height: 150 }}
+                  source={require("../../assets/premiumImages/img1.png")}
+                />
+              </TouchableOpacity>
             </View>
           </ScrollView>
 

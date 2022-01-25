@@ -7,41 +7,31 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { sign_in } from '../../redux/actions/authAction';
 
-
-
-
-
-
-
-
-
-
-
+import { useDispatch } from 'react-redux';
 
 
 export default function Login({ navigation }) {
+
+
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [data, setData] = React.useState('')
+  const dispatch = useDispatch()
+
+
 
   const login = () => {
-
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        firestore()
-          .collection('Users')
-          .doc(res.user.uid)
-          .onSnapshot(documentSnapshot => {
-            console.log(documentSnapshot.id);
-          });
-          navigation.navigate('Home')
-      })
-      .catch(error => {
-        if (error.code === 'auth/operation-not-allowed') {
-          console.log('Enable anonymous in your firebase console.');
-        }
-      });
+    let user = {
+      email,
+      password
+    }
+    dispatch(sign_in(user)).then(() => {
+      navigation.navigate('BottomNav')
+    }).catch((err) => {
+      alert(err)
+    })
   }
 
   return (
@@ -67,18 +57,12 @@ export default function Login({ navigation }) {
           <Text style={{ color: 'white', fontSize: 24 }}>Login</Text>
           <Text style={{ color: 'white', fontSize: 14, marginTop: 15, opacity: 0.8 }}>Enter your email below to reset your Password.</Text>
         </View>
-
         <View>
           <View style={{
             marginTop: 50,
             backgroundColor: 'white',
             borderRadius: 10,
-
           }}>
-
-
-
-
             <View style={{ flexDirection: 'row', alignItem: 'center', borderBottomWidth: 1, borderBottomColor: '#FBFBFB', justifyContent: 'space-between', marginTop: 20 }}>
               <TextInput
                 placeholder="Email Address"
@@ -104,8 +88,6 @@ export default function Login({ navigation }) {
             </View>
 
             <TouchableOpacity onPress={login}>
-
-
               <View style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -115,26 +97,18 @@ export default function Login({ navigation }) {
                 padding: 20, color: '#b3b3b3', backgroundColor: "gold",
                 marginTop: 20,
                 paddingVertical: 25
-
               }}>
                 <Text style={{ fontSize: 14, color: '#1d1900' }}>Login</Text>
                 <Feather name="arrow-right" size={20} color="#1d1900" />
               </View>
             </TouchableOpacity>
-
-
-
-
           </View>
-
           <Text style={{ fontSize: 14, opacity: 0.4, textAlign: 'center', marginTop: 40 }}>You don't Have Account go to Sign Up</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('signup')}
           >
-
             <Text style={{ fontSize: 14, textAlign: 'center', marginTop: 20 }}>Sign Up</Text>
           </TouchableOpacity>
-
         </View>
 
 

@@ -9,7 +9,8 @@ import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsMan
 import Ads from '../../screens/Ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
-import Drawer from '../Drawer/Drawer';
+import Login from '../../screens/Login/Login';
+// import Drawer from '../Drawer/Drawer';
 
 
 
@@ -22,7 +23,7 @@ export default function BottomNav() {
             barStyle={{ backgroundColor: '#ffffff' }}>
             <Tab.Screen
                 name="Home"
-                component={Drawer}
+                component={Home}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
                     tabBarIcon: ({ color }) => (
@@ -32,7 +33,7 @@ export default function BottomNav() {
             />
             <Tab.Screen
                 name="manageAds"
-                component={manageAds}
+                component={Login}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
                     tabBarIcon: ({ color }) => (

@@ -5,62 +5,37 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-
+import { useDispatch } from 'react-redux';
+import { signUp } from '../../redux/actions/authAction';
 
 
 
 export default function SignUp({ navigation }) {
-
 
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [phoneNumber, setPhoneNumber] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [confirm, setConfirm] = React.useState('')
+  const dispatch = useDispatch()
 
   const sign_up = () => {
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        firestore()
-          .collection('Users')
-          .doc(res.user.uid)
-          .set({
-            USER_ID: res.user.uid,
-            NAME: name,
-            EMAIL: email,
-            PHONE: phoneNumber,
-            PASSWORD: password,
-            CONFIRM: confirm,
-          })
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          Alert.alert('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          Alert.alert('That email address is invalid!');
-        }
-        console.error(error);
-      });
+    let user = {
+      name,
+      email,
+      phoneNumber,
+      password,
+      confirm
+    }
+    dispatch(signUp(user))
+  
   }
-
-
-
-
-
 
   return (
 
     <View style={{
       flex: 1,
     }}>
-
-
-
 
       <View style={{
         backgroundColor: '#00aa49',
