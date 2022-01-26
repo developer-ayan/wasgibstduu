@@ -6,13 +6,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import  firestore  from '@react-native-firebase/firestore';
 
 
 
 export default function PremiumAddsManage() {
-  const det = new Set('ayAn')
-  console.log(det)
-  const result = [...det]
   return (
     <ScrollView style={{
       flex: 1,
@@ -46,7 +44,7 @@ export default function PremiumAddsManage() {
       </View>
 
       <View style={{ backgroundColor: '#f7f7f7', padding: 10, flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, borderRadius: 10 }}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <Image
             style={{ height: 120, width: 100, borderRadius: 5 }}
             source={{ uri: 'https://thumbor.forbes.com/thumbor/fit-in/1200x0/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F60310d243a21322fb493cbae%2F0x0.jpg%3FcropX1%3D24%26cropX2%3D1354%26cropY1%3D35%26cropY2%3D783' }}

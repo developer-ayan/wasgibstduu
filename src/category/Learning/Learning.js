@@ -14,12 +14,12 @@ import firestore from '@react-native-firebase/firestore';
 
 
 
-export default function manageAds({ navigation }) {
+export default function Learning({ navigation }) {
   const [data, setData] = React.useState([])
 
   React.useEffect(() => {
     firestore()
-      .collection('User_Ads')
+      .collection('Learning')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
       });

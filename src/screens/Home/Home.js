@@ -12,22 +12,7 @@ import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 
 
-export default function Home({navigation}) {
-  const [data, setData] = React.useState([])
-  const state = useSelector(state => state)
-  // console.log("state data",state.user.UID)
-
-  const UID = state.user.USER_ID
-
-  React.useEffect(() => {
-
-    firestore()
-      .collection('Users')
-      .doc(UID)
-      .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.data());
-      });
-  }, [])
+export default function Home({ navigation }) {
 
 
 
@@ -62,17 +47,17 @@ export default function Home({navigation}) {
           <View style={{
             flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',
           }}>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8',
-            }}>
-              <AntDesign name='car' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>{data ? `${state.user.NAME}` : "guest"}</Text>
-            </View>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('Login')
-            }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Auto_Mobiles')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8', borderBottomColor: 'white'
+              }}>
+                <AntDesign name='car' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Auto Mobiles</Text>
+              </View>
+            </TouchableOpacity>
 
+            <TouchableOpacity onPress={() => navigation.navigate('Phone_and_Screen')}>
               <View style={{
                 padding: 10, paddingVertical: 20, width: 110,
                 borderWidth: 1, borderColor: '#F8F8F8'
@@ -81,13 +66,50 @@ export default function Home({navigation}) {
                 <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Phone & tablets</Text>
               </View>
             </TouchableOpacity>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <MaterialCommunityIcons name='washing-machine' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Electronics</Text>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Electronics')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <MaterialCommunityIcons name='washing-machine' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Electronics</Text>
+              </View>
+
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center'
+          }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Real_State')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <MaterialCommunityIcons name='home-city-outline' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Real States</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('Fashion')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <Ionicons name='shirt' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Fashion</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('Jobs')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <Ionicons name='notifications' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Jobs</Text>
+              </View>
+            </TouchableOpacity>
+
           </View>
 
           <View style={{
@@ -95,47 +117,26 @@ export default function Home({navigation}) {
             //  borderTopRightRadius: 10 ,
             //   borderTopLeftRadius : 10
           }}>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <MaterialCommunityIcons name='home-city-outline' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Real States</Text>
-            </View>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <Ionicons name='shirt' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Fashion</Text>
-            </View>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <Ionicons name='notifications' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Jobs</Text>
-            </View>
-          </View>
-          <View style={{
-            flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',
-            //  borderTopRightRadius: 10 ,
-            //   borderTopLeftRadius : 10
-          }}>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <FontAwesome name='handshake-o' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Services</Text>
-            </View>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <Entypo name='open-book' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Learning</Text>
-            </View>
+
+            <TouchableOpacity onPress={() => navigation.navigate('Services')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <FontAwesome name='handshake-o' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Services</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Learning')}>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <Entypo name='open-book' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Learning</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Events')}>
             <View style={{
               padding: 10, paddingVertical: 20, width: 110,
               borderWidth: 1, borderColor: '#F8F8F8'
@@ -143,11 +144,15 @@ export default function Home({navigation}) {
               <MaterialCommunityIcons name='pine-tree-fire' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
               <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Events</Text>
             </View>
+            </TouchableOpacity>
           </View>
 
           {/* Sponsored Ads   */}
 
           <ScrollView>
+
+
+
             <View style={{ marginTop: 20 }}>
               <Text style={{ color: "black", fontSize: 18, fontFamily: "Arial" }}>SPONSORED ADS</Text>
             </View>
@@ -167,6 +172,7 @@ export default function Home({navigation}) {
                 />
               </TouchableOpacity>
             </View>
+
           </ScrollView>
 
 

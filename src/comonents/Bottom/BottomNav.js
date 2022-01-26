@@ -33,7 +33,7 @@ export default function BottomNav() {
             />
             <Tab.Screen
                 name="manageAds"
-                component={Login}
+                component={manageAds}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
                     tabBarIcon: ({ color }) => (

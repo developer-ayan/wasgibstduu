@@ -1,5 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
 
 
 function signUp(user) {
@@ -47,7 +48,6 @@ function sign_in(user) {
                             dispatch({ type: 'GETUSER', user: documentSnapshot.data() })
                             resolve()
                         });
-                        
                 })
                 .catch(error => {
                     if (error.code === 'auth/operation-not-allowed') {
@@ -60,8 +60,36 @@ function sign_in(user) {
     }
 }
 
+function create_ads(user) {
+    console.log(user)
+    return (dispatch) => {
+        const User_data = user
+        console.log(User_data)
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User logged in already or has just logged in.
+                const LoginUID = user.uid;
+                firestore()
+                    .collection(`${User_data.category}`)
+                    .doc(LoginUID)
+                    .set({
+                        CATEGORY: User_data.category,
+                        TITLE: User_data.title,
+                        DISCRIPTION: User_data.discription,
+                        PRICE: User_data.price,
+                        CITY: User_data.city,
+                        // ADS_IMAGES: User_data.uri,
+                    })
+
+            } else {
+                // User not logged in or has just logged out.
+            }
+        });
+    }
+}
 
 export {
     signUp,
-    sign_in
+    sign_in,
+    create_ads
 }
