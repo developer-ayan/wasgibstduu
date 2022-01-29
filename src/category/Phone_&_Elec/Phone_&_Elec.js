@@ -19,7 +19,7 @@ export default function Phone_and_Screen({ navigation }) {
 
   React.useEffect(() => {
     firestore()
-      .collection('Phone_&_Screen')
+      .collection('Phone and Tablets')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
       });

@@ -4,6 +4,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch } from 'react-redux';
 import { create_ads } from '../../redux/actions/authAction';
+import storage from '@react-native-firebase/storage'
+import { firebase } from '@react-native-firebase/auth';
 
 
 export default function Ads({ navigation }) {
@@ -14,16 +16,21 @@ export default function Ads({ navigation }) {
   const [discription, setDiscription] = React.useState('')
   const [price, setPrice] = React.useState('')
   const [city, setCity] = React.useState('')
+  const [id, setId] = React.useState(null)
+  const [uploading, setUploading] = React.useState(false)
+  const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
 
-  const CreateAds = () => {
-    let user = {
+  const CreateAds = async ()  => {
+    const imageUrl = await  hondlet()
+    console.log(`Adss Image ${imageUrl}`)
+     let user =  {
       category,
       title,
       discription,
       price,
       city,
-      setUri
+      imageUrl
     }
     dispatch(create_ads(user))
   }
@@ -34,9 +41,60 @@ export default function Ads({ navigation }) {
       height: 400,
       cropping: true
     }).then(image => {
-      console.log(image);
+      console.log(image.path);
       setUri(image.path)
     });
+  }
+
+  React.useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User logged in already or has just logged in.
+        setId(user.uid)
+
+
+      } else {
+        // User not logged in or has just logged out.
+      }
+    });
+  })
+
+  const submitPost = async () => {
+
+  }
+
+  const hondlet = async () => {
+    const uploadUri = uri;
+    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+
+    const extansion = fileName.split('.').pop();
+    const name = fileName.split('.').slice(0, -1).join('.');
+    fileName = name + Date.now() + '.' + extansion;
+
+    setUploading(true);
+    setTranseferred(0)
+
+    const storageRef = storage().ref(`photos/${id}`)
+    const task = storageRef.putFile(uploadUri)
+
+    task.on('state_changed', taskSnapshot => {
+      setTranseferred(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+      )
+    });
+
+    try {
+      await task;
+
+      const url = await storageRef.getDownloadURL()
+
+      setUploading(false)
+      alert('your immage uploaded success fully')
+      return url;
+    } catch (e) {
+      console.log(e)
+    }
+    setUri(null)
   }
 
   return (
@@ -114,6 +172,17 @@ export default function Ads({ navigation }) {
           <Feather name="arrow-right" size={20} color="#1d1900" />
         </View>
       </TouchableOpacity>
+
+      {uploading ? (
+        <View>
+          <Text>{transeferred} % Completed</Text>
+        </View>
+      ) : (
+        <TouchableOpacity onPress={submitPost}>
+          <Text>Post</Text>
+        </TouchableOpacity>
+      )
+      }
 
     </ScrollView >
   )

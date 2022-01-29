@@ -18,11 +18,14 @@ import Learning from '../../category/Learning/Learning';
 import Phone_and_Screen from '../../category/Phone_&_Elec/Phone_&_Elec';
 import Real_states from '../../category/Real_States/Real_States';
 import Services from '../../category/Services/Services';
+import Categories_detail from '../../category/Categories_detail/Categories_detail';
 
 const Stack = createStackNavigator();
 function MyStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={Login} />
+
 
             {/* bottom navigation */}
 
@@ -39,20 +42,20 @@ function MyStack() {
 
             {/* Authentication  */}
 
-            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="signup" component={SignUp} />
 
             {/* Category */}
 
-            <Stack.Screen name="Auto_Mobiles" component={Auto_Mobiles} />
-            <Stack.Screen name="Electronics" component={Electronics} />
-            <Stack.Screen name="Events" component={Events} />
-            <Stack.Screen name="Fashion" component={Fashion} />
-            <Stack.Screen name="Jobs" component={Jobs} />
-            <Stack.Screen name="Learning" component={Learning} />
+            <Stack.Screen name="Categories_detail" component={Categories_detail} />
             <Stack.Screen name="Phone_and_Screen" component={Phone_and_Screen} />
+            <Stack.Screen name="Auto_Mobiles" component={Auto_Mobiles} />
             <Stack.Screen name="Real_states" component={Real_states} />
+            <Stack.Screen name="Electronics" component={Electronics} />
+            <Stack.Screen name="Learning" component={Learning} />
             <Stack.Screen name="Services" component={Services} />
+            <Stack.Screen name="Fashion" component={Fashion} />
+            <Stack.Screen name="Events" component={Events} />
+            <Stack.Screen name="Jobs" component={Jobs} />
 
 
         </Stack.Navigator>

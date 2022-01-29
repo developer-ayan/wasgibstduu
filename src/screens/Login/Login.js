@@ -14,13 +14,10 @@ import { useDispatch } from 'react-redux';
 
 export default function Login({ navigation }) {
 
-
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [data, setData] = React.useState('')
   const dispatch = useDispatch()
-
-
 
   const login = () => {
     let user = {

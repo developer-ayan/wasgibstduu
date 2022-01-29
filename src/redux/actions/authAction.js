@@ -78,7 +78,7 @@ function create_ads(user) {
                         DISCRIPTION: User_data.discription,
                         PRICE: User_data.price,
                         CITY: User_data.city,
-                        // ADS_IMAGES: User_data.uri,
+                        ADS_IMAGES: User_data.imageUrl,
                     })
 
             } else {
