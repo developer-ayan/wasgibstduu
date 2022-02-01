@@ -1,0 +1,61 @@
+import React from 'react';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image } from 'react-native';
+import firestore from '@react-native-firebase/firestore'
+
+const Item = ({ category, title, discription, image, city, price }) => (
+
+
+
+    <View style={{ width: '48%',marginRight : 15, marginHorizontal: 1, backgroundColor: 'white'}}>
+        <Image
+            style={{ width: '100%', height: 120 }}
+            source={{ uri: image }}
+        />
+        <View style={{ paddingHorizontal: 8 }}>
+            <Text style={{ paddingVertical: 5, color: '#d3d3d3', fontSize: 12 }}>{category} - {city}</Text>
+            <Text style={{ color: 'black', fontWeight: '500', fontSize: 15 }}>{title}</Text>
+            <Text style={{ color: 'green', fontWeight: '700' , paddingVertical : 5  }}>{price}</Text>
+        </View>
+    </View>
+
+);
+
+const All_Ads = ({ data }) => {
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                data={data}
+                numColumns={2}
+                renderItem={({ item }) => (
+                    <Item
+                        discription={item.DISCRIPTION}
+                        image={item.ADS_IMAGES}
+                        category={item.CATEGORY}
+                        city={item.CITY}
+                        price={item.PRICE}
+                        title={item.TITLE}
+                    />)}
+                keyExtractor={item => item.UID}
+            />
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginTop: StatusBar.currentHeight || 0,
+    },
+    item: {
+        backgroundColor: '#f9c2ff',
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },
+    title: {
+        fontSize: 32,
+    },
+});
+
+export default All_Ads;

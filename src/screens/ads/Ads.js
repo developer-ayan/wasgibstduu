@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch } from 'react-redux';
 import { create_ads } from '../../redux/actions/authAction';
@@ -18,13 +20,14 @@ export default function Ads({ navigation }) {
   const [city, setCity] = React.useState('')
   const [id, setId] = React.useState(null)
   const [uploading, setUploading] = React.useState(false)
+  const [render, setRender] = React.useState(false)
   const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
 
-  const CreateAds = async ()  => {
-    const imageUrl = await  hondlet()
+  const CreateAds = async () => {
+    const imageUrl = await hondlet()
     console.log(`Adss Image ${imageUrl}`)
-     let user =  {
+    let user = {
       category,
       title,
       discription,
@@ -37,11 +40,10 @@ export default function Ads({ navigation }) {
 
   const ImageGallery = () => {
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 700,
+      height: 500,
       cropping: true
     }).then(image => {
-      console.log(image.path);
       setUri(image.path)
     });
   }
@@ -54,14 +56,11 @@ export default function Ads({ navigation }) {
 
 
       } else {
-        // User not logged in or has just logged out.
+        Alert('User Is Not LogIn')
       }
     });
   })
 
-  const submitPost = async () => {
-
-  }
 
   const hondlet = async () => {
     const uploadUri = uri;
@@ -89,7 +88,7 @@ export default function Ads({ navigation }) {
       const url = await storageRef.getDownloadURL()
 
       setUploading(false)
-      alert('your immage uploaded success fully')
+      Alert.alert('Your Ad Has Been Upload')
       return url;
     } catch (e) {
       console.log(e)
@@ -139,7 +138,7 @@ export default function Ads({ navigation }) {
             value={price}
             style={styles.Input} />
         </View>
-        <View style={{ marginTop: 20, marginBottom: 40 }}>
+        <View style={{ marginTop: 20 }}>
           <Text style={styles.AdTitle}>CITY</Text>
           <TextInput
             onChangeText={(text) => setCity(text)}
@@ -147,42 +146,45 @@ export default function Ads({ navigation }) {
             placeholder='Select City'
             style={styles.Input} />
         </View>
-        <TouchableOpacity onPress={ImageGallery}>
-          <Text>
-            Enter you images
-          </Text>
-        </TouchableOpacity>
-        <Image
-          style={{ height: 120, width: 100, borderRadius: 5 }}
-          source={{ uri: uri }}
-        />
-      </View>
-      <TouchableOpacity onPress={CreateAds}>
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottomRightRadius: 10,
-          borderBottomLeftRadius: 10,
-          padding: 20, color: '#b3b3b3', backgroundColor: "#00aa49",
-          marginTop: 20,
-          paddingVertical: 25
-        }}>
-          <Text style={{ fontSize: 14, color: '#1d1900' }}>Create Ads</Text>
-          <Feather name="arrow-right" size={20} color="#1d1900" />
-        </View>
-      </TouchableOpacity>
+        <View style={{ marginTop: 20 }}>
 
-      {uploading ? (
-        <View>
-          <Text>{transeferred} % Completed</Text>
+          <TouchableOpacity onPress={ImageGallery}>
+            <Text style={styles.AdTitle}>UPLOAD IMAGE</Text>
+          </TouchableOpacity>
+          <View>
+            <Image
+              style={{ height: 80, width: 80, borderRadius: 2, marginTop: 1 }}
+              source={{ uri: uri }}
+            />
+          </View>
         </View>
-      ) : (
-        <TouchableOpacity onPress={submitPost}>
-          <Text>Post</Text>
-        </TouchableOpacity>
-      )
-      }
+
+        {uploading ? (
+          <View>
+            <Text>{transeferred} % Completed</Text>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={CreateAds}>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderRadius: 5,
+              padding: 20,
+              color: '#b3b3b3',
+              backgroundColor: "gold",
+              paddingVertical: 25,
+              marginVertical: 10
+            }}>
+              <Text style={{ fontSize: 14, color: '#1d1900' }}>Create Ads</Text>
+              <Feather name="arrow-right" size={20} color="#1d1900" />
+            </View>
+          </TouchableOpacity>
+        )
+        }
+      </View>
+
+
 
     </ScrollView >
   )

@@ -62,7 +62,7 @@ export default function Fashion({ navigation }) {
 
                   <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 10 }}>
                     <Image
-                      style={{ width: 300, height: 300 , borderRadius : 5 }}
+                      style={{ width: 200, height: 200 , borderRadius : 5 }}
                       source={{uri : e.ADS_IMAGES}}
                     />
                   </View>

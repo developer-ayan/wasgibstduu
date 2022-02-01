@@ -64,7 +64,6 @@ function create_ads(user) {
     console.log(user)
     return (dispatch) => {
         const User_data = user
-        console.log(User_data)
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 // User logged in already or has just logged in.
@@ -79,6 +78,7 @@ function create_ads(user) {
                         PRICE: User_data.price,
                         CITY: User_data.city,
                         ADS_IMAGES: User_data.imageUrl,
+                        UID : LoginUID
                     })
 
             } else {

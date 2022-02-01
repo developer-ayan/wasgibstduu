@@ -10,39 +10,48 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
+import All_Ads from './All_Ads';
 
 
 export default function Home({ navigation }) {
+  const [data, setData] = React.useState([])
 
+  React.useEffect(() => {
+    firestore()
+      .collection('Fashion')
+      .onSnapshot(documentSnapshot => {
+        setData(documentSnapshot.docs.map(e => e.data()));
+      });
+  }, [])
 
 
   return (
-    <View style={{
+    <ScrollView style={{
       flex: 1,
-      backgroundColor: 'white'
+      backgroundColor: '#f0f2f5'
     }}>
 
       <View style={{
-        paddingLeft: 13,
-        paddingRight: 13,
-
       }}>
         {/* icon back */}
 
       </View>
-      <View style={{ backgroundColor: '#01a949', height: 300 }}>
-        <View style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: 20,
-          height: 80,
-        }}>
-          <FontAwesome style={{ backgroundColor: '#ffffff', borderTopLeftRadius: 5, borderBottomLeftRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="search" size={25} />
-          <TextInput style={{ width: '60%', backgroundColor: '#ffffff', padding: 10, height: 50, color: '#b1b1b1', fontWeight: 'bold' }} placeholder='Type your search here' />
-          <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
+      <View >
+        <View style={{ height: 400, backgroundColor: '#01a949' }}>
+
+          <View style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 20,
+            height: 80,
+          }}>
+            <FontAwesome style={{ backgroundColor: '#ffffff', borderTopLeftRadius: 5, borderBottomLeftRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="search" size={25} />
+            <TextInput style={{ width: '60%', backgroundColor: '#ffffff', padding: 10, height: 50, color: '#b1b1b1', fontWeight: 'bold' }} placeholder='Type your search here' />
+            <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
+          </View>
         </View>
-        <View style={{ paddingHorizontal: 15, borderRadius: 10, marginTop: 20 }}>
+        <View style={{ paddingHorizontal: 15, borderRadius: 10, marginTop: -280 }}>
 
           <View style={{
             flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center',
@@ -137,13 +146,13 @@ export default function Home({ navigation }) {
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Events')}>
-            <View style={{
-              padding: 10, paddingVertical: 20, width: 110,
-              borderWidth: 1, borderColor: '#F8F8F8'
-            }}>
-              <MaterialCommunityIcons name='pine-tree-fire' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
-              <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Events</Text>
-            </View>
+              <View style={{
+                padding: 10, paddingVertical: 20, width: 110,
+                borderWidth: 1, borderColor: '#F8F8F8'
+              }}>
+                <MaterialCommunityIcons name='pine-tree-fire' style={{ color: '#b1b1b1', fontSize: 40, textAlign: "center" }} />
+                <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>Events</Text>
+              </View>
             </TouchableOpacity>
           </View>
 
@@ -172,6 +181,11 @@ export default function Home({ navigation }) {
                 />
               </TouchableOpacity>
             </View>
+            <View>
+              <Text style = {{marginTop : 20 , fontFamily : 'Arial' , color : 'black' , fontSize : 20}}>Fresh recommendations</Text>
+              <All_Ads data={data} />
+            </View>
+
 
           </ScrollView>
 
@@ -180,6 +194,6 @@ export default function Home({ navigation }) {
         </View>
       </View>
 
-    </View>
+    </ScrollView>
   )
 }
