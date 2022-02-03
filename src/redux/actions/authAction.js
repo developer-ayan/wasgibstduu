@@ -70,8 +70,7 @@ function create_ads(user) {
                 const LoginUID = user.uid;
                 firestore()
                     .collection(`${User_data.category}`)
-                    .doc(LoginUID)
-                    .set({
+                    .add({
                         CATEGORY: User_data.category,
                         TITLE: User_data.title,
                         DISCRIPTION: User_data.discription,
@@ -80,6 +79,16 @@ function create_ads(user) {
                         ADS_IMAGES: User_data.imageUrl,
                         UID : LoginUID
                     })
+                    // .doc(LoginUID)
+                    // .set({
+                    //     CATEGORY: User_data.category,
+                    //     TITLE: User_data.title,
+                    //     DISCRIPTION: User_data.discription,
+                    //     PRICE: User_data.price,
+                    //     CITY: User_data.city,
+                    //     ADS_IMAGES: User_data.imageUrl,
+                    //     UID : LoginUID
+                    // })
 
             } else {
                 // User not logged in or has just logged out.

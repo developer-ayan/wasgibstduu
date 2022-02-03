@@ -11,6 +11,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import All_Ads from './All_Ads';
+import Premium from './Premium';
 
 
 export default function Home({ navigation }) {
@@ -158,38 +159,23 @@ export default function Home({ navigation }) {
 
           {/* Sponsored Ads   */}
 
-          <ScrollView>
 
-
+          {/* Premium Ads */}
 
             <View style={{ marginTop: 20 }}>
               <Text style={{ color: "black", fontSize: 18, fontFamily: "Arial" }}>SPONSORED ADS</Text>
             </View>
+            <Premium
+              navigation={navigation}
+            />
 
-            <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Image
-                style={{ width: 150, height: 150 }}
-                source={require("../../assets/premiumImages/img1.png")}
-              />
-              <TouchableOpacity onPress={() => {
-                NavigationContainer.navigate('Login')
-              }}>
+          {/* All Ads  */}
 
-                <Image
-                  style={{ width: 150, height: 150 }}
-                  source={require("../../assets/premiumImages/img1.png")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text style = {{marginTop : 20 , fontFamily : 'Arial' , color : 'black' , fontSize : 20}}>Fresh recommendations</Text>
-              <All_Ads data={data} />
-            </View>
-
-
-          </ScrollView>
-
-
+            <Text style={{ fontFamily: 'Arial', color: 'black', fontSize: 20, marginTop: 20 }}>Fresh recommendations</Text>
+            <All_Ads
+              data={data}
+              navigation={navigation}
+            />
 
         </View>
       </View>

@@ -11,7 +11,7 @@ export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE } = route.params;
 
     return (
-        <ScrollView>
+        <ScrollView style = {{backgroundColor : 'white'}}>
 
             <View style = {{justifyContent : 'space-between' , flexDirection : 'row' , marginHorizontal : 10}}>
                 {/* icon back */}
@@ -42,7 +42,7 @@ export default function Categories_detail({ route, navigation }) {
 
             }}>
                 <View>
-                    <Text style={{ color: 'black', fontSize: 20, paddingVertical: 5 }}>{TITLE}</Text>
+                    <Text style={{ color: 'black', fontSize: 20, paddingVertical: 5 , width : 260  }}>{TITLE}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Ionicons name='location-outline' style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5 }} />
                         <Text style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5, marginLeft: 5 }}>{CITY}</Text>
@@ -98,7 +98,6 @@ export default function Categories_detail({ route, navigation }) {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                height: 50,
                 paddingHorizontal: 12,
 
             }}>
@@ -106,7 +105,7 @@ export default function Categories_detail({ route, navigation }) {
                     <Text style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5 }}>{CATEGORY}</Text>
                 </View>
                 <View >
-                    <Text style={{ color: 'black', fontSize: 13, paddingVertical: 5 }}>{TITLE}</Text>
+                    <Text style={{ color: 'black', fontSize: 13, paddingVertical: 5 , width : 100 }}>{TITLE}</Text>
                 </View>
             </View>
 
