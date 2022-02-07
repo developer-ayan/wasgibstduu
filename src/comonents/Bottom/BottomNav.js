@@ -9,12 +9,13 @@ import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsMan
 import Ads from '../../screens/Ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
-import Login from '../../screens/Login/Login';
 // import Drawer from '../Drawer/Drawer';
 
 
 
-export default function BottomNav() {
+export default function BottomNav({route}) {
+    let { id } = route.params
+    console.log(id)
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator
@@ -53,7 +54,7 @@ export default function BottomNav() {
             />
             <Tab.Screen
                 name="Inbox"
-                component={Inbox}
+                children={() => <Inbox id={id} />}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
 

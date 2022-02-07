@@ -1,18 +1,31 @@
 const initial_state = {
-    user : {}
+    user: {},
+    allUsers: [],
+    chats : '',
 }
 
-function authReducer(userState = initial_state, action) {
+function authReducer(state = initial_state, action) {
     switch (action.type) {
         case "GETUSER":
-            return({
-                ...userState,
-                user : action.user
+            return ({
+                ...state,
+                user: action.user
             })
-        
+
+        case "GETALLUSERS":
+            return ({
+                ...state,
+                allUsers: action.allUsers
+            })
+        case "CHATS":
+            return ({
+                ...state,
+                chats: action.chats
+            })
+
 
         default:
-            return userState
+            return state
     }
 }
 

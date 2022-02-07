@@ -25,7 +25,6 @@ const Item = ({ category, title, discription, image, city, price, navigation }) 
             </View>
         </TouchableOpacity>
     </View>
-
 );
 
 const All_Ads = ({ data, navigation }) => {

@@ -1,12 +1,8 @@
 import React from 'react'
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import { sign_in } from '../../redux/actions/authAction';
 
 import { useDispatch } from 'react-redux';
@@ -16,7 +12,6 @@ export default function Login({ navigation }) {
 
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [data, setData] = React.useState('')
   const dispatch = useDispatch()
 
   const login = () => {
@@ -24,8 +19,8 @@ export default function Login({ navigation }) {
       email,
       password
     }
-    dispatch(sign_in(user)).then(() => {
-      navigation.navigate('BottomNav')
+    dispatch(sign_in(user)).then((uid) => {
+      navigation.navigate(`BottomNav`, {id : uid})
     }).catch((err) => {
       alert(err)
     })

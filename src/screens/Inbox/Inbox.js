@@ -1,15 +1,34 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, Image, Button } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_all_users, get_msg, get_user } from '../../redux/actions/authAction';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-export default function Inbox() {
+export default function Inbox({  id }) {
+    const [data, setData] = React.useState([])
+    const user = useSelector(state => state.user)
+    const allUsers = useSelector(state => state.allUsers)
+    const chats = useSelector(state => state.chats)
+
+
+
+
+
+
+    const navigation = useNavigation() 
+
+    const dispatch = useDispatch()
+
+    React.useEffect(() => {
+        dispatch(get_user(id))
+        dispatch(get_all_users())
+    }, [])
+
     return (
         <View style={{
             flex: 1,
@@ -67,6 +86,41 @@ export default function Inbox() {
             </View>
 
 
+
+            {/* All Chat users  */}
+
+            <View>
+                <Text>
+                    {user.EMAIL}
+                </Text>
+                <Text>
+                    {user.NAME}
+                </Text>
+            </View>
+
+            <View>
+                <Text style={{ marginTop: 20, fontSize: 30 }}>Get All Users</Text>
+            </View>
+            {
+                allUsers.map((e, v) => {
+
+                    return e.EMAIL !== user.EMAIL && (
+                        <View  key={v}>
+                            <TouchableOpacity onPress={() => navigation.navigate('chatscreen' , {
+                               name : e.NAME,
+                               user1 : user,
+                               user2 : e.USER_ID,
+                              
+                            })}>
+                                <View style={{ borderWidth: 1, borderColor: 'red', marginTop: 10 }}>
+                                    <Text style={{ fontWeight: 'bold' }}>{e.NAME}</Text>
+                                    <Text style={{}}>{e.EMAIL}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                })
+            }
         </View>
     )
 }

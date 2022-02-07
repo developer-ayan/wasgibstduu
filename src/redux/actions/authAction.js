@@ -41,12 +41,11 @@ function sign_in(user) {
                 .signInWithEmailAndPassword(user.email, user.password)
                 .then((res) => {
                     let Mydata = res;
-                    firestore()
-                        .collection('Users')
+                    firestore().collection('Users')
                         .doc(res.user.uid)
                         .onSnapshot(documentSnapshot => {
                             dispatch({ type: 'GETUSER', user: documentSnapshot.data() })
-                            resolve()
+                            resolve(res.user.uid)
                         });
                 })
                 .catch(error => {
@@ -77,28 +76,78 @@ function create_ads(user) {
                         PRICE: User_data.price,
                         CITY: User_data.city,
                         ADS_IMAGES: User_data.imageUrl,
-                        UID : LoginUID
+                        UID: LoginUID
                     })
-                    // .doc(LoginUID)
-                    // .set({
-                    //     CATEGORY: User_data.category,
-                    //     TITLE: User_data.title,
-                    //     DISCRIPTION: User_data.discription,
-                    //     PRICE: User_data.price,
-                    //     CITY: User_data.city,
-                    //     ADS_IMAGES: User_data.imageUrl,
-                    //     UID : LoginUID
-                    // })
+
 
             } else {
-                // User not logged in or has just logged out.
+                alert('User is not logged in')
             }
         });
     }
 }
 
+function get_user(id) {
+    return (dispatch) => {
+        firestore().collection('Users')
+            .doc(id)
+            .onSnapshot(documentSnapshot => {
+                dispatch({ type: 'GETUSER', user: { ...documentSnapshot.data(), id: id } })
+            });
+    }
+}
+
+function get_all_users() {
+    return (dispatch) => {
+        firestore()
+            .collection('Users')
+            .onSnapshot(documentSnapshot => {
+
+                dispatch({ type: 'GETALLUSERS', allUsers: documentSnapshot.docs.map(e => e.data()) })
+            });
+    }
+}
+
+const send_message = (message, user1, user2) => {
+    return (dispatch) => {
+        var MainID;
+        if (user1 < user2) {
+            MainID = user1 + user2
+        } else {
+            MainID = user2 + user1
+        }
+        console.log(MainID)
+        get_msg(MainID)
+        firestore()
+            .collection('Chats')
+            .doc(MainID)
+            .set({
+                user1: user1,
+                user2: user2,
+                message
+            })
+    }
+}
+
+const get_msg = (uid) => {
+    return (dispatch) => {
+        firestore().collection('Chats')
+            .doc(uid)
+            .onSnapshot(documentSnapshot => {
+                console.log("CHATS ", documentSnapshot.data())
+                dispatch({ type: 'CHATS', chats: documentSnapshot.data().message})
+            });
+    }
+}
+
+
+
 export {
     signUp,
     sign_in,
-    create_ads
+    create_ads,
+    get_user,
+    get_all_users,
+    send_message,
+    get_msg
 }
