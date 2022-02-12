@@ -6,27 +6,27 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_users, get_msg, get_user } from '../../redux/actions/authAction';
 import { useNavigation } from '@react-navigation/native';
+import database from '@react-native-firebase/database'
 
 
 
-export default function Inbox({  id }) {
+export default function Inbox({ id }) {
     const [data, setData] = React.useState([])
     const user = useSelector(state => state.user)
-    const allUsers = useSelector(state => state.allUsers)
-    const chats = useSelector(state => state.chats)
+    const user1 = useSelector(state => state)
 
+    setData(user)
+    console.log("INOBX ",data)
+    // const allUsers = useSelector(state => state.allUsers)
+    // const chats = useSelector(state => state.chats)
 
-
-
-
-
-    const navigation = useNavigation() 
+    const navigation = useNavigation()
 
     const dispatch = useDispatch()
 
-    React.useEffect(() => {
+    React.useEffect(() => { 
         dispatch(get_user(id))
-        dispatch(get_all_users())
+        // dispatch(get_all_users())
     }, [])
 
     return (
@@ -89,20 +89,20 @@ export default function Inbox({  id }) {
 
             {/* All Chat users  */}
 
-            <View>
+            {/* <View>
                 <Text>
                     {user.EMAIL}
                 </Text>
                 <Text>
                     {user.NAME}
                 </Text>
-            </View>
+            </View> */}
 
             <View>
                 <Text style={{ marginTop: 20, fontSize: 30 }}>Get All Users</Text>
             </View>
-            {
-                allUsers.map((e, v) => {
+            {/* {
+                user.map((e, v) => {
 
                     return e.EMAIL !== user.EMAIL && (
                         <View  key={v}>
@@ -120,7 +120,9 @@ export default function Inbox({  id }) {
                         </View>
                     )
                 })
-            }
+            } */}
+
+            
         </View>
     )
 }

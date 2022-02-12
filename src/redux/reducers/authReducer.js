@@ -1,6 +1,7 @@
 const initial_state = {
-    user: {},
+    user: [],
     allUsers: [],
+    // users: {},
     chats : '',
 }
 
@@ -11,6 +12,12 @@ function authReducer(state = initial_state, action) {
                 ...state,
                 user: action.user
             })
+
+            // case "GETUSER":
+            // return ({
+            //     ...state,
+            //     user: action.user
+            // })
 
         case "GETALLUSERS":
             return ({

@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database'
 
 
 function signUp(user) {
@@ -89,56 +90,63 @@ function create_ads(user) {
 
 function get_user(id) {
     return (dispatch) => {
-        firestore().collection('Users')
-            .doc(id)
-            .onSnapshot(documentSnapshot => {
-                dispatch({ type: 'GETUSER', user: { ...documentSnapshot.data(), id: id } })
-            });
-    }
-}
-
-function get_all_users() {
-    return (dispatch) => {
-        firestore()
-            .collection('Users')
-            .onSnapshot(documentSnapshot => {
-
-                dispatch({ type: 'GETALLUSERS', allUsers: documentSnapshot.docs.map(e => e.data()) })
-            });
-    }
-}
-
-const send_message = (message, user1, user2) => {
-    return (dispatch) => {
-        var MainID;
-        if (user1 < user2) {
-            MainID = user1 + user2
-        } else {
-            MainID = user2 + user1
-        }
-        console.log(MainID)
-        get_msg(MainID)
-        firestore()
-            .collection('Chats')
-            .doc(MainID)
-            .set({
-                user1: user1,
-                user2: user2,
-                message
+        // firestore().collection('Users')
+        //     .doc(id)
+        //     .onSnapshot(documentSnapshot => {
+        //         dispatch({ type: 'GETUSER', user: { ...documentSnapshot.data(), id: id } })
+        //     });
+             database()
+            .ref('/')
+            .child('users')
+            .on('child_added', (data) => {
+                console.log('User data: ', data.val());
+                dispatch({ type: 'GETUSER', user: data.val() })
             })
     }
 }
 
-const get_msg = (uid) => {
-    return (dispatch) => {
-        firestore().collection('Chats')
-            .doc(uid)
-            .onSnapshot(documentSnapshot => {
-                console.log("CHATS ", documentSnapshot.data())
-                dispatch({ type: 'CHATS', chats: documentSnapshot.data().message})
-            });
-    }
-}
+// function get_all_users() {
+//     return (dispatch) => {
+//         firestore()
+//             .collection('Users')
+//             .onSnapshot(documentSnapshot => {
+
+//                 dispatch({ type: 'GETALLUSERS', allUsers: documentSnapshot.docs.map(e => e.data()) })
+//             });
+//     }
+// }
+
+// const send_message = (message, user1, user2) => {
+//     return (dispatch) => {
+//         var MainID;
+//         if (user1 < user2) {
+//             MainID = user1 + user2
+//         } else {
+//             MainID = user2 + user1
+//         }
+//         console.log(MainID)
+//         get_msg(MainID)
+//         firestore()
+//             .collection('Chats')
+//             .doc(MainID)
+//             .set({
+//                 user1: user1,
+//                 user2: user2,
+//                 message
+//             })
+//     }
+// }
+
+// const get_msg = (uid) => {
+//     return (dispatch) => {
+//         firestore().collection('Chats')
+//             .doc(uid)
+//             .onSnapshot(documentSnapshot => {
+//                 console.log("CHATS ", documentSnapshot.data())
+//                 dispatch({ type: 'CHATS', chats: documentSnapshot.data().message})
+//             });
+//     }
+// }
 
 
 
@@ -147,7 +155,7 @@ export {
     sign_in,
     create_ads,
     get_user,
-    get_all_users,
-    send_message,
-    get_msg
+    // get_all_users,
+    // send_message,
+    // get_msg
 }

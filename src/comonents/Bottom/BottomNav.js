@@ -15,7 +15,6 @@ import Home from '../../screens/Home/Home';
 
 export default function BottomNav({route}) {
     let { id } = route.params
-    console.log(id)
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator
