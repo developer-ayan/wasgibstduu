@@ -7431,6 +7431,11 @@ react-native-screens@^3.10.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-select-dropdown@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-select-dropdown/-/react-native-select-dropdown-1.8.0.tgz#18f30972244678d1e1e191d166627900bd85ff0d"
+  integrity sha512-Sb2ETrh/cAVPncT0Lq9S+hDmilQ3CfMDo0jgkymPQJ5yBY0TMBfvgNTbiI3/Z/W8CLX/wV81BWOEQb5x2ogJfw==
+
 react-native-svg@^12.1.0:
   version "12.1.0"
   resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-12.1.0.tgz"

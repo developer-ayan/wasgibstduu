@@ -2,13 +2,12 @@ import React from 'react'
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch } from 'react-redux';
 import { create_ads } from '../../redux/actions/authAction';
-import storage from '@react-native-firebase/storage'
+import storage from '@react-native-firebase/storage';
 import { firebase } from '@react-native-firebase/auth';
-
+import SelectDropdown from 'react-native-select-dropdown';
 
 export default function Ads({ navigation }) {
 
@@ -23,10 +22,10 @@ export default function Ads({ navigation }) {
   const [render, setRender] = React.useState(false)
   const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
+  const countries = ["Egypt", "Canada", "Australia", "Ireland"]
 
   const CreateAds = async () => {
     const imageUrl = await hondlet()
-    console.log(`Adss Image ${imageUrl}`)
     let user = {
       category,
       title,
@@ -36,6 +35,12 @@ export default function Ads({ navigation }) {
       imageUrl
     }
     dispatch(create_ads(user))
+    setTitle('')
+    setDiscription('')
+    setPrice('')
+    setCity('')
+    setCategory('Fashion')
+    navigation.navigate('Home')
   }
 
   const ImageGallery = () => {
@@ -102,6 +107,29 @@ export default function Ads({ navigation }) {
         {/* icon back */}
         <View>
           <View>
+        
+            <SelectDropdown
+              data={countries}
+              width ="100%"
+              defaultButtonText = 'select a category'
+              buttonStyle={{backgroundColor : '#f7f7f7' , width : '100%' , borderWidth :1 , borderColor : 'red' }}
+              buttonTextStyle = {{color : '#ababab' , fontWeight : 'bold' , borderColor : 'red' , borderWidth : 1 , width : 50}}
+              dropdownStyle = {{backgroundColor : 'red' , borderRadius :10}}
+              rowTextStyle = {{color : 'white' }}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item
+              }}
+            />
             <TouchableOpacity onPress={navigation.goBack}>
               <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
             </TouchableOpacity>

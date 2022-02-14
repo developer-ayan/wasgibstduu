@@ -1,8 +1,12 @@
 const initial_state = {
     user: [],
     allUsers: [],
+<<<<<<< HEAD
     // users: {},
     chats : '',
+=======
+    chats : [],
+>>>>>>> 16ff1ce (Chat App Complete With Design)
 }
 
 function authReducer(state = initial_state, action) {
@@ -12,6 +16,7 @@ function authReducer(state = initial_state, action) {
                 ...state,
                 user: action.user
             })
+<<<<<<< HEAD
 
             // case "GETUSER":
             // return ({
@@ -19,6 +24,8 @@ function authReducer(state = initial_state, action) {
             //     user: action.user
             // })
 
+=======
+>>>>>>> 16ff1ce (Chat App Complete With Design)
         case "GETALLUSERS":
             return ({
                 ...state,
@@ -29,8 +36,6 @@ function authReducer(state = initial_state, action) {
                 ...state,
                 chats: action.chats
             })
-
-
         default:
             return state
     }

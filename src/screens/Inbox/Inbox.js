@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
-import { get_all_users, get_msg, get_user } from '../../redux/actions/authAction';
+import { get_all_users } from '../../redux/actions/authAction';
 import { useNavigation } from '@react-navigation/native';
+<<<<<<< HEAD
 import database from '@react-native-firebase/database'
 
 
@@ -27,10 +28,44 @@ export default function Inbox({ id }) {
     React.useEffect(() => { 
         dispatch(get_user(id))
         // dispatch(get_all_users())
+=======
+import firestore from '@react-native-firebase/firestore';
+import database from '@react-native-firebase/database';
+
+
+
+
+export default function Inbox() {
+    const navigation = useNavigation()
+    const [data, setData] = React.useState([])
+    const [chats, setChats] = React.useState([])
+
+    const user = useSelector(state => state.user)
+    // React.useEffect(() => {
+    //     database().ref('/').child(`chats/${'lfGsGJ1YTGcGC0IgItbr03DTDZA3vOZn2YIARhRzEZzXYfbQPKvXJpD3'}`).on('child_added', (messages) => {
+    //         var arr = []
+    //         arr.push(messages.val())
+
+    //         console.log(arr)
+    //     })
+    // }, [])
+    
+
+    // console.log("CHATS => ", chats.map((e) => e.msg))
+
+    const dispatch = useDispatch()
+
+    React.useEffect(() => {
+        firestore()
+            .collection('Users')
+            .onSnapshot(documentSnapshot => {
+                setData(documentSnapshot.docs.map(e => e.data()));
+            });
+>>>>>>> 16ff1ce (Chat App Complete With Design)
     }, [])
 
     return (
-        <View style={{
+        <ScrollView style={{
             flex: 1,
             backgroundColor: '#ffffff',
             paddingLeft: 13,
@@ -89,7 +124,12 @@ export default function Inbox({ id }) {
 
             {/* All Chat users  */}
 
+<<<<<<< HEAD
             {/* <View>
+=======
+
+            <View>
+>>>>>>> 16ff1ce (Chat App Complete With Design)
                 <Text>
                     {user.EMAIL}
                 </Text>
@@ -101,16 +141,19 @@ export default function Inbox({ id }) {
             <View>
                 <Text style={{ marginTop: 20, fontSize: 30 }}>Get All Users</Text>
             </View>
+<<<<<<< HEAD
             {/* {
                 user.map((e, v) => {
+=======
+>>>>>>> 16ff1ce (Chat App Complete With Design)
 
+            {
+                data.map((e, v) => {
                     return e.EMAIL !== user.EMAIL && (
-                        <View  key={v}>
-                            <TouchableOpacity onPress={() => navigation.navigate('chatscreen' , {
-                               name : e.NAME,
-                               user1 : user,
-                               user2 : e.USER_ID,
-                              
+                        <View key={v}>
+                            <TouchableOpacity onPress={() => navigation.navigate('chatscreen', {
+                                e,
+                                current_user: user
                             })}>
                                 <View style={{ borderWidth: 1, borderColor: 'red', marginTop: 10 }}>
                                     <Text style={{ fontWeight: 'bold' }}>{e.NAME}</Text>
@@ -120,9 +163,21 @@ export default function Inbox({ id }) {
                         </View>
                     )
                 })
+<<<<<<< HEAD
             } */}
 
             
         </View>
+=======
+            }
+            {/* <Text>
+{
+    chats.message
+}
+</Text> */}
+
+
+        </ScrollView>
+>>>>>>> 16ff1ce (Chat App Complete With Design)
     )
 }

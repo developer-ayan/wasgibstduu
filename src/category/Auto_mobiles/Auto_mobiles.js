@@ -29,7 +29,6 @@ export default function Auto_Mobiles({ navigation }) {
         {/* icon back */}
         <TouchableOpacity onPress={navigation.goBack}>
           <Text style={{ color: 'white', fontSize: 20, marginTop: 10, }}>
-            <Feather name="arrow-left" size={25} color="black" />
           </Text>
         </TouchableOpacity>
       </View>

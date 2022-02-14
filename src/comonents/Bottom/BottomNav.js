@@ -13,8 +13,13 @@ import Home from '../../screens/Home/Home';
 
 
 
+<<<<<<< HEAD
 export default function BottomNav({route}) {
     let { id } = route.params
+=======
+export default function BottomNav() {
+
+>>>>>>> 16ff1ce (Chat App Complete With Design)
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator
@@ -53,7 +58,7 @@ export default function BottomNav({route}) {
             />
             <Tab.Screen
                 name="Inbox"
-                children={() => <Inbox id={id} />}
+                children={() => <Inbox />}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
 

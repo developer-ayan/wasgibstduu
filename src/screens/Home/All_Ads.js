@@ -44,7 +44,7 @@ const All_Ads = ({ data, navigation }) => {
                         title={item.TITLE}
                         navigation={navigation}
                     />)}
-                keyExtractor={item => item.UID}
+                keyExtractor={item => item.USER_UID}
             />
         </View>
     );
