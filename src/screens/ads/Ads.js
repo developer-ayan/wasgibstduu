@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch } from 'react-redux';
 import { create_ads } from '../../redux/actions/authAction';
@@ -22,7 +24,7 @@ export default function Ads({ navigation }) {
   const [render, setRender] = React.useState(false)
   const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
-  const countries = ["Egypt", "Canada", "Australia", "Ireland"]
+  // const category = ["Auto Mobiles", "Phone & Tablets", "Electronic", "Real States", "Fashion", 'Jobs', 'Services', 'Learning', 'Events']
 
   const CreateAds = async () => {
     const imageUrl = await hondlet()
@@ -40,6 +42,7 @@ export default function Ads({ navigation }) {
     setPrice('')
     setCity('')
     setCategory('Fashion')
+    setUri(null)
     navigation.navigate('Home')
   }
 
@@ -70,17 +73,13 @@ export default function Ads({ navigation }) {
   const hondlet = async () => {
     const uploadUri = uri;
     let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
-
     const extansion = fileName.split('.').pop();
     const name = fileName.split('.').slice(0, -1).join('.');
     fileName = name + Date.now() + '.' + extansion;
-
     setUploading(true);
     setTranseferred(0)
-
     const storageRef = storage().ref(`photos/${id}`)
     const task = storageRef.putFile(uploadUri)
-
     task.on('state_changed', taskSnapshot => {
       setTranseferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
@@ -89,9 +88,7 @@ export default function Ads({ navigation }) {
 
     try {
       await task;
-
       const url = await storageRef.getDownloadURL()
-
       setUploading(false)
       Alert.alert('Your Ad Has Been Upload')
       return url;
@@ -107,20 +104,24 @@ export default function Ads({ navigation }) {
         {/* icon back */}
         <View>
           <View>
-        
-            <SelectDropdown
-              data={countries}
-              width ="100%"
-              defaultButtonText = 'select a category'
-              buttonStyle={{backgroundColor : '#f7f7f7' , width : '100%' , borderWidth :1 , borderColor : 'red' }}
-              buttonTextStyle = {{color : '#ababab' , fontWeight : 'bold' , borderColor : 'red' , borderWidth : 1 , width : 50}}
-              dropdownStyle = {{backgroundColor : 'red' , borderRadius :10}}
-              rowTextStyle = {{color : 'white' }}
+            {/* <SelectDropdown
+              data={category}
+              width="100%"
+              // defaultValue = 'helo'
+              // defaultButtonText='select a category'
+              buttonStyle={{ backgroundColor: '#f7f7f7', width: '100%' }}
+              renderDropdownIcon={() => <Entypo name="chevron-down" size={20} color="#ababab" style = {{fontWeight : 'bold'}} />}
+              dropdownIconPosition='right'
+              buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
+              dropdownStyle={{  borderRadius:5 ,backgroundColor : '#f7f7f7' }}
+              rowTextStyle={{ color: '#ababab' , fontSize : 15 }}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index)
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
                 // text represented after item is selected
+
+                console.log("SELECR => ", selectedItem = 'select a category')
                 // if data array is an array of objects then return selectedItem.property to render after item is selected
                 return selectedItem
               }}
@@ -129,7 +130,8 @@ export default function Ads({ navigation }) {
                 // if data array is an array of objects then return item.property to represent item in dropdown
                 return item
               }}
-            />
+            /> */}
+
             <TouchableOpacity onPress={navigation.goBack}>
               <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
             </TouchableOpacity>
@@ -211,9 +213,6 @@ export default function Ads({ navigation }) {
         )
         }
       </View>
-
-
-
     </ScrollView >
   )
 }

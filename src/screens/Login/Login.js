@@ -72,7 +72,8 @@ export default function Login({ navigation }) {
                 placeholder="Password"
                 onChangeText={(text) => setPassword(text)}
                 value={password}
-                keyboardType='visible-password'
+                secureTextEntry={true}
+                // keyboardType='visible-password'
                 underlineColorAndroid="transparent"
                 style={{ padding: 15, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
               />

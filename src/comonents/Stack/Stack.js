@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-
 import BottomNav from '../Bottom/BottomNav';
 
 // Auth Screen
@@ -31,7 +30,6 @@ import Phone_and_Screen from '../../category/Phone_&_Elec/Phone_&_Elec';
 import Real_states from '../../category/Real_States/Real_States';
 import Services from '../../category/Services/Services';
 import Categories_detail from '../../category/Categories_detail/Categories_detail';
-
 
 const Stack = createStackNavigator();
 function MyStack() {

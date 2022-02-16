@@ -9,17 +9,15 @@ import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsMan
 import Ads from '../../screens/Ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
+import Profile from '../../screens/Profile/Profile'
 // import Drawer from '../Drawer/Drawer';
 
 
 
-<<<<<<< HEAD
-export default function BottomNav({route}) {
-    let { id } = route.params
-=======
-export default function BottomNav() {
 
->>>>>>> 16ff1ce (Chat App Complete With Design)
+export default function BottomNav({ route }) {
+    let { id } = route.params
+
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator
@@ -68,8 +66,8 @@ export default function BottomNav() {
                 }}
             />
             <Tab.Screen
-                name="Premium"
-                component={PremiumAddsManage}
+                name="Profile"
+                component={Profile}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
 
@@ -82,4 +80,5 @@ export default function BottomNav() {
         </Tab.Navigator>
 
     );
+
 }

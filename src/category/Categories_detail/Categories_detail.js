@@ -1,30 +1,67 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Switch, Pressable, } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import { Linking } from 'react-native'
+import firestore from '@react-native-firebase/firestore';
 
 
 
 export default function Categories_detail({ route, navigation }) {
-    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE } = route.params;
+    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
+    // console.log("UID ====> ",UID)
+    const [data, setData] = React.useState(null)
+
+
+    React.useEffect(() => {
+        firestore().collection('Users')
+            .doc(UID)
+            .onSnapshot(documentSnapshot => {
+                setData(documentSnapshot.data().PHONE)
+                // dispatch({ type: 'CHATS', chats: documentSnapshot.data().message })
+            });
+    }, [])
+
+
+
+    const [like, setLike] = React.useState(0)
+    const [show, setshow] = React.useState(false)
+    const toggle = () => {
+        setshow(!show)
+    }
+
+    const increment = () => {
+        setLike(like + 1)
+    }
+
+    const decrement = () => {
+        setLike(like - 1)
+    }
 
     return (
-        <ScrollView style = {{backgroundColor : 'white'}}>
-
-            <View style = {{justifyContent : 'space-between' , flexDirection : 'row' , marginHorizontal : 10}}>
+        <ScrollView style={{ backgroundColor: 'white' }}>
+            <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginHorizontal: 10 }}>
                 {/* icon back */}
                 <TouchableOpacity onPress={navigation.goBack}>
-                    <Text style={{ color: 'white', fontSize: 20, marginVertical : 15 , }}>
+                    <Text style={{ color: 'white', fontSize: 20, marginVertical: 15, }}>
+                        {/* {isEnabled ? } */}
                         <Feather name="arrow-left" size={25} color="black" />
                     </Text>
+
                 </TouchableOpacity>
-                <TouchableOpacity onPress={navigation.goBack}>
-                    <Text style={{ marginVertical : 15  }}>
-                        <AntDesign name="hearto" size={25} color="red" />
+                <TouchableOpacity onPress={toggle}>
+                    <Text style={{ marginVertical: 15 }}>
+                        {show ?
+                            <AntDesign name="hearto" size={25} color="red" />
+                            :
+                            <AntDesign name="heart" size={25} color="red" />
+                        }
+
                     </Text>
                 </TouchableOpacity>
+
             </View>
 
             <View>
@@ -42,20 +79,23 @@ export default function Categories_detail({ route, navigation }) {
 
             }}>
                 <View>
-                    <Text style={{ color: 'black', fontSize: 20, paddingVertical: 5 , width : 260  }}>{TITLE}</Text>
+                    <Text style={{ color: 'black', fontSize: 20, paddingVertical: 5, width: 260 }}>{TITLE}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Ionicons name='location-outline' style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5 }} />
                         <Text style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5, marginLeft: 5 }}>{CITY}</Text>
                     </View>
                 </View>
+
                 <View style={{ flexDirection: 'row' }}>
 
                     <Text style={{ marginRight: 20 }}>
+
                         <AntDesign
                             name='sharealt' size={25}
                             style={{
                                 color: 'red',
                             }} />
+
                     </Text>
                     <Text>
                         <AntDesign name='exclamationcircleo' size={25} style={{ color: 'red', }} />
@@ -75,7 +115,9 @@ export default function Categories_detail({ route, navigation }) {
                     <Text style={{ marginRight: 10 }}>
                         <FontAwesome name='phone' style={{ color: 'black', fontSize: 18 }} />
                     </Text>
-                    <Text style={{ color: 'black', fontSize: 18 }}>Call Seller</Text>
+                    <TouchableOpacity onPress={() => { Linking.openURL(`tel:${data}`); }}>
+                        <Text style={{ color: 'black', fontSize: 18 }}>Call Seller</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={{
@@ -105,7 +147,7 @@ export default function Categories_detail({ route, navigation }) {
                     <Text style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5 }}>{CATEGORY}</Text>
                 </View>
                 <View >
-                    <Text style={{ color: 'black', fontSize: 13, paddingVertical: 5 , width : 100 }}>{TITLE}</Text>
+                    <Text style={{ color: 'black', fontSize: 13, paddingVertical: 5, width: 100 }}>{TITLE}</Text>
                 </View>
             </View>
 

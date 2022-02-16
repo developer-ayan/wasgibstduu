@@ -6,34 +6,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_users } from '../../redux/actions/authAction';
 import { useNavigation } from '@react-navigation/native';
-<<<<<<< HEAD
 import database from '@react-native-firebase/database'
-
-
-
-export default function Inbox({ id }) {
-    const [data, setData] = React.useState([])
-    const user = useSelector(state => state.user)
-    const user1 = useSelector(state => state)
-
-    setData(user)
-    console.log("INOBX ",data)
-    // const allUsers = useSelector(state => state.allUsers)
-    // const chats = useSelector(state => state.chats)
-
-    const navigation = useNavigation()
-
-    const dispatch = useDispatch()
-
-    React.useEffect(() => { 
-        dispatch(get_user(id))
-        // dispatch(get_all_users())
-=======
 import firestore from '@react-native-firebase/firestore';
-import database from '@react-native-firebase/database';
-
-
-
 
 export default function Inbox() {
     const navigation = useNavigation()
@@ -41,18 +15,6 @@ export default function Inbox() {
     const [chats, setChats] = React.useState([])
 
     const user = useSelector(state => state.user)
-    // React.useEffect(() => {
-    //     database().ref('/').child(`chats/${'lfGsGJ1YTGcGC0IgItbr03DTDZA3vOZn2YIARhRzEZzXYfbQPKvXJpD3'}`).on('child_added', (messages) => {
-    //         var arr = []
-    //         arr.push(messages.val())
-
-    //         console.log(arr)
-    //     })
-    // }, [])
-    
-
-    // console.log("CHATS => ", chats.map((e) => e.msg))
-
     const dispatch = useDispatch()
 
     React.useEffect(() => {
@@ -61,7 +23,6 @@ export default function Inbox() {
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
             });
->>>>>>> 16ff1ce (Chat App Complete With Design)
     }, [])
 
     return (
@@ -124,29 +85,18 @@ export default function Inbox() {
 
             {/* All Chat users  */}
 
-<<<<<<< HEAD
-            {/* <View>
-=======
-
             <View>
->>>>>>> 16ff1ce (Chat App Complete With Design)
                 <Text>
                     {user.EMAIL}
                 </Text>
                 <Text>
                     {user.NAME}
                 </Text>
-            </View> */}
+            </View>
 
             <View>
                 <Text style={{ marginTop: 20, fontSize: 30 }}>Get All Users</Text>
             </View>
-<<<<<<< HEAD
-            {/* {
-                user.map((e, v) => {
-=======
->>>>>>> 16ff1ce (Chat App Complete With Design)
-
             {
                 data.map((e, v) => {
                     return e.EMAIL !== user.EMAIL && (
@@ -163,21 +113,12 @@ export default function Inbox() {
                         </View>
                     )
                 })
-<<<<<<< HEAD
-            } */}
+            }
 
             
-        </View>
-=======
-            }
-            {/* <Text>
-{
-    chats.message
-}
-</Text> */}
+
 
 
         </ScrollView>
->>>>>>> 16ff1ce (Chat App Complete With Design)
     )
 }

@@ -51,6 +51,7 @@ export default function Fashion({ navigation }) {
                 DISCRIPTION: e.DISCRIPTION,
                 CITY : e.CITY,
                 CATEGORY : e.CATEGORY,
+                UID : e.UID
               }
             )}>
 
