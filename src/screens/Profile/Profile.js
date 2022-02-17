@@ -10,24 +10,22 @@ import firestore from '@react-native-firebase/firestore';
 
 function Profile({ navigation }) {
     const [image, setImage] = React.useState(null)
-    const [renderImage, setRenderImage] = React.useState(null)
+    const [data, setData] = React.useState([])
+
+    const [renderImage, setRenderImage] = React.useState('')
 
     const [uploading, setUploading] = React.useState(false)
     const [transeferred, setTranseferred] = React.useState(0)
     const user = useSelector(state => state.user)
-    console.log(user)
-    // const CreateAds = async () => {
-    //     const imageUrl = await hondlet()
-    //     console.log("IMAGE URI => ", imageUrl)
-    //     // firestore()
-    //     //     .collection('Users')
-    //     //     .doc(user.USER_ID)
-    //     //     .set({
-    //     //         PROFILE : imageUrl
-    //     //     })
-    // }
 
-
+    React.useEffect(() => {
+        firestore()
+            .collection('Users')
+            .doc(user.USER_ID)
+            .onSnapshot((e) => {
+                setData(e.data())
+            })
+    }, [])
 
 
     const ImageGallery = () => {
@@ -42,7 +40,13 @@ function Profile({ navigation }) {
 
     const submitPost = async () => {
         const imageUrl = await uploadImage()
-        console.log("URL ====> ",imageUrl)
+        firestore()
+            .collection('Users')
+            .doc(user.USER_ID)
+            .update({
+                PROFILE: imageUrl,
+            })
+        // console.log("URL ====> ", imageUrl)
     }
 
     const uploadImage = async () => {
@@ -68,6 +72,7 @@ function Profile({ navigation }) {
         try {
             await task;
             const url = await storageRef.getDownloadURL()
+            // console.log("URL =>>>>>>>>>>> ", url)
 
             setUploading(false)
             alert('Image Upload')
@@ -95,12 +100,25 @@ function Profile({ navigation }) {
                 <View style={{ width: '100%' }}>
                     <View style={{ alignItems: 'center', paddingVertical: 20, paddingBottom: 70 }}>
                         <View>
-                            {image === null ?
+
+                            {/* <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} /> */}
+
+
+                            {/* {uploading ? 
+                            
+                            <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
+                            :
+                                <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} />
+                        } */}
+                            {data.PROFILE === "" ?
                                 <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
                                 :
-
-                                <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: image }} />
+                                <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} />
                             }
+
+
+                            {/* <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} /> */}
+
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: -20 }}>
                                 <TouchableOpacity onPress={ImageGallery}>
                                     <Feather name="edit-2" size={15} style={{ marginRight: 1, padding: 5, backgroundColor: 'white', borderRadius: 50, color: 'gray' }} />
@@ -127,23 +145,6 @@ function Profile({ navigation }) {
                 </View>
             </View>
 
-
-            {/* {uploading ? 
-(<View>
-<ActivityIndicatore size = 'large' color = "red"/>
-<Text>{transeferred}</Text>
-</View>) 
-: (
-            <TouchableOpacity onPress={submitPost}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, paddingVertical: 20, backgroundColor: 'gold', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
-                    <Text style={{ fontSize: 10, color: 'black', marginRight: 30 }}>View Your All Ads</Text>
-                    <Feather name="arrow-right" size={10} color="#1d1900" />
-                </View>
-            </TouchableOpacity>
-
-)
-
-} */}
 
             {uploading ? (
                 <View>

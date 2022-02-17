@@ -30,18 +30,18 @@ import Phone_and_Screen from '../../category/Phone_&_Elec/Phone_&_Elec';
 import Real_states from '../../category/Real_States/Real_States';
 import Services from '../../category/Services/Services';
 import Categories_detail from '../../category/Categories_detail/Categories_detail';
+import Drawer from '../Drawer/Drawer';
 
 const Stack = createStackNavigator();
 function MyStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login" component={Login}/>
-            <Stack.Screen name="BottomNav" component={BottomNav} />
 
+            <Stack.Screen name="Login" component={Login} />
 
 
             {/* bottom navigation */}
-
+            <Stack.Screen name="BottomNav" component={BottomNav} />
 
             {/* Display Screens */}
 

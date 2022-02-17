@@ -9,24 +9,19 @@ import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsMan
 import Ads from '../../screens/Ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
-import Profile from '../../screens/Profile/Profile'
-// import Drawer from '../Drawer/Drawer';
+import Drawer from '../Drawer/Drawer';
+import Profile from '../../screens/Profile/Profile';
 
-
-
-
-export default function BottomNav({ route }) {
-    let { id } = route.params
-
+export default function BottomNav() {
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Drawer"
             activeColor="black"
             barStyle={{ backgroundColor: '#ffffff' }}>
             <Tab.Screen
-                name="Home"
-                component={Home}
+                name="Drawer"
+                component={Drawer}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
                     tabBarIcon: ({ color }) => (
@@ -56,7 +51,7 @@ export default function BottomNav({ route }) {
             />
             <Tab.Screen
                 name="Inbox"
-                children={() => <Inbox />}
+                component={Inbox}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
 
@@ -80,5 +75,4 @@ export default function BottomNav({ route }) {
         </Tab.Navigator>
 
     );
-
 }
