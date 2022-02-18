@@ -10,6 +10,7 @@ import { create_ads } from '../../redux/actions/authAction';
 import storage from '@react-native-firebase/storage';
 import { firebase } from '@react-native-firebase/auth';
 import SelectDropdown from 'react-native-select-dropdown';
+import * as Animatable from 'react-native-animatable';
 
 export default function Ads({ navigation }) {
 
@@ -100,38 +101,10 @@ export default function Ads({ navigation }) {
 
   return (
     <ScrollView style={{ flex: 1, }}>
-      <View style={styles.MainView}>
+      <Animatable.View animation="bounceInUp" duration = {2000}  style={styles.MainView}>
         {/* icon back */}
         <View>
           <View>
-            {/* <SelectDropdown
-              data={category}
-              width="100%"
-              // defaultValue = 'helo'
-              // defaultButtonText='select a category'
-              buttonStyle={{ backgroundColor: '#f7f7f7', width: '100%' }}
-              renderDropdownIcon={() => <Entypo name="chevron-down" size={20} color="#ababab" style = {{fontWeight : 'bold'}} />}
-              dropdownIconPosition='right'
-              buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
-              dropdownStyle={{  borderRadius:5 ,backgroundColor : '#f7f7f7' }}
-              rowTextStyle={{ color: '#ababab' , fontSize : 15 }}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index)
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-
-                console.log("SELECR => ", selectedItem = 'select a category')
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem
-              }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item
-              }}
-            /> */}
-
             <TouchableOpacity onPress={navigation.goBack}>
               <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
             </TouchableOpacity>
@@ -204,7 +177,7 @@ export default function Ads({ navigation }) {
               color: '#b3b3b3',
               backgroundColor: "gold",
               paddingVertical: 25,
-              marginVertical: 10
+              marginVertical: 10,
             }}>
               <Text style={{ fontSize: 14, color: '#1d1900' }}>Create Ads</Text>
               <Feather name="arrow-right" size={20} color="#1d1900" />
@@ -212,7 +185,7 @@ export default function Ads({ navigation }) {
           </TouchableOpacity>
         )
         }
-      </View>
+      </Animatable.View >
     </ScrollView >
   )
 }
@@ -222,7 +195,7 @@ const styles = StyleSheet.create({
   MainView: {
     paddingLeft: 13,
     paddingRight: 13,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   IconView: {
     marginTop: 10

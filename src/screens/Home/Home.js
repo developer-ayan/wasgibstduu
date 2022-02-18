@@ -7,6 +7,7 @@ import All_Ads from './All_Ads';
 import Premium from './Premium';
 import Category from './Category';
 import Loader from '../../comonents/Loader/Loader';
+import * as Animatable from 'react-native-animatable';
 
 
 export default function Home({ navigation }) {
@@ -86,7 +87,7 @@ var num = 2
   );
 
   return (
-    <View style={{ height: '100%' }}>
+    <Animatable.View animation="bounceInLeft" duration = {1000} style={{ height: '100%' }}>
       {loading ?
         <Loader />
         :
@@ -149,7 +150,7 @@ var num = 2
 
       }
 
-    </View>
+    </Animatable.View>
   )
 }
 
