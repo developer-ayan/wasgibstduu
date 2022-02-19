@@ -22,7 +22,7 @@ function signUp(user) {
                         CONFIRM_PASSWORD: user.confirm,
                     })
 
-
+                    
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {

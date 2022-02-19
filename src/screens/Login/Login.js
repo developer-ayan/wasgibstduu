@@ -23,7 +23,6 @@ export default function Login({ navigation }) {
     isValidPassword: true,
   });
 
-  console.log(data.email, data.password)
 
   const textInputChange = (val) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -84,9 +83,9 @@ export default function Login({ navigation }) {
 
 
   const login = () => {
-    if(data.email === '' && data.password === ''){
+    if (data.email === '' && data.password === '') {
       alert('Please Fill Your Input')
-    }else {
+    } else {
       let user = {
         email: data.email,
         password: data.password,
@@ -135,11 +134,6 @@ export default function Login({ navigation }) {
           borderRadius: 10,
         }}>
 
-          {/* {data.isValidUser ? null :
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text>Username must be 4 characters long.</Text>
-            </Animatable.View>
-          } */}
 
           {/* email Input  */}
           <View style={
@@ -149,33 +143,33 @@ export default function Login({ navigation }) {
               borderLeftWidth: 0,
               borderRightWidth: 0,
               borderTopWidth: 0,
-              // padding
+              paddingVertical: 10
             }}>
-
 
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', lineHeight: 30 }}>
               <TextInput
                 placeholder="Email Address"
-                placeholderTextColor="#666666"
                 autoCapitalize="none"
                 onChangeText={(val) => textInputChange(val)}
                 onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
                 style={{ padding: 20, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
               />
-              {data.isValidUser ?
+              {data.isValidUser  ?
                 <Entypo style={{ padding: 20, fontWeight: 'light', opacity: 0.5 }} name="email" size={20} color="#b3b3b3" />
                 :
                 <MaterialIcons style={{ padding: 20, fontWeight: 'light', opacity: 0.5 }} name="error" size={20} color="red" />
               }
             </View>
+
+            {/* Email Validation  */}
+
             {data.isValidUser ? null :
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, paddingBottom: 10 }}>
+              <Animatable.View animation="bounceInLeft" duration={1000} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, paddingBottom: 10 }}>
                 <Text style={{ color: 'red', fontSize: 12, paddingHorizontal: 10 }}>incorrect your email please correct your email</Text>
-              </View>
+              </Animatable.View>
             }
           </View>
 
-          {/* Email Validation  */}
 
 
 
@@ -188,14 +182,13 @@ export default function Login({ navigation }) {
               borderLeftWidth: 0,
               borderRightWidth: 0,
               borderTopWidth: 0,
-              // padding
+              paddingVertical: 10
             }}>
 
 
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', lineHeight: 40 }}>
               <TextInput
                 placeholder="Your Password"
-                placeholderTextColor="#666666"
                 secureTextEntry={true}
                 autoCapitalize="none"
                 onChangeText={(val) => handlePasswordChange(val)}
@@ -211,14 +204,18 @@ export default function Login({ navigation }) {
 
             {/* Password Validation */}
             {data.isValidPassword ? null :
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, paddingBottom: 10 }}>
+              <Animatable.View animation="bounceInLeft" duration={1000} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, paddingBottom: 10 }}>
                 <Text style={{ color: 'red', fontSize: 12, paddingHorizontal: 10 }}>minimum 6 characters your password</Text>
-              </View>
+              </Animatable.View>
             }
 
           </View>
 
-          {data.isValidPassword === true  && data.isValidUser === true  ?
+          {data.isValidPassword === true
+            && data.isValidUser === true
+            && data.email !== ''
+            && data.password !== ''
+            ?
 
             <TouchableOpacity onPress={login}>
               <View style={{
@@ -237,20 +234,20 @@ export default function Login({ navigation }) {
             :
 
             <TouchableOpacity disabled={true}>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottomRightRadius: 10,
-              borderBottomLeftRadius: 10,
-              padding: 20, color: '#b3b3b3', backgroundColor: "gold",
-              paddingVertical: 25,
-              opacity : 0.3
-            }}>
-              <Text style={{ fontSize: 14, color: '#1d1900' }}>Login</Text>
-              <Feather name="arrow-right" size={20} color="#1d1900" />
-            </View>
-          </TouchableOpacity>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottomRightRadius: 10,
+                borderBottomLeftRadius: 10,
+                padding: 20, color: '#b3b3b3', backgroundColor: "gold",
+                paddingVertical: 25,
+                opacity: 0.3
+              }}>
+                <Text style={{ fontSize: 14, color: '#1d1900' }}>Login</Text>
+                <Feather name="arrow-right" size={20} color="#1d1900" />
+              </View>
+            </TouchableOpacity>
 
           }
 
