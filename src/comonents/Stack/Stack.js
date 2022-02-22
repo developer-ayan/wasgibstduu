@@ -31,6 +31,7 @@ import Real_states from '../../category/Real_States/Real_States';
 import Services from '../../category/Services/Services';
 import Categories_detail from '../../category/Categories_detail/Categories_detail';
 import Drawer from '../Drawer/Drawer';
+import SearchBar from '../../screens/Search/SearchBar';
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -39,13 +40,13 @@ function MyStack() {
 
             <Stack.Screen name="Login" component={Login} />
 
+            <Stack.Screen name="Home" component={Home} />
 
             {/* bottom navigation */}
             <Stack.Screen name="BottomNav" component={BottomNav} />
 
             {/* Display Screens */}
 
-            <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Inbox" component={Inbox} />
             <Stack.Screen name="Ads" component={Ads} />
             <Stack.Screen name="manageAds" component={manageAds} />
@@ -56,6 +57,7 @@ function MyStack() {
             {/* Authentication  */}
 
             <Stack.Screen name="signup" component={SignUp} />
+            <Stack.Screen name="searchbar" component={SearchBar} />
 
             {/* Category */}
 

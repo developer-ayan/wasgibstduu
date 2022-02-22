@@ -113,7 +113,7 @@ export default function SignUp({ navigation }) {
   }
 
   const handleNameChange = (val) => {
-    var re = /^[a-zA-Z0-9]+$/;
+    var re = /^[a-zA-Z0-9]+$/
     if (re.test(val)) {
       setData({
         ...data,
@@ -340,7 +340,7 @@ export default function SignUp({ navigation }) {
             ?
 
             <TouchableOpacity onPress={sign_up}>
-              <View style={style.Sign_up_button}>
+              <View style={styles.Sign_up_button}>
                 <Text style={{ fontSize: 14, color: '#1d1900' }}>Sign Up!</Text>
                 <Feather name="arrow-right" size={20} color="#1d1900" />
               </View>

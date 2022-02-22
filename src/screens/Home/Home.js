@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, FlatList, StyleSheet , Pressable } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
@@ -9,12 +9,12 @@ import Category from './Category';
 import Loader from '../../comonents/Loader/Loader';
 import * as Animatable from 'react-native-animatable';
 
-
 export default function Home({ navigation }) {
   const [data, setData] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [master, setMaster] = React.useState([])
   const [password, setPassword] = React.useState('')
+
 
   React.useEffect(() => {
     firestore()
@@ -26,18 +26,8 @@ export default function Home({ navigation }) {
       });
   }, [])
 
-var num = 2
 
-  // console.log(password)
 
-  // const ItemView = ({ item }) => {
-  //   return (
-  //     <View style={{ padding: 10 }}>
-  //       <Image source={{ uri: item.ADS_IMAGES }} style={{ height: 100 }} />
-  //       <Text>{item.TITLE.toUpperCase()}</Text>
-  //     </View>
-  //   )
-  // }
 
   const ItemSeparatorView = () => {
     return (
@@ -87,7 +77,7 @@ var num = 2
   );
 
   return (
-    <Animatable.View animation="bounceInLeft" duration = {1000} style={{ height: '100%' }}>
+    <Animatable.View animation="bounceInLeft" duration={1000} style={{ height: '100%' }}>
       {loading ?
         <Loader />
         :
@@ -96,28 +86,28 @@ var num = 2
           backgroundColor: '#f0f2f5'
         }}>
           <View style={{ height: 400, backgroundColor: '#01a949' }}>
+            <Pressable onPress = {() => navigation.navigate('searchbar')}>
 
-            <View style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 20,
-              height: 80,
-            }}>
-              <FontAwesome style={{ backgroundColor: '#ffffff', borderTopLeftRadius: 5, borderBottomLeftRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="search" size={25} />
-              <TextInput style={{
-                width: '60%',
-                backgroundColor: '#ffffff',
-                padding: 10,
-                height: 50,
-                color: '#b1b1b1',
-                fontWeight: 'bold'
-              }}
-                value={password}
-                onChangeText={(text) => searchFilter(text)}
-                placeholder='Type your search here' />
-              <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
-            </View>
+              <View style={{
+                alignItems: 'center',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: 20,
+                height: 80,
+              }}>
+                <FontAwesome style={{ backgroundColor: '#ffffff', borderTopLeftRadius: 5, borderBottomLeftRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="search" size={25} />
+                <Text style={{
+                  width: '60%',
+                  backgroundColor: '#ffffff',
+                  paddingLeft: 10,
+                  lineHeight: 50,
+                  color: '#b1b1b1',
+                  fontWeight: 'bold'
+                }}>type your searchbar</Text>
+                <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
+              </View>
+            </Pressable>
+
           </View>
           <View style={{ paddingHorizontal: 15, borderRadius: 10, marginTop: -280 }}>
 
