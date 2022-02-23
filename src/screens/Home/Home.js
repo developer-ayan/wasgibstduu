@@ -103,7 +103,7 @@ export default function Home({ navigation }) {
                   lineHeight: 50,
                   color: '#b1b1b1',
                   fontWeight: 'bold'
-                }}>type your searchbar</Text>
+          }}>Type your search here</Text>
                 <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
               </View>
             </Pressable>
@@ -127,13 +127,13 @@ export default function Home({ navigation }) {
             {/* All Ads  */}
             <Text style={{ fontFamily: 'Arial', color: 'black', fontSize: 20, marginTop: 20 }}>Fresh recommendations</Text>
 
-            {/* <FlatList
+            <FlatList
               data={data}
               ketExtractor={(item, index) => index.toString()}
               ItemSeparatorComponent={ItemSeparatorView}
               numColumns={2}
               renderItem={ItemView}
-            /> */}
+            />
 
           </View>
         </ScrollView>

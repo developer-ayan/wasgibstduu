@@ -11,8 +11,8 @@ import firestore from '@react-native-firebase/firestore';
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
-    // console.log("UID ====> ",UID)
-    const [data, setData] = React.useState(null)
+    console.log("UID ====> ",UID)
+    const [data, setData] = React.useState([])
 
 
     React.useEffect(() => {
@@ -23,6 +23,8 @@ export default function Categories_detail({ route, navigation }) {
                 // dispatch({ type: 'CHATS', chats: documentSnapshot.data().message })
             });
     }, [])
+
+    console.log("is this State Data => ",data)
 
 
 

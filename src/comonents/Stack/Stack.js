@@ -39,25 +39,25 @@ function MyStack() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
             <Stack.Screen name="Login" component={Login} />
-
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="BottomNav" component={BottomNav} />
 
             {/* bottom navigation */}
-            <Stack.Screen name="BottomNav" component={BottomNav} />
+
 
             {/* Display Screens */}
 
-            <Stack.Screen name="Inbox" component={Inbox} />
-            <Stack.Screen name="Ads" component={Ads} />
-            <Stack.Screen name="manageAds" component={manageAds} />
             <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} />
-            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="chatscreen" component={ChatScreen} />
+            <Stack.Screen name="manageAds" component={manageAds} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Inbox" component={Inbox} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Ads" component={Ads} />
 
             {/* Authentication  */}
 
-            <Stack.Screen name="signup" component={SignUp} />
             <Stack.Screen name="searchbar" component={SearchBar} />
+            <Stack.Screen name="signup" component={SignUp} />
 
             {/* Category */}
 

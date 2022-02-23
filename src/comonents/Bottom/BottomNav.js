@@ -16,12 +16,12 @@ export default function BottomNav() {
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator
-            initialRouteName="Drawer"
+            initialRouteName="Home"
             activeColor="black"
             barStyle={{ backgroundColor: '#ffffff' }}>
             <Tab.Screen
-                name="Drawer"
-                component={Drawer}
+                name="Home"
+                component={Home}
                 options={{
                     tabBarLabel: <Entypo name="dot-single" size={15} />,
                     tabBarIcon: ({ color }) => (

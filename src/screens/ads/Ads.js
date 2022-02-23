@@ -139,6 +139,7 @@ export default function Ads({ navigation }) {
           <TextInput
             onChangeText={(text) => setPrice(text)}
             value={price}
+            keyboardType='phone-pad'
             style={styles.Input} />
         </View>
         <View style={{ marginTop: 20 }}>

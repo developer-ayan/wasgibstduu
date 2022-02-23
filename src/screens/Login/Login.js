@@ -9,11 +9,9 @@ import * as Animatable from 'react-native-animatable';
 
 import { useDispatch } from 'react-redux';
 
-
 export default function Login({ navigation }) {
 
   const dispatch = useDispatch()
-
 
   const [data, setData] = React.useState({
     email: '',
