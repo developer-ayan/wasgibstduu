@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, Pressable } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import * as Animatable from 'react-native-animatable';
+import { useSelector } from 'react-redux';
 
 
 
@@ -16,12 +18,16 @@ import firestore from '@react-native-firebase/firestore';
 
 export default function manageAds({ navigation }) {
   const [data, setData] = React.useState([])
+  const user = useSelector(state => state.user)
+  // var tabId = id.split(" ").pop(); // => "Tabs1"
+  // console.log(tabId)
 
   React.useEffect(() => {
-    firestore()
-      .collection('User_Ads')
+    firestore().collection(`Stared Data ${user.USER_ID}`)
+      // .doc(user.USER_ID.pop())
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()))
+        console.log(data.length === 0 ? true : false)
       });
   }, [])
 
@@ -29,72 +35,93 @@ export default function manageAds({ navigation }) {
     <ScrollView style={{
       flex: 1,
       backgroundColor: '#ffffff',
-      paddingLeft: 13,
-      paddingRight: 13,
     }}>
 
-      <View>
-        {/* icon back */}
-        <TouchableOpacity onPress={navigation.goBack}>
-          <Text style={{ color: 'white', fontSize: 20, marginTop: 10, }}>
-            <Feather name="arrow-left" size={25} color="black" />
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 15 }}>
-        <View style={{ margin: 5, backgroundColor: '#00ae49', borderRadius: 5, padding: 13 }}>
-          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}>My Ads</Text>
-        </View>
-        <View style={{ margin: 5, backgroundColor: '#f7f7f7', borderRadius: 5, padding: 13 }}>
-          <Text style={{ color: '#7d7d7d', fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}>Pending approval</Text>
-        </View>
-        <View style={{ margin: 5, backgroundColor: '#f7f7f7', borderRadius: 5, padding: 13 }}>
-          <Text style={{ color: '#7d7d7d', fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}>Archived ads</Text>
-        </View>
-      </View>
+      <View style={{ paddingHorizontal: 13 }}>
 
-      <View style={{ marginTop: 20 }}>
         <View>
-          <Text style={{ color: 'black', fontSize: 20 }}>My Ads</Text>
-          <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Manage your free and premium advertisement</Text>
+          {/* icon back */}
+          <TouchableOpacity onPress={navigation.goBack}>
+            <Text style={{ color: 'white', fontSize: 20, marginTop: 10, }}>
+              <Feather name="arrow-left" size={25} color="black" />
+            </Text>
+          </TouchableOpacity>
         </View>
-        {data.map((e, index) => {
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 15, marginVertical: 10, paddingHorizontal: 5, backgroundColor: '#FAFAFA', borderRadius: 10 }}>
+          <Text style={{ fontSize: 20, color: 'black' }}>Your Stared Ads</Text>
+          <AntDesign style={{ color: '#f7b217' }} name="star" size={30} />
+        </View>
+      </View>
+      {data.length === 0 ?
+        (
+          <View style={{}}>
+
+            {/* empty  */}
+
+            <View></View>
+            <View>
+              <Text style={{ color: 'black', fontSize: 20 }}>No Have Your Stared Ads</Text>
+              <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Go To See Ads And get in stared Store</Text>
+            </View>
+
+            {/* empty  */}
+
+            <View></View>
+
+          </View>
+        ) :
+
+        data.map((item, ind) => {
+          console.log("data => ", item)
           return (
-            <View key={index}>
-              <View style={{
-                padding: 10, borderRadius: 10, marginTop: 20, shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.18,
-                shadowRadius: 1.00,
-                elevation: 1,
-              }}>
+            <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
+                {
+                  IMAGE: item.IMAGE,
+                  PRICE: item.PRICE,
+                  DISCRIPTION: item.DISCRIPTION,
+                  CITY: item.CITY,
+                  CATEGORY: item.CATEGORY,
+                  UID: item.UID,
+                }
+              )}>
+                <Animatable.View duration={1000} animation="bounceInLeft" style={{ flexDirection: 'row', width: '100%', borderColor: '#F0F0F0', borderBottomWidth: 1, alignItems: 'center', padding: 10 }}>
+                  <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
+                    <Image
+                      style={{ height: 130, width: '100%', borderRadius: 5 }}
+                      source={{ uri: item.IMAGE }}
+                    />
+                  </View>
+                  <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', height: 130 }}>
+                    <Text style={{ color: '#b3b3b3' }}>ayan ahmed</Text>
+                    <Text numberOfLines={2} style={{ color: '#494949', fontSize: 14 }}>{item.TITLE}</Text>
+                    <Text style={{ color: 'green', fontSize: 18 }}>{item.PRICE}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <Text style={{ color: '#b3b3b3' }}>Versand moglich</Text>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
-                  <Image
-                    style={{ width: 200, height: 200 }}
-                    source={require("../../assets/premiumImages/img1.png")}
-                  />
-                </View>
+                      <Pressable onPress={() => {
+                      firestore()
+                        .collection(`Stared Data ${user.USER_ID}`)
+                        .doc(item.DISCRIPTION)
+                        .delete()
+                     
+                    }}>
+                        <AntDesign style={{ color: '#f7b217' }} name="star" size={20} />
+                      </Pressable>
 
-                <View style={{ paddingHorizontal: 10 }}>
-                  <Text style={{ color: 'black', fontSize: 16 }}>{e.TITLE}</Text>
-                  <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 2, opacity: 0.5, }}>{e.CATEGORY}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, justifyContent: 'space-between', paddingHorizontal: 10 }}>
-                  <Text style={{ fontSize: 25, color: 'black' }}>{e.PRICE}</Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <AntDesign name="edit" size={22} color="#b1b1b1" style={{ color: 'black', paddingVertical: 2, width: 40 }} />
-                    <AntDesign name="delete" size={22} color="#b1b1b1" style={{ color: 'black', paddingVertical: 2 }} />
                   </View>
                 </View>
-              </View>
+              </Animatable.View>
+            </TouchableOpacity>
             </View>
-          )
-        })}
-      </View>
-    </ScrollView>
+  )
+})
+
+      }
+
+{/* {
+        
+      } */}
+    </ScrollView >
   )
 }

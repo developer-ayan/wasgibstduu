@@ -18,7 +18,7 @@ function CustomDrawer(props) {
             })
     }, [])
 
-    console.log("DATA => ", data.PROFILE === "" ? 'NOT AVAILABLE PICTURE' : data.PROFILE)
+    // console.log("DATA => ", data.PROFILE === "" ? 'NOT AVAILABLE PICTURE' : data.PROFILE)
 
     return (
         <View style={{ flex: 1 }}>

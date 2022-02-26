@@ -1,17 +1,16 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, Switch, Pressable, } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Switch, Pressable,Linking } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { Linking } from 'react-native'
 import firestore from '@react-native-firebase/firestore';
 
 
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
-    console.log("UID ====> ",UID)
+    console.log("UID ====> ", TITLE)
     const [data, setData] = React.useState([])
 
 
@@ -20,11 +19,12 @@ export default function Categories_detail({ route, navigation }) {
             .doc(UID)
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.data().PHONE)
-                // dispatch({ type: 'CHATS', chats: documentSnapshot.data().message })
             });
     }, [])
 
-    console.log("is this State Data => ",data)
+    
+
+    // console.log("is this State Data => ",data)
 
 
 
@@ -55,10 +55,16 @@ export default function Categories_detail({ route, navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={toggle}>
                     <Text style={{ marginVertical: 15 }}>
-                        {show ?
-                            <AntDesign name="hearto" size={25} color="red" />
+                        {show  ?
+                        // <TouchableOpacity onPress={() => console.log('open')}>
+                            (console.log('gello ') , <AntDesign  name="hearto" size={25} color="red" />)
+                        // </TouchableOpacity>
                             :
-                            <AntDesign name="heart" size={25} color="red" />
+                            // <TouchableOpacity onPress={() => console.log('Close')}>
+                            
+                           (console.log('asda'), <AntDesign name="heart" size={25} color="red" />)
+                            // console.log()
+                        // </TouchableOpacity>
                         }
 
                     </Text>
@@ -108,11 +114,15 @@ export default function Categories_detail({ route, navigation }) {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingHorizontal: 12
+                paddingHorizontal: 12,
+                width: '100%'
             }}>
-                <View>
+
+                <View style={{ borderWidth: 1, borderColor: 'white', width: '40%' }}>
                     <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>${PRICE}</Text>
                 </View>
+
+
                 <View style={{ flexDirection: 'row', width: 150, alignItems: 'center', justifyContent: 'center', borderRadius: 10, paddingVertical: 8, backgroundColor: 'gold' }}>
                     <Text style={{ marginRight: 10 }}>
                         <FontAwesome name='phone' style={{ color: 'black', fontSize: 18 }} />

@@ -46,7 +46,7 @@ export default function Category({navigation}) {
             <View style={{
                 flexDirection: 'row', backgroundColor: 'white', justifyContent: 'center'
             }}>
-                <TouchableOpacity onPress={() => navigation.navigate('Real_State')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Real_states')}>
                     <View style={{
                         padding: 10, paddingVertical: 20, width: 110,
                         borderWidth: 1, borderColor: '#F8F8F8'

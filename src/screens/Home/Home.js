@@ -127,13 +127,13 @@ export default function Home({ navigation }) {
             {/* All Ads  */}
             <Text style={{ fontFamily: 'Arial', color: 'black', fontSize: 20, marginTop: 20 }}>Fresh recommendations</Text>
 
-            <FlatList
+            {/* <FlatList
               data={data}
               ketExtractor={(item, index) => index.toString()}
               ItemSeparatorComponent={ItemSeparatorView}
               numColumns={2}
               renderItem={ItemView}
-            />
+            /> */}
 
           </View>
         </ScrollView>
