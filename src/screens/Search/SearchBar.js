@@ -23,28 +23,23 @@ export default function SearchBar({ navigation }) {
       setshow(!show)
   }
 
-
-
-
   React.useEffect(() => {
-    // firestore()
-    firestore().collection('Fashion')
+    firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Fashion')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
         setMaster(documentSnapshot.docs.map(e => e.data()));
         setLoading(false)
       });
   }, [])
-  console.log("DATA => ",data)
-
   const searchFilter = (text) => {
     if (text) {
       const newData = master.filter((item) => {
-        // console.log("ITWEM => ",item)
         const ItemData = item.TITLE ? item.TITLE.toUpperCase()
           : ''.toUpperCase()
         const textData = text.toUpperCase()
-        // console.log("text data => ",ItemData.indexOf(textData) > -1)
         return ItemData.indexOf(textData) > -1;
       })
       setData(newData)
@@ -181,3 +176,4 @@ export default function SearchBar({ navigation }) {
     </ScrollView>
   )
 }
+

@@ -65,14 +65,15 @@ function sign_in(user) {
 }
 
 function create_ads(user) {
-    console.log(user)
+    console.log("USER NAME WITH REDUX ===> ",user)
     return (dispatch) => {
         const User_data = user
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                // User logged in already or has just logged in.
                 const LoginUID = user.uid;
-                firestore()
+                    firestore()
+                    .collection(`Category`)
+                    .doc('Your all ads there !')
                     .collection(`${User_data.category}`)
                     .add({
                         CATEGORY: User_data.category,
@@ -81,8 +82,12 @@ function create_ads(user) {
                         PRICE: User_data.price,
                         CITY: User_data.city,
                         ADS_IMAGES: User_data.imageUrl,
-                        UID: LoginUID
+                        UID: LoginUID,
+                        NAME : User_data.name,
+
                     })
+
+
             } else {
                 alert('User is not logged in')
             }

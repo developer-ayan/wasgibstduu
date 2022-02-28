@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, Switch, Pressable,Linking } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Switch, Pressable, Linking } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,7 +10,6 @@ import firestore from '@react-native-firebase/firestore';
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
-    console.log("UID ====> ", TITLE)
     const [data, setData] = React.useState([])
 
 
@@ -22,7 +21,7 @@ export default function Categories_detail({ route, navigation }) {
             });
     }, [])
 
-    
+
 
     // console.log("is this State Data => ",data)
 
@@ -55,16 +54,27 @@ export default function Categories_detail({ route, navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={toggle}>
                     <Text style={{ marginVertical: 15 }}>
-                        {show  ?
-                        // <TouchableOpacity onPress={() => console.log('open')}>
-                            (console.log('gello ') , <AntDesign  name="hearto" size={25} color="red" />)
-                        // </TouchableOpacity>
+                        {show ?
+                            // <TouchableOpacity onPress={() => console.log('open')}>
+                            (
+
+                                console.log({
+                                    IMAGE,
+                                    PRICE,
+                                    DISCRIPTION,
+                                    CITY,
+                                    CATEGORY,
+                                    TITLE,
+                                    UID,
+                                })
+                                , <AntDesign name="hearto" size={25} color="red" />)
+                            // </TouchableOpacity>
                             :
                             // <TouchableOpacity onPress={() => console.log('Close')}>
-                            
-                           (console.log('asda'), <AntDesign name="heart" size={25} color="red" />)
+
+                            (console.log('minus'), <AntDesign name="heart" size={25} color="red" />)
                             // console.log()
-                        // </TouchableOpacity>
+                            // </TouchableOpacity>
                         }
 
                     </Text>

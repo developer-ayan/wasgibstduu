@@ -103,8 +103,7 @@ export default function manageAds({ navigation }) {
                       firestore()
                         .collection(`Stared Data ${user.USER_ID}`)
                         .doc(item.DISCRIPTION)
-                        .delete()
-                     
+                        .delete()  
                     }}>
                         <AntDesign style={{ color: '#f7b217' }} name="star" size={20} />
                       </Pressable>

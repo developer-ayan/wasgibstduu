@@ -210,12 +210,12 @@ function Profile({ navigation }) {
                         <ActivityIndicator size="large" color="#00ff00" />
                     </View>
                 ) : (
-                    // <TouchableOpacity onPress={submitPost}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Your_Ads')}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, paddingVertical: 20, backgroundColor: 'gold', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
                             <Text style={{ fontSize: 10, color: 'black', marginRight: 30 }}>View Your All Ads</Text>
                             <Feather name="arrow-right" size={10} color="#1d1900" />
                         </View>
-                    // </TouchableOpacity>
+                </TouchableOpacity>
                 )
                 }
 

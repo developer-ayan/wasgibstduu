@@ -14,12 +14,19 @@ import * as Animatable from 'react-native-animatable';
 import firestore from '@react-native-firebase/firestore'
 import Loader from '../../comonents/Loader/Loader';
 import { useSelector } from 'react-redux';
+import {
+  Categories_detail,
+  Colors,
+  Sizes
+} from '../../comonents/Constant/Constant';
 
 export default function Learning({ navigation }) {
 
   const [data, setData] = React.useState([])
+  const [dummy, setDummy] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [show, setshow] = React.useState(false)
+  const arr = []
 
   const toggle = () => {
     setshow(!show)
@@ -28,12 +35,39 @@ export default function Learning({ navigation }) {
   const user = useSelector(state => state.user)
 
   React.useEffect(() => {
-    firestore().collection('Learning')
+
+    firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Learning')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
         setLoading(false)
       });
+
+    firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Learning')
+      .get()
+      .then((correct) => {
+        correct.forEach(snapshot => {
+          console.log(snapshot.data())
+          firestore()
+            .collection('Category')
+            .doc('Your all ads there !')
+            .collection('Learning')
+            .doc(snapshot.id)
+            .update({
+              AUTO_ID: snapshot.id
+            })
+
+        })
+      })
+
+
   }, [])
+
 
   return (
     <ScrollView style={styles.ScrollView}>
@@ -45,8 +79,8 @@ export default function Learning({ navigation }) {
       </TouchableOpacity>
 
       <View style={styles.Main_ads_veiw}>
-        <Text style={styles.Ads_name}>Fashion Ads</Text>
-        <Text style={styles.Ads_name_para}>Manage your free and premium advertisement</Text>
+        <Text style={styles.Ads_name} >{Categories_detail.learning}</Text>
+        <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
       </View>
 
       {loading ?
@@ -60,6 +94,13 @@ export default function Learning({ navigation }) {
           </View>
           :
           data.map((item, ind) => {
+              // firestore()
+              //   .collection('Users')
+              //   .doc(item.UID)
+              //   .onSnapshot(e => {
+              //     setName(e.data().NAME)
+              //   })
+            
             return (
               <View key={ind} style={styles.main_view_map}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
@@ -82,7 +123,7 @@ export default function Learning({ navigation }) {
                         />
                       </View>
                       <View style={styles.Animatable_Para}>
-                        <Text style={styles.username}>ayan ahmed</Text>
+                        <Text style={styles.username}>{item.NAME}</Text>
                         <Text numberOfLines={2} style={styles.title}>{item.TITLE}</Text>
                         <Text style={styles.price}>{item.PRICE}</Text>
                         <View style={styles.Icon_view}>
@@ -122,24 +163,25 @@ export default function Learning({ navigation }) {
 
 const styles = StyleSheet.create({
   ScrollView: {
-    backgroundColor: 'white',
-    paddingHorizontal: 13
+    backgroundColor: Colors.white,
+    paddingHorizontal: Sizes.thirteen
   },
   Arrow_left: {
-    color: 'white',
-    fontSize: 20,
-    marginTop: 10,
+    color: Colors.white,
+    fontSize: Sizes.twenty,
+    marginTop: Sizes.ten,
   },
   Main_ads_veiw: {
-    marginVertical: 20
+    marginVertical: Sizes.twenty
   },
   Ads_name: {
-    color: 'black', fontSize: 20
+    color: Colors.black,
+    fontSize: Sizes.twenty
   },
   Ads_name_para: {
-    color: '#7d7d7d',
-    fontSize: 14,
-    marginTop: 5
+    color: Colors.ads_para,
+    fontSize: Sizes.fouteen,
+    marginTop: Sizes.five
   },
   View_data_length: {
     flexDirection: 'row',
@@ -149,17 +191,17 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   View_data_length_Not_avalaible: {
-    fontSize: 15
+    fontSize: Sizes.fifteen
   },
   View_data_length_icon: {
-    color: 'red',
-    paddingHorizontal: 10
+    color: Colors.red,
+    paddingHorizontal: Sizes.ten
   },
   main_view_map: {
     marginHorizontal: 1,
-    backgroundColor: 'white',
-    borderRadius: 2,
-    marginTop: 10
+    backgroundColor: Colors.white,
+    borderRadius: Sizes.two,
+    marginTop: Sizes.ten
   },
   Animatable: {
     alignItems: 'center'
@@ -174,39 +216,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   Animatable_image: {
-    height: 100,
+    height: Sizes.hundred,
     width: '100%',
-    borderRadius: 2
+    borderRadius: Sizes.two
   },
   Animatable_Para: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    padding: 5,
+    paddingHorizontal: Sizes.ten,
+    padding: Sizes.five,
     width: '60%',
     lineHeihgt: 80
   },
-  Animatable_image: {
-    height: 100,
-    width: '100%',
-    borderRadius: 2
-  },
-  Animatable_image: {
-    height: 100,
-    width: '100%',
-    borderRadius: 2
-  },
   username: {
-    color: '#b3b3b3',
-    fontSize: 10
+    color: Colors.card_username,
+    fontSize: Sizes.ten
   },
   title: {
-    color: '#494949',
-    fontSize: 12
+    color: Colors.card_title,
+    fontSize: Sizes.twelve
   },
   price: {
-    color: 'green',
-    fontSize: 12
+    color: Colors.green,
+    fontSize: Sizes.twelve
   },
   Icon_view: {
     flexDirection: 'row',
@@ -214,11 +246,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   Versand: {
-    color: '#b3b3b3',
-    fontSize: 12
+    color: Colors.card_username,
+    fontSize: Sizes.twelve
   },
   staro: {
-    color: '#b3b3b3'
+    color: Colors.card_username
   }
-
 })

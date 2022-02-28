@@ -32,6 +32,7 @@ import Services from '../../category/Services/Services';
 import Categories_detail from '../../category/Categories_detail/Categories_detail';
 import Drawer from '../Drawer/Drawer';
 import SearchBar from '../../screens/Search/SearchBar';
+import Your_Ads from '../../screens/Your_Ads/Your_Ads';
 
 const Stack = createStackNavigator();
 function MyStack() {
@@ -53,6 +54,7 @@ function MyStack() {
             <Stack.Screen name="Inbox" component={Inbox} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Ads" component={Ads} />
+            <Stack.Screen name="Your_Ads" component={Your_Ads} />
 
             {/* Authentication  */}
 
