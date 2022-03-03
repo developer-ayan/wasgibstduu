@@ -24,6 +24,7 @@ export default function Learning({ navigation }) {
 
   const [data, setData] = React.useState([])
   const [dummy, setDummy] = React.useState([])
+  const [staredData, setStaredData] = React.useState()
   const [loading, setLoading] = React.useState(true)
   const [show, setshow] = React.useState(false)
   const arr = []
@@ -61,12 +62,21 @@ export default function Learning({ navigation }) {
             .update({
               AUTO_ID: snapshot.id
             })
-
         })
       })
 
+      // firestore()
+      // .collection('Category')
+      // .doc('Your all ads there !')
+      // .collection('Learning')
+      // .onSnapshot(e => {
+      //   console.log("E => ",e.docs.map((e) => e.data()))
+      // })
+
 
   }, [])
+
+  // console.log("STATRED DATA =>aa ",staredData)
 
 
   return (
@@ -94,13 +104,13 @@ export default function Learning({ navigation }) {
           </View>
           :
           data.map((item, ind) => {
-              // firestore()
-              //   .collection('Users')
-              //   .doc(item.UID)
-              //   .onSnapshot(e => {
-              //     setName(e.data().NAME)
-              //   })
-            
+            // firestore()
+            //   .collection('Users')
+            //   .doc(item.UID)
+            //   .onSnapshot(e => {
+            //     setName(e.data().NAME)
+            //   })
+
             return (
               <View key={ind} style={styles.main_view_map}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
@@ -132,19 +142,38 @@ export default function Learning({ navigation }) {
 
                           <Pressable onPress={() => {
                             firestore()
-                              .collection(`Stared Data ${user.USER_ID}`)
-                              .doc(item.DISCRIPTION)
-                              .set({
-                                IMAGE: item.ADS_IMAGES,
-                                PRICE: item.PRICE,
-                                DISCRIPTION: item.DISCRIPTION,
-                                CITY: item.CITY,
-                                CATEGORY: item.CATEGORY,
-                                UID: item.UID,
-                                TITLE: item.TITLE,
+                              .collection('Category')
+                              .doc('Your all ads there !')
+                              .collection('Learning')
+                              .get()
+                              .then((correct) => {
+                                correct.forEach(snapshot => {
+                                  console.log(snapshot.data())
+                                  firestore()
+                                    .collection('Category')
+                                    .doc('Your all ads there !')
+                                    .collection('Learning')
+                                    .doc(snapshot.id)
+                                    .collection('Stared Data')
+                                    .doc(user.USER_ID)
+                                    .set({
+                                      IMAGE: item.ADS_IMAGES,
+                                      PRICE: item.PRICE,
+                                      DISCRIPTION: item.DISCRIPTION,
+                                      CITY: item.CITY,
+                                      CATEGORY: item.CATEGORY,
+                                      UID: item.UID,
+                                      TITLE: item.TITLE,
+                                    })
+                                })
                               })
                           }}>
+                            {/* {staredData ? 
+                            <AntDesign style={styles.staro} name="star" size={18} />
+                            :
                             <AntDesign style={styles.staro} name="staro" size={18} />
+
+                            } */}
                           </Pressable>
                         </View>
                       </View>
