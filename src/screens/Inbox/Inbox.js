@@ -130,16 +130,7 @@ export default function Inbox() {
             })} */}
 
             {data.map((e, v) => {
-                var arr = []
-                firestore()
-                    .collection(e.USER_ID < user.USER_ID ? e.USER_ID + user.USER_ID : user.USER_ID + e.USER_ID)
-                    .onSnapshot(documentSnapshot => {
-                        for(var key in documentSnapshot.docs.map(e => e.data()))
-                        // console.log("ARR => ", documentSnapshot.docs.map(e => e.data()))
-                        arr.push( documentSnapshot.docs.map(e => e.data()))
-                    })
-                console.log("arr => ",arr)
-                return e.EMAIL !== user.EMAIL && (
+                return e.EMAIL === user.EMAIL && (
 
                     <View key={v}>
                         <TouchableOpacity onPress={() => navigation.navigate('chatscreen', {

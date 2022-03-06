@@ -5,21 +5,27 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
-    const [data, setData] = React.useState([])
+    const user = useSelector(state => state.user)
+
+    const [e, setE] = React.useState([])
 
 
     React.useEffect(() => {
         firestore().collection('Users')
             .doc(UID)
             .onSnapshot(documentSnapshot => {
-                setData(documentSnapshot.data().PHONE)
+                setE(documentSnapshot.data())
             });
     }, [])
+
+    console.log("CURRENTS USER DATA => ", user)
+    console.log("CHAT USER DATA => ", e)
 
 
 
@@ -94,7 +100,6 @@ export default function Categories_detail({ route, navigation }) {
                 justifyContent: 'space-between',
                 paddingHorizontal: 10,
                 paddingVertical: 10,
-
             }}>
                 <View>
                     <Text style={{ color: 'black', fontSize: 20, paddingVertical: 5, width: 260 }}>{TITLE}</Text>
@@ -124,12 +129,12 @@ export default function Categories_detail({ route, navigation }) {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingHorizontal: 12,
+                paddingHorizontal: 10,
                 width: '100%'
             }}>
 
                 <View style={{ borderWidth: 1, borderColor: 'white', width: '40%' }}>
-                    <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>${PRICE}</Text>
+                    <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>{PRICE}</Text>
                 </View>
 
 
@@ -137,7 +142,7 @@ export default function Categories_detail({ route, navigation }) {
                     <Text style={{ marginRight: 10 }}>
                         <FontAwesome name='phone' style={{ color: 'black', fontSize: 18 }} />
                     </Text>
-                    <TouchableOpacity onPress={() => { Linking.openURL(`tel:${data}`); }}>
+                    <TouchableOpacity onPress={() => { Linking.openURL(`tel:${e.PHONE}`); }}>
                         <Text style={{ color: 'black', fontSize: 18 }}>Call Seller</Text>
                     </TouchableOpacity>
                 </View>
@@ -163,13 +168,12 @@ export default function Categories_detail({ route, navigation }) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 paddingHorizontal: 12,
-
             }}>
                 <View>
                     <Text style={{ color: '#CECECE', fontSize: 13, paddingVertical: 5 }}>{CATEGORY}</Text>
                 </View>
                 <View >
-                    <Text style={{ color: 'black', fontSize: 13, paddingVertical: 5, width: 100 }}>{TITLE}</Text>
+                    <Text style={{ color: 'black', fontSize: 13, paddingVertical: 5, width: 200, textAlign: 'right' }}>{TITLE}</Text>
                 </View>
             </View>
 
@@ -199,6 +203,39 @@ export default function Categories_detail({ route, navigation }) {
                     />
                 </View>
             </View>
+
+
+
+
+            {
+                e.EMAIL !== user.EMAIL && (
+
+                    <View>
+                        <TouchableOpacity onPress={() => navigation.navigate('Send_offer', {
+                            e,
+                            current_user: user,
+                            profile: e.PROFILE
+                        })}>
+                            <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, marginBottom: 0, borderRadius: 5 }}>
+                                <Text style={{ fontSize: 16, color: 'black' }}>Send Offer</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => navigation.navigate('chatscreen', {
+                            e,
+                            current_user: user,
+                            profile: e.PROFILE
+                        })}>
+                            <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, borderRadius: 5 }}>
+                                <Text style={{ fontSize: 16, color: 'black' }}>Send Message</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+            }
+
+
+
         </ScrollView>
     )
 }

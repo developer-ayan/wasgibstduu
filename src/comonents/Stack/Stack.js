@@ -33,47 +33,48 @@ import Categories_detail from '../../category/Categories_detail/Categories_detai
 import Drawer from '../Drawer/Drawer';
 import SearchBar from '../../screens/Search/SearchBar';
 import Your_Ads from '../../screens/Your_Ads/Your_Ads';
+import Send_offer from '../../category/Send_offer/Send_offer';
 
 const Stack = createStackNavigator();
 function MyStack() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'modal',animation: 'slide_from_right',}}>
 
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="BottomNav" component={BottomNav} />
+            <Stack.Screen name="Login" component={Login} options={{  animation: 'slide_from_right'}}/>
 
             {/* bottom navigation */}
 
+            <Stack.Screen name="BottomNav" component={BottomNav} options={{ animation: 'slide_from_right' }}/>
 
             {/* Display Screens */}
 
-            <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} />
-            <Stack.Screen name="chatscreen" component={ChatScreen} />
-            <Stack.Screen name="manageAds" component={manageAds} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="Inbox" component={Inbox} />
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Ads" component={Ads} />
-            <Stack.Screen name="Your_Ads" component={Your_Ads} />
+            <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} options={{ animation: 'slide_from_right' }}  />
+            <Stack.Screen name="chatscreen" component={ChatScreen} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="manageAds" component={manageAds} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Your_Ads" component={Your_Ads} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Profile" component={Profile} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Inbox" component={Inbox} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Home" component={Home} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Ads" component={Ads} options={{ animation: 'slide_from_right' }} />
 
             {/* Authentication  */}
 
-            <Stack.Screen name="searchbar" component={SearchBar} />
-            <Stack.Screen name="signup" component={SignUp} />
+            <Stack.Screen name="searchbar" component={SearchBar} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="signup" component={SignUp} options={{ animation: 'slide_from_right' }} />
 
             {/* Category */}
 
-            <Stack.Screen name="Categories_detail" component={Categories_detail} />
-            <Stack.Screen name="Phone_and_Screen" component={Phone_and_Screen} />
-            <Stack.Screen name="Auto_Mobiles" component={Auto_Mobiles} />
-            <Stack.Screen name="Real_states" component={Real_states} />
-            <Stack.Screen name="Electronics" component={Electronics} />
-            <Stack.Screen name="Learning" component={Learning} />
-            <Stack.Screen name="Services" component={Services} />
-            <Stack.Screen name="Fashion" component={Fashion} />
-            <Stack.Screen name="Events" component={Events} />
-            <Stack.Screen name="Jobs" component={Jobs} />
-
+            <Stack.Screen name="Categories_detail" component={Categories_detail} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Phone_and_Screen" component={Phone_and_Screen} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Send_offer" component={Send_offer} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Auto_Mobiles" component={Auto_Mobiles} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Real_states" component={Real_states} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Electronics" component={Electronics} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Learning" component={Learning} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Services" component={Services} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Fashion" component={Fashion} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Events" component={Events} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Jobs" component={Jobs}  options={{ animation: 'slide_from_right' }}/>
 
         </Stack.Navigator>
     );
