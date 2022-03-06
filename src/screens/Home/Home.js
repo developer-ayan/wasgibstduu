@@ -27,6 +27,10 @@ export default function Home({ navigation }) {
   }, [])
 
 
+  const string = 'abc xyz'
+  const stringcheck = string.
+
+
 
 
   const ItemSeparatorView = () => {
