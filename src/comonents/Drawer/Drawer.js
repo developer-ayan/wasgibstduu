@@ -14,6 +14,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import CustomDrawer from '../CustomDrawer/CustomDrawer';
+import Get_offer from '../../category/Get_offer/Get_offer';
 
 const drawer = createDrawerNavigator();
 
@@ -73,7 +74,7 @@ function Drawer() {
 
                 }}
             />
-            <drawer.Screen name="Quit" component={Inbox}
+            <drawer.Screen name="Quit" component={Get_offer}
                 options={{
                     drawerIcon: ({ color }) =>
                     (

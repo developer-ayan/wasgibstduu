@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  StyleSheet
+  StyleSheet,
+  TextInput
 } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -20,112 +21,86 @@ import {
   Sizes
 } from '../../comonents/Constant/Constant';
 
-export default function Send_offer({ navigation }) {
+export default function Send_offer({ navigation , route}) {
+  const { IMAGE,PRICE,DISCRIPTION,CITY,CATEGORY,TITLE,UID} = route.params
+  const [price, setPrice] = React.useState('')
+  const [discription, setDiscription] = React.useState('')
 
-  const [data, setData] = React.useState([])
-  const [loading, setLoading] = React.useState(true)
-  const [show, setshow] = React.useState(false)
 
-  const toggle = () => {
-    setshow(!show)
+  function send_data(){
+    firestore()
+    .collection('Users')
+    .doc(UID)
+    .collection('send_offer')
+    .doc(TITLE+UID+DISCRIPTION)
+    .set({
+      IMAGE : IMAGE,
+      PRICE : PRICE,
+      TITLE : TITLE,
+      DISCRIPTION : DISCRIPTION,
+      UID : UID,
+      CITY : CITY,
+      CATEGORY : CATEGORY,
+      OFFERPRICE : price,
+      OFFERDISCRIPTION : discription
+    })
   }
 
-  const user = useSelector(state => state.user)
 
-  React.useEffect(() => {
-    firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Real States')
-      .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
-        setLoading(false)
-      });
-  }, [])
 
   return (
-    <ScrollView style={styles.ScrollView}>
+    <View style={{ backgroundColor: 'white', flex: 1, width: '100%', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', paddingHorizontal: 20 }}>
 
-      <TouchableOpacity onPress={navigation.goBack}>
-        <Text style={styles.Arrow_left}>
-          <Feather name="arrow-left" size={25} color="black" />
-        </Text>
+
+
+      <Text
+        style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', marginHorizontal: 30, borderRadius: 10, fontSize : 14, width: '100%' }}>
+        You can tell your offer here.
+      </Text>
+      {/* <View style={{ marginTop: 20 }}> */}
+      <View style={{ width: '100%' }}>
+        <TextInput
+          placeholder="Price"
+          autoCapitalize="none"
+          onChangeText={(val) => setPrice(val)}
+          value={price}
+          style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}
+        />
+
+        <View style={{ marginTop: 20 }}>
+          <TextInput
+            placeholder="Discription"
+            autoCapitalize="none"
+            onChangeText={(val) => setDiscription(val)}
+            value={discription}
+            style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}
+          />
+        </View>
+
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}
+          >Send Offer</Text>
+
+        </View>
+
+      </View>
+      {/* </View> */}
+
+      <TouchableOpacity onPress={send_data} style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: '#00aa49', marginHorizontal: 30, borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}>
+        <Text style={{ textAlign: 'center', color: 'white' }}
+        >Send Offer</Text>
       </TouchableOpacity>
 
-      <View style={styles.Main_ads_veiw}>
-        <Text style={styles.Ads_name} >{Categories_detail.real_states}</Text>
-        <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
-      </View>
-
-      {loading ?
-        <Loader />
-        :
-        data.length === 0 ?
-          <View style={styles.View_data_length}>
-
-            <Text style={styles.View_data_length_Not_avalaible}>Ads is not avalaible </Text>
-            <AntDesign name='exclamationcircleo' size={25} style={styles.View_data_length_icon} />
-          </View>
-          :
-          data.map((item, ind) => {
-            return (
-              <View key={ind} style={styles.main_view_map}>
-                <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
-                  {
-                    IMAGE: item.ADS_IMAGES,
-                    PRICE: item.PRICE,
-                    DISCRIPTION: item.DISCRIPTION,
-                    CITY: item.CITY,
-                    CATEGORY: item.CATEGORY,
-                    TITLE: item.TITLE,
-                    UID: item.UID,
-                  }
-                )}>
-                  <Animatable.View duration={1000} animation="bounceInLeft" style={styles.Animatable}>
-                    <View style={styles.Animatable_child}>
-                      <View style={styles.Animatable_child_to_child}>
-                        <Image
-                          style={styles.Animatable_image}
-                          source={{ uri: item.ADS_IMAGES }}
-                        />
-                      </View>
-                      <View style={styles.Animatable_Para}>
-                        <Text style={styles.username}>ayan ahmed</Text>
-                        <Text numberOfLines={2} style={styles.title}>{item.TITLE}</Text>
-                        <Text style={styles.price}>{item.PRICE}</Text>
-                        <View style={styles.Icon_view}>
-                          <Text style={styles.Versand}>Versand moglich</Text>
 
 
-                          <Pressable onPress={() => {
-                            firestore()
-                              .collection(`Stared Data ${user.USER_ID}`)
-                              .doc(item.DISCRIPTION)
-                              .set({
-                                IMAGE: item.ADS_IMAGES,
-                                PRICE: item.PRICE,
-                                DISCRIPTION: item.DISCRIPTION,
-                                CITY: item.CITY,
-                                CATEGORY: item.CATEGORY,
-                                UID: item.UID,
-                                TITLE: item.TITLE,
-                              })
-                          }}>
-                            <AntDesign style={styles.staro} name="staro" size={18} />
-                          </Pressable>
-                        </View>
-                      </View>
-                    </View>
-                  </Animatable.View>
-                </TouchableOpacity>
-              </View>
-            )
-          })
-      }
+
+      {/* </View> */}
+    </View>
 
 
-    </ScrollView>
+
   )
+
 }
 
 const styles = StyleSheet.create({
@@ -143,7 +118,7 @@ const styles = StyleSheet.create({
   },
   Ads_name: {
     color: Colors.black,
-     fontSize: Sizes.twenty
+    fontSize: Sizes.twenty
   },
   Ads_name_para: {
     color: Colors.ads_para,
@@ -201,11 +176,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.card_title,
-    fontSize:  Sizes.twelve
+    fontSize: Sizes.twelve
   },
   price: {
     color: Colors.green,
-    fontSize:  Sizes.twelve
+    fontSize: Sizes.twelve
   },
   Icon_view: {
     flexDirection: 'row',

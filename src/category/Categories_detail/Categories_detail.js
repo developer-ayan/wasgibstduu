@@ -12,9 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
     const user = useSelector(state => state.user)
-
     const [e, setE] = React.useState([])
-
 
     React.useEffect(() => {
         firestore().collection('Users')
@@ -23,15 +21,6 @@ export default function Categories_detail({ route, navigation }) {
                 setE(documentSnapshot.data())
             });
     }, [])
-
-    console.log("CURRENTS USER DATA => ", user)
-    console.log("CHAT USER DATA => ", e)
-
-
-
-    // console.log("is this State Data => ",data)
-
-
 
     const [like, setLike] = React.useState(0)
     const [show, setshow] = React.useState(false)
@@ -65,13 +54,7 @@ export default function Categories_detail({ route, navigation }) {
                             (
 
                                 console.log({
-                                    IMAGE,
-                                    PRICE,
-                                    DISCRIPTION,
-                                    CITY,
-                                    CATEGORY,
-                                    TITLE,
-                                    UID,
+
                                 })
                                 , <AntDesign name="hearto" size={25} color="red" />)
                             // </TouchableOpacity>
@@ -214,7 +197,14 @@ export default function Categories_detail({ route, navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate('Send_offer', {
                             e,
                             current_user: user,
-                            profile: e.PROFILE
+                            profile: e.PROFILE,
+                            IMAGE,
+                            PRICE,
+                            DISCRIPTION,
+                            CITY,
+                            CATEGORY,
+                            TITLE,
+                            UID,
                         })}>
                             <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, marginBottom: 0, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 16, color: 'black' }}>Send Offer</Text>

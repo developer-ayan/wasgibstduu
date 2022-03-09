@@ -27,33 +27,7 @@ export default function Home({ navigation }) {
   }, [])
 
 
-  const string = 'abc xyz'
-  const stringcheck = string.
 
-
-
-
-  const ItemSeparatorView = () => {
-    return (
-      <View style={{ wdith: '100%', backgroundColor: 'red' }} />
-    )
-  }
-
-  const searchFilter = (text) => {
-    if (text) {
-      const newData = master.filter((item) => {
-        const ItemData = item.TITLE ? item.TITLE.toUpperCase()
-          : ''.toUpperCase()
-        const textData = text.toUpperCase()
-        return ItemData.indexOf(textData) > -1;
-      })
-      setData(newData)
-      setPassword(text)
-    } else {
-      setData(master)
-      setPassword(text)
-    }
-  }
 
   const ItemView = ({ item }) => (
     <View style={{ width: '50%', marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
