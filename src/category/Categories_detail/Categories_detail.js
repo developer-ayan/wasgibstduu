@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function Categories_detail({ route, navigation }) {
-    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID } = route.params;
+    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID , LIKE } = route.params;
     const user = useSelector(state => state.user)
     const [e, setE] = React.useState([])
 
@@ -36,6 +36,8 @@ export default function Categories_detail({ route, navigation }) {
         setLike(like - 1)
     }
 
+    console.log(LIKE)
+
     return (
         <ScrollView style={{ backgroundColor: 'white' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginHorizontal: 10 }}>
@@ -49,14 +51,12 @@ export default function Categories_detail({ route, navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={toggle}>
                     <Text style={{ marginVertical: 15 }}>
-                        {show ?
+                        {/* {show ?
                             // <TouchableOpacity onPress={() => console.log('open')}>
                             (
 
-                                console.log({
-
-                                })
-                                , <AntDesign name="hearto" size={25} color="red" />)
+                          
+                                 <AntDesign name="hearto" size={25} color="red" />
                             // </TouchableOpacity>
                             :
                             // <TouchableOpacity onPress={() => console.log('Close')}>
@@ -64,9 +64,11 @@ export default function Categories_detail({ route, navigation }) {
                             (console.log('minus'), <AntDesign name="heart" size={25} color="red" />)
                             // console.log()
                             // </TouchableOpacity>
-                        }
+                        } */}
+
 
                     </Text>
+                    
                 </TouchableOpacity>
 
             </View>

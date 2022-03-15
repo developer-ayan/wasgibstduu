@@ -43,6 +43,8 @@ export default function Fashion({ navigation }) {
       });
   }, [])
 
+  // console.log("DATA => ",data)
+
   return (
     <ScrollView style={styles.ScrollView}>
 
@@ -79,6 +81,7 @@ export default function Fashion({ navigation }) {
                     CATEGORY: item.CATEGORY,
                     TITLE: item.TITLE,
                     UID: item.UID,
+                    LIKE: item.LIKE,
                   }
                 )}>
                   <Animatable.View duration={1000} animation="bounceInLeft" style={styles.Animatable}>

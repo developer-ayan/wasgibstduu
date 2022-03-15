@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert  } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -9,10 +9,11 @@ import { create_ads } from '../../redux/actions/authAction';
 import storage from '@react-native-firebase/storage';
 import { firebase } from '@react-native-firebase/auth';
 import SelectDropdown from 'react-native-select-dropdown';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function Ads({ navigation }) {
 
-  const [uri, setUri] = React.useState(null)
+  const [uri, setUri] = React.useState([])
   const [category, setCategory] = React.useState('')
   const [title, setTitle] = React.useState('')
   const [discription, setDiscription] = React.useState('')
@@ -25,7 +26,7 @@ export default function Ads({ navigation }) {
   const dispatch = useDispatch()
   const countries = ["Fashion", "Auto Mobiles", "Electronics", "Events", "Jobs", "Learning", "Phone & tablets", "Real States", "Services"]
   const state = useSelector(user => user.user)
-  console.log("ADS USER => ",state.NAME)
+  console.log("ADS USER => ", state.NAME)
 
   const CreateAds = async () => {
     const imageUrl = await hondlet()
@@ -36,7 +37,7 @@ export default function Ads({ navigation }) {
       price,
       city,
       imageUrl,
-      name : state.NAME
+      name: state.NAME
     }
     dispatch(create_ads(user))
     // setTitle('')
@@ -45,17 +46,20 @@ export default function Ads({ navigation }) {
     // setCity('')
     // setCategory('')
     navigation.navigate('BottomNav')
+    setUri(null)
+
   }
 
   // console.log(category)
 
   const ImageGallery = () => {
     ImagePicker.openPicker({
-      width: 700,
-      height: 500,
+      mediaType : 'photo',
+      multiple : true,
       cropping: true
     }).then(image => {
-      setUri(image.path)
+      setUri(image.map((e) => e.path))
+      // console.log(image.map((e) => e.path))
     });
   }
 
@@ -133,7 +137,7 @@ export default function Ads({ navigation }) {
               buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
               dropdownStyle={{ backgroundColor: '#f7f7f7' }}
               rowTextStyle={{ color: '#ababab', fontSize: 15 }}
-              buttonStyle={{ backgroundColor: '#f7f7f7', width: '100%' }}
+              // buttonStyle={{ backgroundColor: '#f7f7f7', width: '100%' }}
               // buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
               // dropdownStyle={{ backgroundColor: 'red', borderRadius: 10 }}
               // rowTextStyle={{ color: 'white' }}
@@ -179,18 +183,37 @@ export default function Ads({ navigation }) {
             placeholder='Select City'
             style={styles.Input} />
         </View>
-        <View style={{ marginTop: 20 }}>
+        {/* <View style={{ marginTop: 20, marginBottom: 10 ,flexDirection : 'row' , justifyContent : 'flex-start', flexWrap : 'wrap' }}> */}
 
-          <TouchableOpacity onPress={ImageGallery}>
-            <Text style={styles.AdTitle}>UPLOAD IMAGE</Text>
-          </TouchableOpacity>
           <View>
-            <Image
-              style={{ height: 80, width: 80, borderRadius: 2, marginTop: 1 }}
-              source={{ uri: uri }}
-            />
+            {uri === null ? null :
+
+<View style= {{flexDirection : 'row' , width : '100%' , borderWidth : 1 ,borderColor : 'black'}}>
+{uri.map((e) => {
+  return (
+    <View style= {{flexDirection : 'row'  , borderWidth : 1 ,borderColor : 'black' , justifyContent : 'space-between'}}>
+
+
+<Image
+  style={{ height: 85, width: 90, borderRadius: 2, marginTop: 1   }}
+  source={{ uri: e }}
+/>
+  </View>
+  )
+})}
+
+  </View>
+            }
           </View>
-        </View>
+          <TouchableOpacity onPress={ImageGallery}>
+          <View style={{  alignSelf: 'flex-start', padding: 15, borderRadius: 5 , borderWidth : 1 ,borderColor : '#ababab' , marginLeft : uri === null ? 0 : 20}}>
+            <Entypo name='plus' color={'#ababab'} style={{}} size={50} />
+          </View>
+
+          </TouchableOpacity>
+
+
+        {/* </View> */}
 
         {uploading ? (
           <View>
@@ -198,20 +221,24 @@ export default function Ads({ navigation }) {
           </View>
         ) : (
           <TouchableOpacity onPress={CreateAds}>
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderRadius: 5,
+            {/* <View style={{
               padding: 20,
               color: '#b3b3b3',
-              backgroundColor: "gold",
-              paddingVertical: 25,
-              marginVertical: 10
-            }}>
-              <Text style={{ fontSize: 14, color: '#1d1900' }}>Create Ads</Text>
-              <Feather name="arrow-right" size={20} color="#1d1900" />
-            </View>
+            
+
+            }}> */}
+              <LinearGradient
+        colors={['#ECECEC', '#CCCCCC', ]}
+        start={{x: 0, y: 0.5}}
+        end={{x: 1, y: 1}}
+        style={styles.button}
+      >
+        <TouchableOpacity>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </LinearGradient>
+              {/* <Text style={{ fontSize: 14, color: '#1d1900', textAlign : 'center' }}>Submit</Text> */}
+            {/* </View> */}
           </TouchableOpacity>
         )
         }
@@ -271,6 +298,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 13,
     opacity: 0.7
+  },
+  button: {
+    marginVertical: 10,
+    paddingVertical: 18,
+    paddingHorizontal: 40,
+    borderRadius: 5
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 17,
+    fontWeight : 'bold'
   }
 
 })

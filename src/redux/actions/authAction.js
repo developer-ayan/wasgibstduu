@@ -22,7 +22,7 @@ function signUp(user) {
                         CONFIRM_PASSWORD: user.confirm,
                     })
 
-                    
+
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
@@ -65,13 +65,12 @@ function sign_in(user) {
 }
 
 function create_ads(user) {
-    console.log("USER NAME WITH REDUX ===> ",user)
     return (dispatch) => {
         const User_data = user
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 const LoginUID = user.uid;
-                    firestore()
+                firestore()
                     .collection(`Category`)
                     .doc('Your all ads there !')
                     .collection(`${User_data.category}`)
@@ -83,11 +82,10 @@ function create_ads(user) {
                         CITY: User_data.city,
                         ADS_IMAGES: User_data.imageUrl,
                         UID: LoginUID,
-                        NAME : User_data.name,
-
+                        NAME: User_data.name,
+                        LIKE: [""],
+                        TIME_ADS : firebase.firestore.Timestamp.fromDate(new Date())
                     })
-
-
             } else {
                 alert('User is not logged in')
             }
