@@ -106,7 +106,7 @@ function Profile({ navigation }) {
             .update({
                 PROFILE: imageUrl,
             })
-            setModalVisible(false)
+        setModalVisible(false)
     }
 
     const uploadImage = async () => {
@@ -157,30 +157,31 @@ function Profile({ navigation }) {
                 }}
             >
                 <View style={styles.centeredView}>
-                {uploading ? (
-                    <View style = {{ flexDirection : 'row' , justifyContent: 'space-around', alignItems : 'center' ,width : '50%'}}>
-                        <Text style = {{color : 'white'}}>{transeferred} % Completed</Text>
-                        <ActivityIndicator size="large" color="white" />
-                    </View>
-                ) : (
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Are you sure if You want upload new image ?</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={submitPost}
-                        >
-                            <Text style={styles.textStyle}>Yes</Text>
-                        </Pressable>
-                        <Pressable
-                            style={[styles.button, styles.skip]}
-                            onPress={() => setModalVisible(!modalVisible)}
-                        >
-                            <Text style={styles.textStyle}>No</Text>
-                        </Pressable>
-                    </View>
-                )
-                }
-                    
+                    {uploading ? (
+                                                <View style={{ flexDirection: 'row', alignItems: 'center', width: '70%', backgroundColor: 'white', paddingHorizontal: 30, paddingVertical: 20, borderRadius: 10 }}>
+                                                <ActivityIndicator size="large" color="#525252" style={{ marginRight: 10 }} />
+                                                <Text style={{ color: '#525252', fontWeight: 'bold' }}>Please wait...</Text>
+                                            </View>
+                    ) : (
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Are you sure if You want upload new image ?</Text>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={submitPost}
+                            >
+                                <Text style={styles.textStyle}>Yes</Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.skip]}
+                                onPress={() => setModalVisible(!modalVisible)}
+                            >
+                                <Text style={styles.textStyle}>No</Text>
+                            </Pressable>
+    
+                        </View>
+                    )
+                    }
+
                 </View>
             </Modal>
 
@@ -238,7 +239,7 @@ function Profile({ navigation }) {
                 </View>
 
 
-              
+
 
                 {/* {modal ? 
             <Text>True</Text>  
@@ -359,8 +360,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: 'rgba(52, 52, 52, 0.8)'
-      },
-      modalView: {
+    },
+    modalView: {
         margin: 20,
         backgroundColor: "white",
         borderRadius: 5,
@@ -368,35 +369,35 @@ const styles = StyleSheet.create({
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 2
+            width: 0,
+            height: 2
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
-      },
-      button: {
+    },
+    button: {
         borderRadius: 10,
         padding: 10,
         elevation: 2,
-        width  : '100%',
-        marginTop : 20
-      },
-      buttonClose: {
+        width: '100%',
+        marginTop: 20
+    },
+    buttonClose: {
         backgroundColor: "#2196F3",
-        width : 200
-      },
-      skip: {
+        width: 200
+    },
+    skip: {
         backgroundColor: "#FF6347",
-        width : 200
-      },
-      textStyle: {
+        width: 200
+    },
+    textStyle: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
-      },
-      modalText: {
+    },
+    modalText: {
         marginBottom: 15,
         textAlign: "center"
-      }
+    }
 });

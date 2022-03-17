@@ -6,16 +6,18 @@ import database from '@react-native-firebase/database'
 import { useDispatch, useSelector } from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import Feather from 'react-native-vector-icons/Feather';
 
 export default function ChatScreen({ route, navigation }) {
 
     const { e, current_user } = route.params
+    const chat_user_profile = e.PROFILE
     const [message, setMessage] = React.useState('')
     const [data, setData] = React.useState([])
     const [uri, setUri] = React.useState()
+    console.log("USER => ", e)
 
     React.useEffect(() => {
         const user = current_user
@@ -23,6 +25,8 @@ export default function ChatScreen({ route, navigation }) {
         const merge = merge_uid(user.USER_ID, chat_user.USER_ID)
         get_messages(merge)
     }, [])
+
+
 
     const merge_uid = (uid1, uid2) => {
         if (uid1 < uid2) {
@@ -60,7 +64,7 @@ export default function ChatScreen({ route, navigation }) {
         var arr = []
         ImagePicker.openPicker({
             multiple: true,
-            waitAnimationEnd : false,
+            waitAnimationEnd: false,
 
             // width: 700,
             // height: 500,
@@ -69,37 +73,41 @@ export default function ChatScreen({ route, navigation }) {
             compressImageQuality: 0.8,
             maxFiles: 10,
             mediaType: 'any',
-            includeBase64 : true,
+            includeBase64: true,
         }).then(image => {
             // console.log("response => ", image)
             image.map((images) => {
 
-                arr.push({path : images.path})
+                arr.push({ path: images.path })
                 setUri(arr)
             })
 
             // arr.push(image.path)
             // console.log("Arr => ", arr)
             // setUri(arr)
-            console.log("arrr =. ", uri.map((e ) => console.log(e.path)))
+            console.log("arrr =. ", uri.map((e) => console.log(e.path)))
         });
     }
 
     return (
         // <ScrollView>
 
-        <View style={{ backgroundColor: 'white' }}>
-            <View style={{ paddingHorizontal: 10, padding: 20, flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+            <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                 <TouchableOpacity onPress={navigation.goBack}>
                     <Text>
                         <Feather name="arrow-left" size={30} color="#343434" />
                     </Text>
                 </TouchableOpacity>
-                <Text style={{ color: 'black', fontSize: 20, paddingHorizontal: 10 }}>{e.NAME}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>{e.NAME}</Text>
+                <Image source={{ uri: e.PROFILE }} style={{ height: 40, width: 40, borderRadius: 100 }} />
+
             </View>
-            <View style={{
+            <ScrollView style={{
                 // borderWidth: 1,
-                // borderColor: 'black'
+                // borderColor: 'black',
+                // height: '80%',
+                // flexDirection: 'column-reverse'
             }}>
                 {
                     data.map((e, v) => {
@@ -109,11 +117,14 @@ export default function ChatScreen({ route, navigation }) {
                                 width: '100%',
                                 flexDirection: 'row',
                                 justifyContent: uid ? 'flex-end' : 'flex-start',
-                                alignItems: 'center',
+                                alignItems : 'center'
+                                
                             }}>
-                                {uid ? null :
-                                    <Entypo name="user" size={40} color="#e9f5fe" />
-                                }
+
+                                {uid ? null :           
+                                     <Image source={{ uri: chat_user_profile === "" ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : chat_user_profile }} style={{ height: 40, width: 40, borderRadius: 100 , marginLeft : 5}} />
+                                     
+                                    }
                                 <Text style={{
                                     width: '75%',
                                     marginVertical: 5,
@@ -131,32 +142,23 @@ export default function ChatScreen({ route, navigation }) {
                         )
                     })
                 }
-            </View>
-            <View>
-                {/* {uri.map((e, v) => {
-                    <Image
-                        style={{ height: 80, width: 80, borderRadius: 2, marginTop: 1 }}
-                        source={{ uri: 'file:///storage/emulated/0/Android/data/com.wasgib…Pictures/1f8b4df3-119f-4a5e-938f-5cee6bc47034.jpg' }}
-                    />
-                })} */}
+            </ScrollView>
+            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10, borderTopRightRadius: 10, paddingVertical: 3 }}>
 
-
-            </View>
-
-            <TouchableOpacity onPress={ImageGallery}>
-                <Text style={{ color: 'red' }}>UPLOAD IMAGE</Text>
-            </TouchableOpacity>
-
-
-
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginHorizontal: 5, backgroundColor: 'white', borderRadius: 10 }}>
-                <TextInput onChangeText={(text) => setMessage(text)}
-                    value={message} placeholder='Type a message' style={{ width: '85%', }} />
-                <TouchableOpacity onPress={send_message} style={{ padding: 15 }}>
-                    <FontAwesome name="send" size={20} color="#00aa49" />
+                <TouchableOpacity onPress={ImageGallery} style={{ padding: 15 }}>
+                    <FontAwesome name="image" size={20} color="black" />
                 </TouchableOpacity>
 
+                <View style={{ width: '70%' }}>
+                    <TextInput onChangeText={(text) => setMessage(text)}
+                        value={message} placeholder='Type a message' />
+                </View>
+
+                <TouchableOpacity onPress={send_message} style={{ padding: 15 }}>
+                    <Ionicons name="send" size={20} color="black" />
+                </TouchableOpacity>
             </View>
+
         </View >
         // </ScrollView>
     )

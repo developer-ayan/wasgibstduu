@@ -8,11 +8,13 @@ import { get_all_users } from '../../redux/actions/authAction';
 import { useNavigation } from '@react-navigation/native';
 import database from '@react-native-firebase/database'
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 export default function Inbox() {
     const navigation = useNavigation()
     const [data, setData] = React.useState([])
     const [chats, setChats] = React.useState([])
+    const [msg, setMsg] = React.useState([])
     const [allResultsVisible, setAllResultsVisible] = React.useState(false);
 
 
@@ -25,7 +27,16 @@ export default function Inbox() {
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
             });
+
+
+        firestore()
+            .collection('P6QvoVpboaMwluKo7dIU5gMCwy73ZUQJ8p1CkTMCipkdHRaCUDJDMff2')
+            .onSnapshot(documentSnapshot => {
+                setMsg(documentSnapshot.docs.map(e => e.data()));
+            });
     }, [])
+
+    // const lastMsg = msg.pop().msg;
 
 
     return (
@@ -76,14 +87,13 @@ export default function Inbox() {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Entypo name="user" size={50} color="#b1b1b1" style={{ marginHorizontal: 5, opacity: 0.0 }} />
                     <View style={{ marginHorizontal: 4 }}>
-                        <Text style={{ color: '#b1b1b1' }}>hi</Text>
-                        <Text style={{ color: '#b1b1b1' }}>Like this iphone</Text>
+                        {/* <Text style={{ color: '#b1b1b1' }}>{lastMsg}</Text> */}
+                        {/* <Text style={{ color: '#b1b1b1' }}>Like this iphone</Text> */}
                         <Text style={{ color: '#b1b1b1', fontSize: 12, paddingVertical: 5 }}>May. 7th. 2021. at 12:44</Text>
 
                     </View>
                 </View>
             </View>
-
 
 
 
