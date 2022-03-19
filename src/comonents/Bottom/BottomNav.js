@@ -11,8 +11,20 @@ import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
 import Drawer from '../Drawer/Drawer';
 import Profile from '../../screens/Profile/Profile';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 export default function BottomNav() {
+
+    const state = useSelector(state => state.user)
+    React.useEffect(() => {
+        try {
+            const userDetail = JSON.stringify(state)
+            AsyncStorage.setItem('userData', userDetail)
+        } catch (e) {
+            // saving error
+        }
+    }, [])
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator

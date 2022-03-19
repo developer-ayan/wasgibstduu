@@ -34,21 +34,48 @@ import Drawer from '../Drawer/Drawer';
 import SearchBar from '../../screens/Search/SearchBar';
 import Your_Ads from '../../screens/Your_Ads/Your_Ads';
 import Send_offer from '../../category/Send_offer/Send_offer';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createStackNavigator();
 function MyStack() {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'modal',animation: 'slide_from_right',}}>
 
-            <Stack.Screen name="Login" component={Login} options={{  animation: 'slide_from_right'}}/>
+    const [save , setSave] = React.useState()
+
+    const get_data = async() => {
+
+        try {
+            const userDetail = await AsyncStorage.getItem('userData')
+            const check = JSON.parse(userDetail);
+            setSave(check)
+            console.log("DATA => ", check)
+        } catch (e) {
+            // error reading value
+            console.log(e);
+        }
+    }
+
+    React.useEffect(() => {
+
+        get_data()
+
+    }, [])
+    return (
+        
+        <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'modal', animation: 'slide_from_right', }}>
+
+            {/* Authentication  */}
+
+            {/* {!save ? 
+            
+        } */}
+            
 
             {/* bottom navigation */}
 
-            <Stack.Screen name="BottomNav" component={BottomNav} options={{ animation: 'slide_from_right' }}/>
+            <Stack.Screen name="BottomNav" component={BottomNav} options={{ animation: 'slide_from_right' }} />
 
             {/* Display Screens */}
 
-            <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} options={{ animation: 'slide_from_right' }}  />
+            <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} options={{ animation: 'slide_from_right' }} />
             <Stack.Screen name="chatscreen" component={ChatScreen} options={{ animation: 'slide_from_right' }} />
             <Stack.Screen name="manageAds" component={manageAds} options={{ animation: 'slide_from_right' }} />
             <Stack.Screen name="Your_Ads" component={Your_Ads} options={{ animation: 'slide_from_right' }} />
@@ -57,10 +84,8 @@ function MyStack() {
             <Stack.Screen name="Home" component={Home} options={{ animation: 'slide_from_right' }} />
             <Stack.Screen name="Ads" component={Ads} options={{ animation: 'slide_from_right' }} />
 
-            {/* Authentication  */}
 
             <Stack.Screen name="searchbar" component={SearchBar} options={{ animation: 'slide_from_right' }} />
-            <Stack.Screen name="signup" component={SignUp} options={{ animation: 'slide_from_right' }} />
 
             {/* Category */}
 
@@ -74,7 +99,7 @@ function MyStack() {
             <Stack.Screen name="Services" component={Services} options={{ animation: 'slide_from_right' }} />
             <Stack.Screen name="Fashion" component={Fashion} options={{ animation: 'slide_from_right' }} />
             <Stack.Screen name="Events" component={Events} options={{ animation: 'slide_from_right' }} />
-            <Stack.Screen name="Jobs" component={Jobs}  options={{ animation: 'slide_from_right' }}/>
+            <Stack.Screen name="Jobs" component={Jobs} options={{ animation: 'slide_from_right' }} />
 
         </Stack.Navigator>
     );

@@ -92,8 +92,32 @@ function create_ads(user) {
         });
     }
 }
+
+function all_ads() {
+    const [save , setSave] = React.useState({});
+    return (dispatch) => {
+
+        const get_data = async() => {
+          try {
+              const userDetail = await AsyncStorage.getItem('userData')
+              const check = JSON.parse(userDetail);
+              
+              check != {} ?  setSave(check) : null;     
+              dispatch({ type: 'DATA', data : check })
+          } catch (e) {
+              // error reading value
+              console.log(e);
+          }
+      }
+      
+      React.useEffect(() => {
+          get_data()
+      }, [])
+    }
+}
 export {
     signUp,
     sign_in,
     create_ads,
+    all_ads
 }

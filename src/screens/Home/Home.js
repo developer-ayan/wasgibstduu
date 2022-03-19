@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, FlatList, StyleSheet , Pressable } from "react-native";
+import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, FlatList, StyleSheet, Pressable } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
@@ -8,13 +8,15 @@ import Premium from './Premium';
 import Category from './Category';
 import Loader from '../../comonents/Loader/Loader';
 import * as Animatable from 'react-native-animatable';
+import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home({ navigation }) {
   const [data, setData] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [master, setMaster] = React.useState([])
   const [password, setPassword] = React.useState('')
-
+  const state = useSelector(state => state.user)
 
   React.useEffect(() => {
     firestore()
@@ -64,7 +66,7 @@ export default function Home({ navigation }) {
           backgroundColor: '#f0f2f5'
         }}>
           <View style={{ height: 400, backgroundColor: '#01a949' }}>
-            <Pressable onPress = {() => navigation.navigate('searchbar')}>
+            <Pressable onPress={() => navigation.navigate('searchbar')}>
 
               <View style={{
                 alignItems: 'center',
@@ -81,7 +83,7 @@ export default function Home({ navigation }) {
                   lineHeight: 50,
                   color: '#b1b1b1',
                   fontWeight: 'bold'
-          }}>Type your search here</Text>
+                }}>Type your search here</Text>
                 <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
               </View>
             </Pressable>

@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 function Profile({ navigation }) {
@@ -147,6 +148,7 @@ function Profile({ navigation }) {
     return (
 
         <ScrollView style={{ backgroundColor: 'white' }}>
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -158,10 +160,10 @@ function Profile({ navigation }) {
             >
                 <View style={styles.centeredView}>
                     {uploading ? (
-                                                <View style={{ flexDirection: 'row', alignItems: 'center', width: '70%', backgroundColor: 'white', paddingHorizontal: 30, paddingVertical: 20, borderRadius: 10 }}>
-                                                <ActivityIndicator size="large" color="#525252" style={{ marginRight: 10 }} />
-                                                <Text style={{ color: '#525252', fontWeight: 'bold' }}>Please wait...</Text>
-                                            </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '70%', backgroundColor: 'white', paddingHorizontal: 30, paddingVertical: 20, borderRadius: 10 }}>
+                            <ActivityIndicator size="large" color="#525252" style={{ marginRight: 10 }} />
+                            <Text style={{ color: '#525252', fontWeight: 'bold' }}>Please wait...</Text>
+                        </View>
                     ) : (
                         <View style={styles.modalView}>
                             <Text style={styles.modalText}>Are you sure if You want upload new image ?</Text>
@@ -177,7 +179,7 @@ function Profile({ navigation }) {
                             >
                                 <Text style={styles.textStyle}>No</Text>
                             </Pressable>
-    
+
                         </View>
                     )
                     }
@@ -190,7 +192,7 @@ function Profile({ navigation }) {
                 opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
             }}>
 
-                <View style={{ backgroundColor: '#00aa49', borderWidth: 1, borderColor: 'red', paddingBottom: 150 }}>
+                <View style={{ backgroundColor: '#00aa49' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 10, justifyContent: 'space-between' }}>
                         <TouchableOpacity onPress={navigation.goBack}>
                             <Text style={{ color: 'white', fontSize: 20 }}>
@@ -200,53 +202,79 @@ function Profile({ navigation }) {
                         <Text style={{ color: 'white', fontSize: 16 }}>My Profile</Text>
                         <Octicons name="verified" size={20} color="white" />
                     </View>
+
+                    <View style={{ width: '100%' }}>
+                        <View style={{ alignItems: 'center', paddingVertical: 20, paddingBottom: 70 }}>
+                            <View>
+
+                                {/* <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} /> */}
+
+
+                                {/* {uploading ? 
+                            
+                            <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
+                            :
+                                <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} />
+                        } */}
+                                {data.PROFILE === "" ?
+                                    <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
+                                    :
+                                    <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} />
+                                }
+
+
+                                {/* <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} /> */}
+
+                                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: -20 }}>
+                                    <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
+                                        <Feather name="edit-2" size={15} style={{ marginRight: 1, padding: 5, backgroundColor: 'white', borderRadius: 50, color: 'gray' }} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <Text style={{ color: 'black', fontSize: 15, color: 'white', paddingTop: 10 }}>{user.NAME}</Text>
+                        </View>
+                    </View>
                 </View>
                 {/* profile image */}
                 <View style={{ marginTop: -50, backgroundColor: 'white', borderTopRightRadius: 30, borderTopLeftRadius: 30 }}>
-
-                    <View style={{ alignItems: 'center', marginTop: -50, }}>
-                        <View>
-                            {data.PROFILE === "" ?
-                                <Image style={{ borderRadius: 100, height: 120, width: 120, borderWidth: 10, borderColor: 'white' }} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
-                                :
-                                <Image style={{ borderRadius: 100, height: 120, width: 120, borderWidth: 10, borderColor: 'white' }} source={{ uri: data.PROFILE }} />
-                            }
-
-
-                            {/* <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} /> */}
-
-                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: -20 }}>
-                                <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
-                                    <Feather name="edit-2" size={15} style={{ marginRight: 1, padding: 5, backgroundColor: 'white', borderRadius: 50, color: 'gray' }} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <Text style={{ color: 'black', fontSize: 15, color: '#b3b3b3', paddingTop: 10 }}>{user.NAME}</Text>
-                    </View>
-
                     <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 20 }}>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 50 }}>USERNAME</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 50 }}>Username</Text>
                         <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user.NAME}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 70 }}>PHONE</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 70 }}>Phone</Text>
                         <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user.PHONE}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 30 }}>EMAIL ADDRESS</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 30 }}>Email Address</Text>
                         <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user.EMAIL}</Text>
                     </View>
                 </View>
 
 
 
-
-                {/* {modal ? 
-            <Text>True</Text>  
-            :  
-            <Text>false</Text>  
-
-            } */}
+                {/* <TouchableOpacity onPress={() => navigation.navigate('Your_Ads')}> */}
+                <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={['green', 'gray', 'gold']}
+                    style={{
+                        marginTop : 10,
+                        marginHorizontal : 10,
+                        backgroundColor: 'white',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 10,
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Your_Ads')}
+                        style={styles.signUpButton}
+                    >
+                        <Text>Personal ads</Text>
+                    </TouchableOpacity>
+                </LinearGradient>
+                {/* </TouchableOpacity> */}
 
 
             </Animated.View>
@@ -399,5 +427,14 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
-    }
+    },
+    signUpButton: {
+        margin: 1,
+        width: '99.40%',
+        borderRadius: 10,
+        paddingVertical: 17,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+    },
 });

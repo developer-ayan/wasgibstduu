@@ -1,16 +1,14 @@
 import React from 'react'
-import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert ,Modal , Pressable } from "react-native";
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import ImagePicker from 'react-native-image-crop-picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { create_ads } from '../../redux/actions/authAction';
 import storage from '@react-native-firebase/storage';
 import { firebase } from '@react-native-firebase/auth';
 import SelectDropdown from 'react-native-select-dropdown';
-import * as Animatable from 'react-native-animatable';
 
 export default function Ads({ navigation }) {
 
@@ -25,35 +23,30 @@ export default function Ads({ navigation }) {
   const [render, setRender] = React.useState(false)
   const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
-  // const category = ["Auto Mobiles", "Phone & Tablets", "Electronic", "Real States", "Fashion", 'Jobs', 'Services', 'Learning', 'Events']
-  const [modalVisible, setModalVisible] = React.useState(false);
+  const countries = ["Fashion", "Auto Mobiles", "Electronics", "Events", "Jobs", "Learning", "Phone & tablets", "Real States", "Services"]
+  const state = useSelector(user => user.user)
 
   const CreateAds = async () => {
-
-    if (title === '' || discription === '' || price === '' || city === '' || imageUrl === null) {
-      setModalVisible(true)
-    } else {
-      const imageUrl = await hondlet()
-      let user = {
-        category,
-        title,
-        discription,
-        price,
-        city,
-        imageUrl
-      }
-      dispatch(create_ads(user))
-      setTitle('')
-      setDiscription('')
-      setPrice('')
-      setCity('')
-      setCategory('Fashion')
-      setUri(null)
-      navigation.navigate('Home')
-
+    const imageUrl = await hondlet()
+    let user = {
+      category,
+      title,
+      discription,
+      price,
+      city,
+      imageUrl,
+      name : state.NAME
     }
-
+    dispatch(create_ads(user))
+    // setTitle('')
+    // setDiscription('')
+    // setPrice('')
+    // setCity('')
+    // setCategory('')
+    navigation.navigate('BottomNav')
   }
+
+  // console.log(category)
 
   const ImageGallery = () => {
     ImagePicker.openPicker({
@@ -68,12 +61,9 @@ export default function Ads({ navigation }) {
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // User logged in already or has just logged in.
         setId(user.uid)
-
-
       } else {
-        Alert('User Is Not LogIn')
+        Alert('User Is Not Login')
       }
     });
   })
@@ -82,13 +72,17 @@ export default function Ads({ navigation }) {
   const hondlet = async () => {
     const uploadUri = uri;
     let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+
     const extansion = fileName.split('.').pop();
     const name = fileName.split('.').slice(0, -1).join('.');
     fileName = name + Date.now() + '.' + extansion;
+
     setUploading(true);
     setTranseferred(0)
+
     const storageRef = storage().ref(`photos/${id}`)
     const task = storageRef.putFile(uploadUri)
+
     task.on('state_changed', taskSnapshot => {
       setTranseferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
@@ -97,7 +91,9 @@ export default function Ads({ navigation }) {
 
     try {
       await task;
+
       const url = await storageRef.getDownloadURL()
+
       setUploading(false)
       Alert.alert('Your Ad Has Been Upload')
       return url;
@@ -109,34 +105,12 @@ export default function Ads({ navigation }) {
 
   return (
     <ScrollView style={{ flex: 1, }}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-          {/* <Feather style={styles.modalText} name="arrow-right" size={20} color="#1d1900" /> */}
-
-            <Pressable
-              style={{  width : '80%' }}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style = {{fontSize : 15 , textAlign : 'center' , fontWeight : 'bold'}}>Required All Fields please write...</Text>
-                        <Entypo style={{fontSize : 20,textAlign : 'center' , marginTop : 10 , color : 'gold'}} name="warning" size={20} color="#1d1900" />
-
-              {/* <Text style={styles.textStyle}>Hide Modal</Text> */}
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <Animatable.View animation="bounceInUp" duration={2000} style={styles.MainView}>
+      <View style={styles.MainView}>
         {/* icon back */}
         <View>
           <View>
+
+
             <TouchableOpacity onPress={navigation.goBack}>
               <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
             </TouchableOpacity>
@@ -146,11 +120,34 @@ export default function Ads({ navigation }) {
         </View>
         <View style={styles.Categories}>
           <Text style={styles.CategoriesHeading}>CATEGORY</Text>
-          <TextInput
-            placeholder='Select a category'
-            onChangeText={(text) => setCategory(text)}
-            value={category}
-            style={styles.Input} />
+          <View style={{ backgroundColor: '#f7f7f7', paddingVertical: 5 }}>
+
+            <SelectDropdown
+              data={countries}
+              width="100%"
+              defaultButtonText='select a category'
+              // buttonStyle={{ width: '100%' }}
+              renderDropdownIcon={() => <Entypo name="chevron-down" size={20} color="#ababab" style={{ fontWeight: 'bold' }} />}
+              dropdownIconPosition='right'
+              buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
+              dropdownStyle={{ backgroundColor: '#f7f7f7' }}
+              rowTextStyle={{ color: '#ababab', fontSize: 15 }}
+              buttonStyle={{ backgroundColor: '#f7f7f7', width: '100%' }}
+              // buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
+              // dropdownStyle={{ backgroundColor: 'red', borderRadius: 10 }}
+              // rowTextStyle={{ color: 'white' }}
+              onSelect={(selectedItem, index) => {
+                setCategory(selectedItem)
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem
+              }}
+              rowTextForSelection={(item, index) => {
+                return item
+              }}
+            />
+          </View>
+
         </View>
         <View style={{ marginTop: 20 }}>
           <Text style={styles.AdTitle}>AD TITLE</Text>
@@ -209,7 +206,7 @@ export default function Ads({ navigation }) {
               color: '#b3b3b3',
               backgroundColor: "gold",
               paddingVertical: 25,
-              marginVertical: 10,
+              marginVertical: 10
             }}>
               <Text style={{ fontSize: 14, color: '#1d1900' }}>Create Ads</Text>
               <Feather name="arrow-right" size={20} color="#1d1900" />
@@ -217,7 +214,10 @@ export default function Ads({ navigation }) {
           </TouchableOpacity>
         )
         }
-      </Animatable.View >
+      </View>
+
+
+
     </ScrollView >
   )
 }
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   MainView: {
     paddingLeft: 13,
     paddingRight: 13,
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   IconView: {
     marginTop: 10
@@ -270,33 +270,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 13,
     opacity: 0.7
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: 'rgba(52, 52, 52, 0.8)'
-
-    
-  },
-  modalView: {
-    margin: 10,
-    backgroundColor: "white",
-    padding: 35,
-    borderRadius : 5,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-
-
-
-
+  }
 
 })

@@ -18,6 +18,8 @@ import { useSelector } from 'react-redux';
 export default function manageAds({ navigation }) {
   const [data, setData] = React.useState([])
   const state = useSelector(state => state.user)
+  const all = useSelector(state => state)
+  console.log("All => ",all.all_data)
 
 
   React.useEffect(() => {

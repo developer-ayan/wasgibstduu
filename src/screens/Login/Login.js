@@ -89,6 +89,7 @@ export default function Login({ navigation }) {
         password: data.password,
       }
       dispatch(sign_in(user)).then((uid) => {
+        
         navigation.navigate(`BottomNav`, { id: uid })
       }).catch((err) => {
         alert(err)
