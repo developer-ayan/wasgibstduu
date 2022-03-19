@@ -11,13 +11,14 @@ function CustomDrawer(props) {
     const navigation = useNavigation()
 
     const [data, setData] = React.useState([])
-    // const removeData = async () => {
-    //     await AsyncStorage.removeItem('userData')
-    //     auth()
-    //         .signOut()
-    //         .then(() => navigation.navigate('Login'),
-    //     )
-    // }
+    const removeData = async () => {
+        await AsyncStorage.removeItem('uid')
+        console.log('remove')
+        // auth()
+        //     .signOut()
+        //     .then(() => navigation.navigate('Login'),
+        // )
+    }
 
 
 
@@ -38,11 +39,11 @@ function CustomDrawer(props) {
             <DrawerContentScrollView {...props}>
                 <ImageBackground source={{ uri: 'https://media.istockphoto.com/photos/the-gray-and-silver-are-light-black-with-white-the-gradient-is-the-picture-id1322292759?b=1&k=20&m=1322292759&s=170667a&w=0&h=FtcK2R11RjeMUkMUWu5kxFmYR8pY-G8OLs99PnWIJpE=' }} style={{ paddingVertical: 30, paddingHorizontal: 10 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        {/* <TouchableOpacity onPress={removeData}> */}
+                        <TouchableOpacity onPress={removeData}>
 
                             <Image source={{ uri: 'https://www.pngkey.com/png/full/202-2024691_my-profile-comments-my-profile-icon-png.png' }} style={{ height: 60, width: 60, borderRadius: 40 }} />
 
-                        {/* </TouchableOpacity> */}
+                        </TouchableOpacity>
                         {/* {data.PROFILE = '' ?
                             <Image source={{ uri: 'https://www.pngkey.com/png/full/202-2024691_my-profile-comments-my-profile-icon-png.png' }} style={{ height: 60, width: 60, borderRadius: 40 }} />
                             :

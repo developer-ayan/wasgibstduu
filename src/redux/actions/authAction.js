@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function signUp(user) {
@@ -49,6 +50,7 @@ function sign_in(user) {
                         .doc(res.user.uid)
                         .onSnapshot(documentSnapshot => {
                             dispatch({ type: 'GETUSER', user: documentSnapshot.data() })
+                            // AsyncStorage.setItem('userdetail', JSON.parse(documentSnapshot.data()))
                             resolve(res.user.uid)
                         });
 

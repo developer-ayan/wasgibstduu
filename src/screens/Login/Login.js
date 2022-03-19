@@ -8,8 +8,11 @@ import { sign_in } from '../../redux/actions/authAction';
 import * as Animatable from 'react-native-animatable';
 
 import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Login({ navigation }) {
+export default function Login({ }) {
+  const navigation = useNavigation()
 
   const dispatch = useDispatch()
 
@@ -80,7 +83,7 @@ export default function Login({ navigation }) {
   }
 
 
-  const login = () => {
+  const login = async () => {
     if (data.email === '' && data.password === '') {
       alert('Please Fill Your Input')
     } else {
@@ -88,12 +91,21 @@ export default function Login({ navigation }) {
         email: data.email,
         password: data.password,
       }
-      dispatch(sign_in(user)).then((uid) => {
-        
-        navigation.navigate(`BottomNav`, { id: uid })
-      }).catch((err) => {
-        alert(err)
+      dispatch(sign_in(user)).then(async (uid) => {
+
+        // try {
+        const userDetail = JSON.stringify(uid)
+        AsyncStorage.setItem('uid', userDetail)
+        // console.log("userDetail => ",uid)
+        // } catch (e) {
+        // saving error
+        // }
+        // const check = ;
       })
+      // navigation.navigate(`BottomNav`)
+      // }).catch((err) => {
+      //   alert("My error => ", err)
+      // })
     }
   }
 
@@ -153,7 +165,7 @@ export default function Login({ navigation }) {
                 onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
                 style={{ padding: 20, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
               />
-              {data.isValidUser  ?
+              {data.isValidUser ?
                 <Entypo style={{ padding: 20, fontWeight: 'light', opacity: 0.5 }} name="email" size={20} color="#b3b3b3" />
                 :
                 <MaterialIcons style={{ padding: 20, fontWeight: 'light', opacity: 0.5 }} name="error" size={20} color="red" />

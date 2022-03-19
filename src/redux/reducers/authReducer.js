@@ -1,5 +1,5 @@
 const initial_state = {
-    user: [],
+    user: {},
     allUsers: [],
     all_data: {},
 }
