@@ -38,7 +38,7 @@ function signUp(user) {
 }
 
 
-function sign_in(user) {
+const sign_in = (user) => {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
             auth()
@@ -50,16 +50,17 @@ function sign_in(user) {
                         .doc(res.user.uid)
                         .onSnapshot(documentSnapshot => {
                             dispatch({ type: 'GETUSER', user: documentSnapshot.data() })
-                            // AsyncStorage.setItem('userdetail', JSON.parse(documentSnapshot.data()))
-                            resolve(res.user.uid)
+                            resolve(user = documentSnapshot.data())
                         });
 
                 })
                 .catch(error => {
-                    if (error.code === 'auth/operation-not-allowed') {
-                        console.log('Enable anonymous in your firebase console.');
-                        reject()
+                    if (error.code === 'auth/wrong-password') {
+                        reject(notfound = 'invalid password !')
+                    } else if (error.code === 'auth/user-not-found') {
+                        reject(notfound = 'user is not avalaible please sign up your sign')
                     }
+
                 });
         })
 
@@ -86,7 +87,7 @@ function create_ads(user) {
                         UID: LoginUID,
                         NAME: User_data.name,
                         LIKE: [""],
-                        TIME_ADS : firebase.firestore.Timestamp.fromDate(new Date())
+                        TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date())
                     })
             } else {
                 alert('User is not logged in')
@@ -96,25 +97,25 @@ function create_ads(user) {
 }
 
 function all_ads() {
-    const [save , setSave] = React.useState({});
+    const [save, setSave] = React.useState({});
     return (dispatch) => {
 
-        const get_data = async() => {
-          try {
-              const userDetail = await AsyncStorage.getItem('userData')
-              const check = JSON.parse(userDetail);
-              
-              check != {} ?  setSave(check) : null;     
-              dispatch({ type: 'DATA', data : check })
-          } catch (e) {
-              // error reading value
-              console.log(e);
-          }
-      }
-      
-      React.useEffect(() => {
-          get_data()
-      }, [])
+        const get_data = async () => {
+            try {
+                const userDetail = await AsyncStorage.getItem('userData')
+                const check = JSON.parse(userDetail);
+
+                check != {} ? setSave(check) : null;
+                dispatch({ type: 'DATA', data: check })
+            } catch (e) {
+                // error reading value
+                console.log(e);
+            }
+        }
+
+        React.useEffect(() => {
+            get_data()
+        }, [])
     }
 }
 export {

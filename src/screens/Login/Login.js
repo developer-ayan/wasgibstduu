@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal, StyleSheet, Pressable } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({ }) {
   const navigation = useNavigation()
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [error, setError] = React.useState();
 
   const dispatch = useDispatch()
 
@@ -91,23 +93,26 @@ export default function Login({ }) {
         email: data.email,
         password: data.password,
       }
-      dispatch(sign_in(user)).then(async (uid) => {
+      dispatch(sign_in(user))
+        .then(async (uid) => {
+          AsyncStorage.setItem('uid', JSON.stringify(uid), (err) => {
+            if (err) {
+              console.log("an error");
+            }
+            console.log("success");
+          }).catch((err) => {
+            console.log("error is: " + err);
+          });
+        })
 
-        // try {
-        const userDetail = JSON.stringify(uid)
-        AsyncStorage.setItem('uid', userDetail)
-        // console.log("userDetail => ",uid)
-        // } catch (e) {
-        // saving error
-        // }
-        // const check = ;
-      })
+        .catch((error) => console.log("error => ",error))
       // navigation.navigate(`BottomNav`)
-      // }).catch((err) => {
-      //   alert("My error => ", err)
       // })
     }
+
   }
+
+  console.log("error => ", error)
 
 
 
@@ -115,6 +120,35 @@ export default function Login({ }) {
     <ScrollView style={{
       flex: 1,
     }}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' , paddingHorizontal : 10 , paddingVertical : 10 }}>
+              <Text></Text>
+              <TouchableOpacity>
+              <Entypo name='circle-with-cross' size={30} style = {{padding : 5 , color : 'red'}} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+              <Entypo name='circle-with-cross' size={150} style = {{padding : 10 , color : 'red'}} />
+            </View>
+
+            <View style={{ textAlign : 'center',width: '100%' }}>
+              <Text style = {{color : 'gray' , padding : 20 , fontWeight : 'bold' , fontSize : 25}}>{error}</Text>
+            </View>
+
+          </View>
+        </View>
+      </Modal>
       <View style={{
         backgroundColor: '#00aa49',
         paddingLeft: 13,
@@ -275,3 +309,63 @@ export default function Login({ }) {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    width: '100%',
+  },
+  modalView: {
+    width: 250,
+    marginHorizontal: 50,
+    borderColor: 'red',
+    borderWidth: 1,
+    backgroundColor: "white",
+    borderRadius: 5,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    width: '100%',
+    marginTop: 20
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+    width: 200
+  },
+  skip: {
+    backgroundColor: "#FF6347",
+    width: 200
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  signUpButton: {
+    margin: 1,
+    width: '99.40%',
+    borderRadius: 10,
+    paddingVertical: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+})

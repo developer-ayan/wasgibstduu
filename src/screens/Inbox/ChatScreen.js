@@ -9,6 +9,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import Feather from 'react-native-vector-icons/Feather';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { firebase } from '@react-native-firebase/auth';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function ChatScreen({ route, navigation }) {
 
@@ -17,16 +20,23 @@ export default function ChatScreen({ route, navigation }) {
     const [message, setMessage] = React.useState('')
     const [data, setData] = React.useState([])
     const [uri, setUri] = React.useState()
-    console.log("USER => ", e)
+    const [userData, setUserData] = React.useState({})
 
-    React.useEffect(() => {
-        const user = current_user
-        const chat_user = e
-        const merge = merge_uid(user.USER_ID, chat_user.USER_ID)
-        get_messages(merge)
-    }, [])
+    const getData = async () => {
+        const value = await AsyncStorage.getItem('uid');
+        setUserData(JSON?.parse(value))
+    }
+    
+    useFocusEffect( 
+        React.useCallback(() => {
+            getData()
+            const user = userData?.USER_ID
+            const chat_user = e
+            const merge = merge_uid(user, e.USER_ID)
+            get_messages(merge)
+        }, [])
 
-
+    )
 
     const merge_uid = (uid1, uid2) => {
         if (uid1 < uid2) {
@@ -48,13 +58,15 @@ export default function ChatScreen({ route, navigation }) {
         if (message === '') {
             alert('please Enter your msg')
         } else {
-            const merge = merge_uid(current_user.USER_ID, e.USER_ID)
+            const merge = merge_uid(userData?.USER_ID, e?.USER_ID)
             firestore()
                 .collection(`${merge}`)
                 .add({
                     msg: message,
-                    name: current_user.NAME,
-                    uid: current_user.USER_ID
+                    name: userData?.NAME,
+                    uid: userData?.USER_ID,
+                    date: new Date().toUTCString()
+
                 })
             setMessage('')
         }
@@ -111,20 +123,20 @@ export default function ChatScreen({ route, navigation }) {
             }}>
                 {
                     data.map((e, v) => {
-                        const uid = e.uid === current_user.USER_ID
+                        const uid = e.uid === userData?.USER_ID
                         return (
                             <View key={v} style={{
                                 width: '100%',
                                 flexDirection: 'row',
                                 justifyContent: uid ? 'flex-end' : 'flex-start',
-                                alignItems : 'center'
-                                
+                                alignItems: 'center'
+
                             }}>
 
-                                {uid ? null :           
-                                     <Image source={{ uri: chat_user_profile === "" ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : chat_user_profile }} style={{ height: 40, width: 40, borderRadius: 100 , marginLeft : 5}} />
-                                     
-                                    }
+                                {uid ? null :
+                                    <Image source={{ uri: chat_user_profile === "" ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : chat_user_profile }} style={{ height: 40, width: 40, borderRadius: 100, marginLeft: 5 }} />
+
+                                }
                                 <Text style={{
                                     width: '75%',
                                     marginVertical: 5,

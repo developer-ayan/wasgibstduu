@@ -5,7 +5,7 @@ import LoginStack from './src/comonents/Stack/LoginStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
-  const [save, setSave] = React.useState(null);
+  const [save, setSave] = React.useState({});
 
 
 
@@ -13,26 +13,24 @@ export default function App() {
     const get_data = async () => {
 
       try {
-        const userDetail = await AsyncStorage.getItem('uid')
-        const check = JSON.stringify(userDetail);
-        console.log("My ", check)
-        setSave(check)
-        // console.log("DATA => ", check)
-      } catch (e) {
-        // error reading value
-        console.log(e);
-      }
+        const value = await AsyncStorage.getItem('uid');
+        if (value !== 'null') {
+            // We have data!!
+            setSave(JSON.parse(value))
+        }
+    } catch (error) {
+        // Error retrieving data
+    }
     }
     get_data()
   }, [save])
-  console.log("Check => ", save)
 
   return (
     <NavigationContainer>
-      {save === '' || save === 'null' ?
-        <LoginStack />
-        :
+      {save?.CONFIRM_PASSWORD ?
         <MyStack />
+        : 
+        <LoginStack />
       }
     </NavigationContainer>
   );
