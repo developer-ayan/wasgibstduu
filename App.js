@@ -9,21 +9,21 @@ export default function App() {
 
 
 
-  React.useEffect(() => {
-    const get_data = async () => {
+  const get_data = async () => {
 
-      try {
-        const value = await AsyncStorage.getItem('uid');
-        if (value !== 'null') {
-            // We have data!!
-            setSave(JSON.parse(value))
-        }
-    } catch (error) {
-        // Error retrieving data
-    }
-    }
+    try {
+      const value = await AsyncStorage.getItem('uid');
+      if (value !== 'null') {
+          // We have data!!
+          setSave(JSON.parse(value))
+      }
+  } catch (error) {
+      // Error retrieving data
+  }
+  }
+  React.useEffect(() => {
     get_data()
-  }, [save])
+  }, [get_data])
 
   return (
     <NavigationContainer>

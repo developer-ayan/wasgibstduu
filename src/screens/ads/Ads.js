@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +9,7 @@ import { create_ads } from '../../redux/actions/authAction';
 import storage from '@react-native-firebase/storage';
 import { firebase } from '@react-native-firebase/auth';
 import SelectDropdown from 'react-native-select-dropdown';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Ads({ navigation }) {
 
@@ -24,7 +25,17 @@ export default function Ads({ navigation }) {
   const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
   const countries = ["Fashion", "Auto Mobiles", "Electronics", "Events", "Jobs", "Learning", "Phone & tablets", "Real States", "Services"]
-  const state = useSelector(user => user.user)
+  const [state , setState] = useState({})
+
+  const getData = async () => {
+    const value = await AsyncStorage.getItem('uid');
+    setState(JSON?.parse(value))
+}
+
+    React.useEffect(() => {
+      getData()
+    }, [])
+
 
   const CreateAds = async () => {
     const imageUrl = await hondlet()

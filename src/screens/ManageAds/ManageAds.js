@@ -37,7 +37,7 @@ export default function manageAds({ navigation }) {
       backgroundColor: '#ffffff',
     }}>
 
-      <View style={{ paddingHorizontal: 13 }}>
+      <View style={{ paddingHorizontal: 13}}>
 
         <View>
           {/* icon back */}
@@ -59,9 +59,11 @@ export default function manageAds({ navigation }) {
             {/* empty  */}
 
             <View></View>
-            <View>
-              <Text style={{ color: 'black', fontSize: 20 }}>No Have Your Stared Ads</Text>
-              <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Go To See Ads And get in stared Store</Text>
+            <View style = {{flexDirection : 'row' , justifyContent: 'center', alignItems : 'center'}}>
+              <View>
+              <Text style={{ color: 'black', fontSize: 20 , marginTop : 220 }}>No Have Your Stared Ads</Text>
+              {/* <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Go To See Ads And get in stared Store</Text> */}
+              </View>
             </View>
 
             {/* empty  */}
@@ -74,7 +76,7 @@ export default function manageAds({ navigation }) {
         data.map((item, ind) => {
           console.log("data => ", item)
           return (
-            <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
+            <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 , borderWidth : 50 , borderColor : 'blue' }}>
               <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
                 {
                   IMAGE: item.IMAGE,

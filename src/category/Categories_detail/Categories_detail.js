@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, Switch, Pressable, Linking } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -6,13 +6,21 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID , LIKE } = route.params;
-    const user = useSelector(state => state.user)
+    const [like, setLike] = React.useState(0)
+    const [show, setshow] = React.useState(false)
     const [e, setE] = React.useState([])
+    const [user , setUser] = useState({})
+
+    const getData = async () => {
+        const value = await AsyncStorage.getItem('uid');
+        setUser(JSON?.parse(value))
+    }
 
     React.useEffect(() => {
         firestore().collection('Users')
@@ -20,10 +28,9 @@ export default function Categories_detail({ route, navigation }) {
             .onSnapshot(documentSnapshot => {
                 setE(documentSnapshot.data())
             });
+            getData()
     }, [])
 
-    const [like, setLike] = React.useState(0)
-    const [show, setshow] = React.useState(false)
     const toggle = () => {
         setshow(!show)
     }

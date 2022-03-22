@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import { get_all_users, get_messages, send_message } from '../../redux/actions/authAction';
 import firestore from '@react-native-firebase/firestore'
@@ -49,11 +49,13 @@ export default function ChatScreen({ route, navigation }) {
     const get_messages = (uid) => {
         firestore()
             .collection(uid)
+            .orderBy('date')
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
                 console.log(documentSnapshot.docs.map(e => e.data().date));
             });
     }
+  
 
     const send_message = () => {
         if (message === '') {
@@ -102,6 +104,7 @@ export default function ChatScreen({ route, navigation }) {
         });
     }
 
+
     return (
         // <ScrollView>
 
@@ -136,7 +139,6 @@ export default function ChatScreen({ route, navigation }) {
 
                                 {uid ? null :
                                     <Image source={{ uri: chat_user_profile === "" ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : chat_user_profile }} style={{ height: 40, width: 40, borderRadius: 100, marginLeft: 5 }} />
-
                                 }
                                 <Text style={{
                                     width: '75%',
