@@ -51,6 +51,7 @@ export default function ChatScreen({ route, navigation }) {
             .collection(uid)
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
+                console.log(documentSnapshot.docs.map(e => e.data().date));
             });
     }
 
