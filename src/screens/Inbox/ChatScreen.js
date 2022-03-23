@@ -34,7 +34,7 @@ export default function ChatScreen({ route, navigation }) {
             const chat_user = e
             const merge = merge_uid(user, e.USER_ID)
             get_messages(merge)
-        }, [])
+        }, [data])
 
     )
 
@@ -52,9 +52,9 @@ export default function ChatScreen({ route, navigation }) {
             .orderBy('date')
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
-                console.log(documentSnapshot.docs.map(e => e.data().date));
             });
     }
+
   
 
     const send_message = () => {

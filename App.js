@@ -23,7 +23,7 @@ export default function App() {
   }
   React.useEffect(() => {
     get_data()
-  }, [get_data])
+  }, [get_data , save])
 
   return (
     <NavigationContainer>

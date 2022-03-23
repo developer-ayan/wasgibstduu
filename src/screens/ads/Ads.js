@@ -10,6 +10,7 @@ import storage from '@react-native-firebase/storage';
 import { firebase } from '@react-native-firebase/auth';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Ads({ navigation }) {
 
@@ -25,16 +26,18 @@ export default function Ads({ navigation }) {
   const [transeferred, setTranseferred] = React.useState(0)
   const dispatch = useDispatch()
   const countries = ["Fashion", "Auto Mobiles", "Electronics", "Events", "Jobs", "Learning", "Phone & tablets", "Real States", "Services"]
-  const [state , setState] = useState({})
+  const [state, setState] = useState({})
 
   const getData = async () => {
     const value = await AsyncStorage.getItem('uid');
     setState(JSON?.parse(value))
-}
+  }
 
-    React.useEffect(() => {
-      getData()
-    }, [])
+  React.useEffect(() => {
+    getData()
+  }, [])
+
+
 
 
   const CreateAds = async () => {
@@ -46,7 +49,8 @@ export default function Ads({ navigation }) {
       price,
       city,
       imageUrl,
-      name : state.NAME
+      name: state.NAME,
+      UID: state.USER_ID
     }
     dispatch(create_ads(user))
     // setTitle('')
@@ -54,7 +58,7 @@ export default function Ads({ navigation }) {
     // setPrice('')
     // setCity('')
     // setCategory('')
-    navigation.navigate('BottomNav')
+    navigation.navigate('Home')
   }
 
   // console.log(category)
@@ -141,9 +145,11 @@ export default function Ads({ navigation }) {
               renderDropdownIcon={() => <Entypo name="chevron-down" size={20} color="#ababab" style={{ fontWeight: 'bold' }} />}
               dropdownIconPosition='right'
               buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
-              dropdownStyle={{ backgroundColor: '#f7f7f7' }}
-              rowTextStyle={{ color: '#ababab', fontSize: 15 }}
+              dropdownStyle={{ backgroundColor: 'white', height: 200 }}
+              rowTextStyle={{ color: '#ababab', fontSize: 15, padding: 10, textAlign: 'left', }}
               buttonStyle={{ backgroundColor: '#f7f7f7', width: '100%' }}
+              rowStyle={{ backgroundColor: 'white' }}
+
               // buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
               // dropdownStyle={{ backgroundColor: 'red', borderRadius: 10 }}
               // rowTextStyle={{ color: 'white' }}
@@ -172,6 +178,7 @@ export default function Ads({ navigation }) {
           <TextInput
             onChangeText={(text) => setDiscription(text)}
             value={discription}
+            multiline={true}
             style={styles.Input} />
         </View>
         <View style={{ marginTop: 20 }}>

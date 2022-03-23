@@ -5,10 +5,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_users } from '../../redux/actions/authAction';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import database from '@react-native-firebase/database'
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Inbox() {
     const navigation = useNavigation()
@@ -16,25 +17,31 @@ export default function Inbox() {
     const [chats, setChats] = React.useState([])
     const [msg, setMsg] = React.useState([])
     const [allResultsVisible, setAllResultsVisible] = React.useState(false);
+    const [user, setUser] = React.useState({})
 
 
-    const user = useSelector(state => state.user)
-    const dispatch = useDispatch()
+    
+  const getData = async () => {
+    const value = await AsyncStorage.getItem('uid');
+    setUser(JSON?.parse(value))
+  }
 
-    React.useEffect(() => {
+  const string = 'P6QvoVpboaMwluKo7dIU5gMCwy73ZUQJ8p1CkTMCipkdHRaCUDJDMff2'
+  console.log(string.includes(user.USER_ID))
+    // const dispatch = useDispatch()
+    useFocusEffect(
+
+        React.useCallback(() => {
+        getData()
         firestore()
-            .collection('Users')
-            .onSnapshot(documentSnapshot => {
-                setData(documentSnapshot.docs.map(e => e.data()));
-            });
+        .collection('P6QvoVpboaMwluKo7dIU5gMCwy73ZUQJ8p1CkTMCipkdHRaCUDJDMff2')
+        .onSnapshot(documentSnapshot => {
+            setMsg(documentSnapshot.docs.map(e => e.data()));
+                });
+        }, [])
+    )
+    console.log("YASER => ",user)
 
-
-        firestore()
-            .collection('P6QvoVpboaMwluKo7dIU5gMCwy73ZUQJ8p1CkTMCipkdHRaCUDJDMff2')
-            .onSnapshot(documentSnapshot => {
-                setMsg(documentSnapshot.docs.map(e => e.data()));
-            });
-    }, [])
 
     // const lastMsg = msg.pop().msg;
 

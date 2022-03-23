@@ -7,29 +7,31 @@ import Feather from 'react-native-vector-icons/Feather';
 import firestore from '@react-native-firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Categories_detail({ route, navigation }) {
-    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID , LIKE } = route.params;
+    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID, LIKE } = route.params;
+    console.log(UID)
     const [like, setLike] = React.useState(0)
     const [show, setshow] = React.useState(false)
-    const [e, setE] = React.useState([])
-    const [user , setUser] = useState({})
+    const [e, setE] = useState({})
+    const [user, setUser] = useState({})
 
     const getData = async () => {
         const value = await AsyncStorage.getItem('uid');
+        console.log("value => ", e)
         setUser(JSON?.parse(value))
     }
-
-    React.useEffect(() => {
-        firestore().collection('Users')
-            .doc(UID)
-            .onSnapshot(documentSnapshot => {
-                setE(documentSnapshot.data())
-            });
+    useFocusEffect(
+        React.useCallback(() => {
+            firestore().collection('Users')
+                .doc(UID)
+                .onSnapshot(documentSnapshot => {
+                    setE(documentSnapshot.data())
+                });
             getData()
-    }, [])
+        }, [])
+    )
 
     const toggle = () => {
         setshow(!show)
@@ -43,8 +45,6 @@ export default function Categories_detail({ route, navigation }) {
         setLike(like - 1)
     }
 
-    console.log(LIKE)
-
     return (
         <ScrollView style={{ backgroundColor: 'white' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginHorizontal: 10 }}>
@@ -55,27 +55,6 @@ export default function Categories_detail({ route, navigation }) {
                         <Feather name="arrow-left" size={25} color="black" />
                     </Text>
 
-                </TouchableOpacity>
-                <TouchableOpacity onPress={toggle}>
-                    <Text style={{ marginVertical: 15 }}>
-                        {/* {show ?
-                            // <TouchableOpacity onPress={() => console.log('open')}>
-                            (
-
-                          
-                                 <AntDesign name="hearto" size={25} color="red" />
-                            // </TouchableOpacity>
-                            :
-                            // <TouchableOpacity onPress={() => console.log('Close')}>
-
-                            (console.log('minus'), <AntDesign name="heart" size={25} color="red" />)
-                            // console.log()
-                            // </TouchableOpacity>
-                        } */}
-
-
-                    </Text>
-                    
                 </TouchableOpacity>
 
             </View>
@@ -223,7 +202,6 @@ export default function Categories_detail({ route, navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate('chatscreen', {
                             e,
                             current_user: user,
-                            profile: e.PROFILE
                         })}>
                             <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 16, color: 'black' }}>Send Message</Text>

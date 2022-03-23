@@ -70,6 +70,7 @@ export default function Fashion({ navigation }) {
           </View>
           :
           data.map((item, ind) => {
+            console.log(item.UID)
             return (
               <View key={ind} style={styles.main_view_map}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
@@ -84,7 +85,7 @@ export default function Fashion({ navigation }) {
                     LIKE: item.LIKE,
                   }
                 )}>
-                  <Animatable.View duration={1000} animation="bounceInLeft" style={styles.Animatable}>
+                  <Animatable.View style={styles.Animatable}>
                     <View style={styles.Animatable_child}>
                       <View style={styles.Animatable_child_to_child}>
                         <Image

@@ -70,9 +70,6 @@ const sign_in = (user) => {
 function create_ads(user) {
     return (dispatch) => {
         const User_data = user
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                const LoginUID = user.uid;
                 firestore()
                     .collection(`Category`)
                     .doc('Your all ads there !')
@@ -84,15 +81,12 @@ function create_ads(user) {
                         PRICE: User_data.price,
                         CITY: User_data.city,
                         ADS_IMAGES: User_data.imageUrl,
-                        UID: LoginUID,
+                        UID: User_data.UID,
                         NAME: User_data.name,
                         LIKE: [""],
                         TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date())
                     })
-            } else {
-                alert('User is not logged in')
-            }
-        });
+            
     }
 }
 

@@ -10,7 +10,8 @@ import firestore from '@react-native-firebase/firestore';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native';
 
 function Profile({ navigation }) {
     // const [image, setImage] = React.useState(null)
@@ -24,15 +25,24 @@ function Profile({ navigation }) {
     const [modalVisible, setModalVisible] = React.useState(false);
 
     const [transeferred, setTranseferred] = React.useState(0)
-    const user = useSelector(state => state.user)
+    const [user, setUser] = React.useState({})
+
+    const getData = async () => {
+        const value = await AsyncStorage.getItem('uid');
+        setUser(JSON?.parse(value))
+    }
+        React.useEffect(() => {
+            getData()
+            firestore()
+                .collection('Users')
+                .doc(user.USER_ID)
+                .onSnapshot((e) => {
+                    setData(e.data())
+                })
+        }, [])
 
     React.useEffect(() => {
-        firestore()
-            .collection('Users')
-            .doc(user.USER_ID)
-            .onSnapshot((e) => {
-                setData(e.data())
-            })
+
         // submitPost()
     }, [])
 
@@ -103,7 +113,7 @@ function Profile({ navigation }) {
         setProfileImage(imageUrl)
         firestore()
             .collection('Users')
-            .doc(user.USER_ID)
+            .doc(user?.USER_ID)
             .update({
                 PROFILE: imageUrl,
             })
@@ -206,20 +216,10 @@ function Profile({ navigation }) {
                     <View style={{ width: '100%' }}>
                         <View style={{ alignItems: 'center', paddingVertical: 20, paddingBottom: 70 }}>
                             <View>
-
-                                {/* <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} /> */}
-
-
-                                {/* {uploading ? 
-                            
-                            <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
-                            :
-                                <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} />
-                        } */}
-                                {data.PROFILE === "" ?
+                                {user?.PROFILE === "" && user?.PROFILE === undefined ?
                                     <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
                                     :
-                                    <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data.PROFILE }} />
+                                    <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: user?.PROFILE }} />
                                 }
 
 
@@ -231,7 +231,7 @@ function Profile({ navigation }) {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            <Text style={{ color: 'black', fontSize: 15, color: 'white', paddingTop: 10 }}>{user.NAME}</Text>
+                            <Text style={{ color: 'black', fontSize: 15, color: 'white', paddingTop: 10 }}>{user?.NAME}</Text>
                         </View>
                     </View>
                 </View>
@@ -239,15 +239,15 @@ function Profile({ navigation }) {
                 <View style={{ marginTop: -50, backgroundColor: 'white', borderTopRightRadius: 30, borderTopLeftRadius: 30 }}>
                     <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 20 }}>
                         <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 50 }}>Username</Text>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user.NAME}</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user?.NAME}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
                         <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 70 }}>Phone</Text>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user.PHONE}</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user?.PHONE}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
                         <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 30 }}>Email Address</Text>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user.EMAIL}</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user?.EMAIL}</Text>
                     </View>
                 </View>
 
@@ -259,8 +259,8 @@ function Profile({ navigation }) {
                     end={{ x: 1, y: 1 }}
                     colors={['green', 'gray', 'gold']}
                     style={{
-                        marginTop : 10,
-                        marginHorizontal : 10,
+                        marginTop: 10,
+                        marginHorizontal: 10,
                         backgroundColor: 'white',
                         alignItems: 'center',
                         justifyContent: 'center',
