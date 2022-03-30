@@ -17,12 +17,11 @@ import { useSelector } from 'react-redux';
 export default function BottomNav() {
 
     const state = useSelector(state => state.user)
-    console.log("state => ",state)
+    console.log("state => ", state)
     React.useEffect(() => {
         try {
             const userDetail = JSON.stringify(state)
             AsyncStorage.setItem('userData', userDetail)
-            // console.log("userDetail => ",userDetail)
         } catch (e) {
             // saving error
         }
@@ -85,6 +84,18 @@ export default function BottomNav() {
                     ),
                 }}
             />
+
+            {/* <Tab.Screen
+                name="Profile"
+                component={Profile}
+                
+                options={{
+                    tabBarLabel: <Entypo name="dot-single" size={15} />,
+                    tabBarIcon: ({ color }) => (
+                        <AntDesign name="user" color={color} size={23} />
+                    ),
+                }}
+            /> */}
 
         </Tab.Navigator>
 

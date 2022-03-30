@@ -13,7 +13,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '@react-native-firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
 
+
 export default function ChatScreen({ route, navigation }) {
+
 
     const { e, current_user } = route.params
     const chat_user_profile = e.PROFILE
@@ -27,16 +29,14 @@ export default function ChatScreen({ route, navigation }) {
         setUserData(JSON?.parse(value))
     }
     
-    useFocusEffect( 
-        React.useCallback(() => {
-            getData()
+        React.useEffect(() => {
             const user = userData?.USER_ID
             const chat_user = e
             const merge = merge_uid(user, e.USER_ID)
             get_messages(merge)
+            getData()
         }, [data])
 
-    )
 
     const merge_uid = (uid1, uid2) => {
         if (uid1 < uid2) {

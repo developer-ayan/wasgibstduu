@@ -8,11 +8,13 @@ export default function Premium({ navigation }) {
     const [data, setData] = React.useState([])
     React.useEffect(() => {
         firestore()
-            .collection('Learning')
-            .onSnapshot(documentSnapshot => {
-                setData(documentSnapshot.docs.map(e => e.data()));
-            });
-    }, [])
+          .collection('Category')
+          .doc('Your all ads there !')
+          .collection('Learning')
+          .onSnapshot(documentSnapshot => {
+            setData(documentSnapshot.docs.map(e => e.data()));
+          });
+      }, [])
     // console.log("DATA => ", 'true' : 'false')
     return (
 
@@ -43,7 +45,6 @@ export default function Premium({ navigation }) {
                                         backgroundColor: 'white',
                                         width: 120,
                                         marginRight: 20,
-                                        marginTop: 20,
                                         borderTopRightRadius: 5, borderTopLeftRadius: 5
                                     }}>
 

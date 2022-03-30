@@ -14,22 +14,22 @@ export default function App() {
     try {
       const value = await AsyncStorage.getItem('uid');
       if (value !== 'null') {
-          // We have data!!
-          setSave(JSON.parse(value))
+        // We have data!!
+        setSave(JSON.parse(value))
       }
-  } catch (error) {
+    } catch (error) {
       // Error retrieving data
-  }
+    }
   }
   React.useEffect(() => {
     get_data()
-  }, [get_data , save])
+  }, [get_data, save])
 
   return (
     <NavigationContainer>
       {save?.CONFIRM_PASSWORD ?
         <MyStack />
-        : 
+        :
         <LoginStack />
       }
     </NavigationContainer>

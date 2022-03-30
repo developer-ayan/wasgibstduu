@@ -35,30 +35,43 @@ export default function Ads({ navigation }) {
 
   React.useEffect(() => {
     getData()
-  }, [])
-
-
-
+  }, [state.NAME ])
 
   const CreateAds = async () => {
-    const imageUrl = await hondlet()
-    let user = {
-      category,
-      title,
-      discription,
-      price,
-      city,
-      imageUrl,
-      name: state.NAME,
-      UID: state.USER_ID
+
+    if (category === '') {
+      alert('required category')
+    } else if (title === '') {
+      alert('required title')
+    } else if (discription === '') {
+      alert('required title')
     }
-    dispatch(create_ads(user))
-    // setTitle('')
-    // setDiscription('')
-    // setPrice('')
-    // setCity('')
-    // setCategory('')
-    navigation.navigate('Home')
+    else if (price === '') {
+      alert('required title')
+    }
+    else if (city === '') {
+      alert('required title')
+    }else {
+      const imageUrl = await hondlet()
+      let user = {
+        category,
+        title,
+        discription,
+        price,
+        city,
+        imageUrl,
+        name: state.NAME,
+        UID: state.USER_ID
+      }
+      dispatch(create_ads(user))
+      navigation.navigate('Home')
+      setTitle('')
+      setDiscription('')
+      setPrice('')
+      setCity('')
+      setCategory('')
+    }
+
   }
 
   // console.log(category)
@@ -124,8 +137,6 @@ export default function Ads({ navigation }) {
         {/* icon back */}
         <View>
           <View>
-
-
             <TouchableOpacity onPress={navigation.goBack}>
               <Text style={styles.IconView}><Feather name='arrow-left' style={styles.BackIcon} size={25} /></Text>
             </TouchableOpacity>

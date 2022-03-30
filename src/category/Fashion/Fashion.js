@@ -19,7 +19,7 @@ import {
   Colors,
   Sizes
 } from '../../comonents/Constant/Constant';
-
+import { ActivityIndicator } from 'react-native-paper';
 
 export default function Fashion({ navigation }) {
 
@@ -30,7 +30,6 @@ export default function Fashion({ navigation }) {
     setshow(!show)
   }
 
-  const user = useSelector(state => state.user)
 
   React.useEffect(() => {
     firestore()
@@ -43,12 +42,18 @@ export default function Fashion({ navigation }) {
       });
   }, [])
 
+
+
   // console.log("DATA => ",data)
 
-  return (
+  return  (
+    
     <ScrollView style={styles.ScrollView}>
-
-      <TouchableOpacity onPress={navigation.goBack}>
+      {loading === true ? 
+      <ActivityIndicator  color='black' size={30} style = {{  marginTop : '95%'}}/>
+     : 
+     <View>
+<TouchableOpacity onPress={navigation.goBack}>
         <Text style={styles.Arrow_left}>
           <Feather name="arrow-left" size={25} color="black" />
         </Text>
@@ -59,9 +64,7 @@ export default function Fashion({ navigation }) {
         <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
       </View>
 
-      {loading ?
-        <Loader />
-        :
+      {
         data.length === 0 ?
           <View style={styles.View_data_length}>
 
@@ -126,6 +129,10 @@ export default function Fashion({ navigation }) {
             )
           })
       }
+     </View>
+    }
+
+      
 
 
     </ScrollView>
@@ -134,8 +141,9 @@ export default function Fashion({ navigation }) {
 
 const styles = StyleSheet.create({
   ScrollView: {
+    flex : 1,
     backgroundColor: Colors.white,
-    paddingHorizontal: Sizes.thirteen
+    paddingHorizontal: Sizes.thirteen,
   },
   Arrow_left: {
     color: Colors.white,

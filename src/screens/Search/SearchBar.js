@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, TextInput, Image, Text, ScrollView, TouchableOpacity, FlatList, Pressable } from 'react-native'
+import React, { useState } from 'react'
+import { View, TextInput, Image, Text, ScrollView, TouchableOpacity, Modal, Alert, Pressable, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -14,13 +14,17 @@ export default function SearchBar({ navigation }) {
   const [loading, setLoading] = React.useState(true)
   const [master, setMaster] = React.useState([])
   const [search, setSearch] = React.useState('')
-  const user = useSelector(state => state.user)
+  const [price, setPrice] = React.useState('')
+  const [city, setCity] = React.useState('')
+  const [category, setCategory] = React.useState('')
+  const [modalVisible, setModalVisible] = useState(false);
+
 
 
 
   const [show, setshow] = React.useState(false)
   const toggle = () => {
-      setshow(!show)
+    setshow(!show)
   }
 
   React.useEffect(() => {
@@ -34,9 +38,22 @@ export default function SearchBar({ navigation }) {
         setLoading(false)
       });
   }, [])
+
+  console.log("CATEGORY => ", category)
+  console.log("CATEGORY => ", city)
+
+
+  const UltraFilter = () => {
+    const newData = master.filter((item) => {
+      return item.PRICE == '1200' || item.CITY == city || item.CATEGORY == category;
+    })
+    console.log("newData => ", newData)
+  }
+
   const searchFilter = (text) => {
     if (text) {
       const newData = master.filter((item) => {
+        console.log("item => ", item)
         const ItemData = item.TITLE ? item.TITLE.toUpperCase()
           : ''.toUpperCase()
         const textData = text.toUpperCase()
@@ -50,10 +67,75 @@ export default function SearchBar({ navigation }) {
     }
   }
 
+
+
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
 
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
 
+          <View>
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 22, marginBottom: 20 }}>Select your category</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '100%', backgroundColor: 'white', justifyContent: 'space-around' }}>
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Auto Mobiles')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Auto mobiles</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Phone & tablets')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Phone / tablets</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Electronics')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Electronics</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Real States')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Real States</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Fashion')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Fashion</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Jobs')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Jobs</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Services')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Services</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('learning')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>learning</Text>
+            </Pressable>
+
+            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Events')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Events</Text>
+            </Pressable>
+          </View>
+
+
+        </View>
+      </Modal>
+
+      {/* <Pressable
+        style={[styles.button, styles.buttonClose]}
+        onPress={() => setModalVisible(!modalVisible)}
+      >
+        <Text style={styles.textStyle}>Hide Modal</Text>
+      </Pressable> */}
       {/* Search Bar */}
 
       <View style={{ height: 100, backgroundColor: '#01a949' }}>
@@ -64,6 +146,7 @@ export default function SearchBar({ navigation }) {
           marginTop: 10,
           height: 80,
         }}>
+
 
           <FontAwesome style={{ backgroundColor: '#ffffff', borderTopLeftRadius: 5, borderBottomLeftRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="search" size={25} />
           <TextInput style={{
@@ -78,14 +161,29 @@ export default function SearchBar({ navigation }) {
             value={search}
             onChangeText={(text) => searchFilter(text)}
             placeholder='Type your search here' />
-          <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
+          <Pressable onPress={() => setModalVisible(true)}>
+            <Ionicons style={{ backgroundColor: '#ffffff', borderTopRightRadius: 5, borderBottomRightRadius: 5, padding: 10, height: 50, color: '#b1b1b1' }} name="ios-options-outline" size={25} />
+          </Pressable>
         </View>
       </View>
 
-      <View style={{ padding: 10, marginHorizontal: 10, marginTop: 15, backgroundColor: '#FAFAFA' }}>
-        <Text style={{ paddingHorizontal: 13, textAlign: 'center', fontSize: 20, fontWeight: 'bold', color: '#01a949' }}>All Categories ads is here ...</Text>
-      </View>
-      {/* <Slider /> */}
+
+      <TouchableOpacity onPress={UltraFilter}>
+        <Text>ultra filter</Text>
+      </TouchableOpacity>
+
+
+      <TouchableOpacity onPress={() => setCity('Karachi')}>
+        <Text>karachi</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => setCategory('Fashion')}>
+        <Text>Fashion</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => setCategory('Learning')}>
+        <Text>Learning</Text>
+      </TouchableOpacity>
 
 
 
@@ -120,7 +218,7 @@ export default function SearchBar({ navigation }) {
                       />
                     </View>
                     <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', lineHeihgt: 80 }}>
-                      <Text style={{ color: '#b3b3b3', fontSize: 10 }}>ayan ahmed</Text>
+                      <Text style={{ color: '#b3b3b3', fontSize: 10 }}>{item.NAME}</Text>
                       <Text numberOfLines={2} style={{ color: '#494949', fontSize: 12 }}>{item.TITLE}</Text>
                       <Text style={{ color: 'green', fontSize: 12 }}>{item.PRICE}</Text>
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -144,7 +242,7 @@ export default function SearchBar({ navigation }) {
                           <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
                         </Pressable>
                       </View>
-{/* <TouchableOpacity onPress = {toggle}>
+                      {/* <TouchableOpacity onPress = {toggle}>
   {show ? 
       
       <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
@@ -176,4 +274,11 @@ export default function SearchBar({ navigation }) {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});
 

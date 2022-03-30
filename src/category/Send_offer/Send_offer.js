@@ -21,29 +21,35 @@ import {
   Sizes
 } from '../../comonents/Constant/Constant';
 
-export default function Send_offer({ navigation , route}) {
-  const { IMAGE,PRICE,DISCRIPTION,CITY,CATEGORY,TITLE,UID} = route.params
+export default function Send_offer({ navigation, route }) {
+  const { IMAGE, PRICE, DISCRIPTION, CITY, CATEGORY, TITLE, UID } = route.params
   const [price, setPrice] = React.useState('')
   const [discription, setDiscription] = React.useState('')
 
 
-  function send_data(){
-    firestore()
-    .collection('Users')
-    .doc(UID)
-    .collection('send_offer')
-    .doc(TITLE+UID+DISCRIPTION)
-    .set({
-      IMAGE : IMAGE,
-      PRICE : PRICE,
-      TITLE : TITLE,
-      DISCRIPTION : DISCRIPTION,
-      UID : UID,
-      CITY : CITY,
-      CATEGORY : CATEGORY,
-      OFFERPRICE : price,
-      OFFERDISCRIPTION : discription
-    })
+  function send_data() {
+
+    if(price === '' && discription === ''){
+      alert('please write this field')
+    }else(
+      firestore()
+        .collection('Users')
+        .doc(UID)
+        .collection('send_offer')
+        .doc(TITLE + UID + DISCRIPTION)
+        .set({
+          IMAGE: IMAGE,
+          PRICE: PRICE,
+          TITLE: TITLE,
+          DISCRIPTION: DISCRIPTION,
+          UID: UID,
+          CITY: CITY,
+          CATEGORY: CATEGORY,
+          OFFERPRICE: price,
+          OFFERDISCRIPTION: discription
+        })
+    )
+
   }
 
 
@@ -53,15 +59,49 @@ export default function Send_offer({ navigation , route}) {
 
 
 
-      <Text
-        style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', marginHorizontal: 30, borderRadius: 10, fontSize : 14, width: '100%' }}>
-        You can tell your offer here.
-      </Text>
+      <View style={styles.main_view_map}>
+        <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
+          {
+            IMAGE: ADS_IMAGES,
+            PRICE: PRICE,
+            DISCRIPTION: DISCRIPTION,
+            CITY: CITY,
+            CATEGORY: CATEGORY,
+            TITLE: TITLE,
+            UID: UID,
+          }
+        )}>
+          <Animatable.View style={styles.Animatable}>
+            <View style={styles.Animatable_child}>
+              <View style={styles.Animatable_child_to_child}>
+                <Image
+                  style={styles.Animatable_image}
+                  source={{ uri: IMAGE }}
+                />
+              </View>
+              <View style={styles.Animatable_Para}>
+                <Text style={styles.username}>ayan ahmed</Text>
+                <Text numberOfLines={2} style={styles.title}>{TITLE}</Text>
+                <Text style={styles.price}>{PRICE}</Text>
+                <View style={styles.Icon_view}>
+                  <Text style={styles.Versand}>Versand moglich</Text>
+
+
+
+                  <AntDesign style={styles.staro} name="staro" size={18} />
+
+                </View>
+              </View>
+            </View>
+          </Animatable.View>
+        </TouchableOpacity>
+      </View>
       {/* <View style={{ marginTop: 20 }}> */}
       <View style={{ width: '100%' }}>
         <TextInput
           placeholder="Price"
           autoCapitalize="none"
+          keyboardType='numeric'
           onChangeText={(val) => setPrice(val)}
           value={price}
           style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}
@@ -71,16 +111,12 @@ export default function Send_offer({ navigation , route}) {
           <TextInput
             placeholder="Discription"
             autoCapitalize="none"
+            multiline={true}
+
             onChangeText={(val) => setDiscription(val)}
             value={discription}
             style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}
           />
-        </View>
-
-        <View style={{ marginTop: 20 }}>
-          <Text style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}
-          >Send Offer</Text>
-
         </View>
 
       </View>
