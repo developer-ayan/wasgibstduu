@@ -18,8 +18,12 @@ export default function SearchBar({ navigation }) {
   const [city, setCity] = React.useState('')
   const [category, setCategory] = React.useState('')
   const [modalVisible, setModalVisible] = useState(false);
+  const [filterPrice, setFilterPrice] = useState('');
+  const [filterPrice2, setFilterPrice2] = useState(null);
+  const [filterCity, setFilterCity] = useState('');
+  const [filterArray, setFilterArray] = useState([]);
 
-
+  console.log("price1 => ", filterPrice)
 
 
   const [show, setshow] = React.useState(false)
@@ -39,15 +43,13 @@ export default function SearchBar({ navigation }) {
       });
   }, [])
 
-  console.log("CATEGORY => ", category)
-  console.log("CATEGORY => ", city)
-
 
   const UltraFilter = () => {
     const newData = master.filter((item) => {
-      return item.PRICE == '1200' || item.CITY == city || item.CATEGORY == category;
+      return item.PRICE <= filterPrice || item.CITY == city.toUpperCase() || item.CATEGORY == category.toUpperCase();
     })
-    console.log("newData => ", newData)
+    setFilterArray(newData)
+    // console.log("newData => ", newData)
   }
 
   const searchFilter = (text) => {
@@ -68,8 +70,6 @@ export default function SearchBar({ navigation }) {
   }
 
 
-
-
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
 
@@ -82,52 +82,90 @@ export default function SearchBar({ navigation }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <ScrollView style={styles.centeredView}>
 
-          <View>
-            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 22, marginBottom: 20 }}>Select your category</Text>
+          <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+            <Text style={{ color: '#D7D7D7', fontWeight: 'bold', fontSize: 18, marginBottom: 20 }}>Categories</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '100%', backgroundColor: 'white', justifyContent: 'space-around' }}>
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Auto Mobiles')}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: 'white', justifyContent: 'space-around' , marginHorizontal : 10}}>
+            <Pressable style={{ width: 108, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Auto Mobiles')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Auto mobiles</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Phone & tablets')}>
-              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Phone / tablets</Text>
+            <Pressable style={{ width: 112, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Phone & tablets')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Phone tablets</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Electronics')}>
+            <Pressable style={{ width: 112, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Electronics')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Electronics</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Real States')}>
+            <Pressable style={{ width: 108, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Real States')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Real States</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Fashion')}>
+            <Pressable style={{ width: 112, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Fashion')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Fashion</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Jobs')}>
+            <Pressable style={{ width: 115, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Jobs')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Jobs</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Services')}>
+            <Pressable style={{ width: 108, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Services')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Services</Text>
             </Pressable>
 
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('learning')}>
+            <Pressable style={{ width: 112, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('learning')}>
               <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>learning</Text>
             </Pressable>
-
-            <Pressable style={{ backgroundColor: '#e9ecf2', width: '30%', marginBottom: 10, paddingVertical: 15, borderRadius: 5 }} onPress={() => setCategory('Events')}>
-              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 13, textAlign: 'center' }}>Events</Text>
+            <Pressable style={{ width: 112, backgroundColor: '#e9ecf2', paddingHorizontal: 15, marginBottom: 10, paddingVertical: 10, borderRadius: 5, alignSelf: 'baseline' }} onPress={() => setCategory('Events')}>
+              <Text style={{ color: '#BFCAC4', fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}>Events</Text>
             </Pressable>
+
           </View>
 
 
-        </View>
+          <View style={{ marginHorizontal: 10, marginTop: 15 }}>
+            <View>
+              <Text style={{ color: '#D7D7D7', fontWeight: 'bold', fontSize: 18, marginBottom: 20 }}>Range your price</Text>
+            </View>
+            <TextInput
+              placeholder='$ 00.00'
+              onChangeText={(e) => setFilterPrice(e)}
+              value={filterPrice}
+              keyboardType='numeric'
+              style={{ borderColor: '#e9ecf2', borderWidth: 1, borderRadius: 5, padding: 15, color: 'gray', fontSize: 15 }}
+              placeholderTextColor='#e9ecf2' />
+          </View>
+
+          <View style={{ marginHorizontal: 10, marginTop: 15 }}>
+            <View>
+              <Text style={{ color: '#D7D7D7', fontWeight: 'bold', fontSize: 18, marginBottom: 20 }}>Cities</Text>
+            </View>
+            <TextInput
+              placeholder='Type a city'
+              onChangeText={(e) => setFilterCity(e)}
+              value={filterCity}
+              style={{ borderColor: '#e9ecf2', borderWidth: 1, borderRadius: 5, padding: 15, color: 'gray', fontSize: 15 }}
+              placeholderTextColor='#e9ecf2' />
+          </View>
+
+          <TouchableOpacity onPress={UltraFilter}>
+            <View style={{ marginHorizontal: 10, marginTop: 15 , backgroundColor : '#00aa49' , borderRadius : 5  }}>
+              <Text style={{ borderRadius: 5, padding: 18, color: 'gray', fontSize: 18 ,color : 'white' , fontWeight : 'bold' , textAlign : 'center'  }}>Filter Data</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity  onPress={() => setModalVisible(!modalVisible)}>
+            <View style={{ marginHorizontal: 10, marginTop: 15 , backgroundColor : 'red' , borderRadius : 5  }}>
+              <Text style={{ borderRadius: 5, padding: 18, color: 'gray', fontSize: 18 ,color : 'white' , fontWeight : 'bold' , textAlign : 'center'  }}>Cancel</Text>
+            </View>
+          </TouchableOpacity>
+
+
+        </ScrollView>
       </Modal>
 
       {/* <Pressable
@@ -167,33 +205,140 @@ export default function SearchBar({ navigation }) {
         </View>
       </View>
 
+{filterArray.length === 0 ? 
+loading ?
+  <Loader />
+  :
+  data.map((item, ind) => {
 
-      <TouchableOpacity onPress={UltraFilter}>
-        <Text>ultra filter</Text>
-      </TouchableOpacity>
+    return (
+      <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
+          {
+            IMAGE: item.ADS_IMAGES,
+            PRICE: item.PRICE,
+            DISCRIPTION: item.DISCRIPTION,
+            CITY: item.CITY,
+            CATEGORY: item.CATEGORY,
+            TITLE: item.TITLE,
+            UID: item.UID,
+          }
+        )}>
+          <Text>real data</Text>
+
+          <Animatable.View style={{ alignItems: 'center' }}>
+
+            <View style={{ flexDirection: 'row', width: '100%' }}>
+              <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Image
+                  style={{ height: 100, width: '100%', borderRadius: 2 }}
+                  source={{ uri: item.ADS_IMAGES }}
+                />
+              </View>
+              <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', lineHeihgt: 80 }}>
+                <Text style={{ color: '#b3b3b3', fontSize: 10 }}>{item.NAME}</Text>
+                <Text numberOfLines={2} style={{ color: '#494949', fontSize: 12 }}>{item.TITLE}</Text>
+                <Text style={{ color: 'green', fontSize: 12 }}>{item.PRICE}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Text style={{ color: '#b3b3b3', fontSize: 12 }}>Versand moglich</Text>
 
 
-      <TouchableOpacity onPress={() => setCity('Karachi')}>
-        <Text>karachi</Text>
-      </TouchableOpacity>
+                  <Pressable onPress={() => {
+                    firestore()
+                      .collection(`Stared Data ${user.USER_ID}`)
+                      .doc(item.DISCRIPTION)
+                      .set({
+                        IMAGE: item.ADS_IMAGES,
+                        PRICE: item.PRICE,
+                        DISCRIPTION: item.DISCRIPTION,
+                        CITY: item.CITY,
+                        CATEGORY: item.CATEGORY,
+                        UID: item.UID,
+                        TITLE: item.TITLE,
+                      })
+                  }}>
+                    <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Animatable.View>
+        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
+      </View>
+    )
+  })
+  : 
+  loading ?
+  <Loader />
+  :
+  filterArray.map((item, ind) => {
 
-      <TouchableOpacity onPress={() => setCategory('Fashion')}>
-        <Text>Fashion</Text>
-      </TouchableOpacity>
+    return (
+      <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
+          {
+            IMAGE: item.ADS_IMAGES,
+            PRICE: item.PRICE,
+            DISCRIPTION: item.DISCRIPTION,
+            CITY: item.CITY,
+            CATEGORY: item.CATEGORY,
+            TITLE: item.TITLE,
+            UID: item.UID,
+          }
+        )}>
+          <Text>Filter</Text>
+          <Animatable.View style={{ alignItems: 'center' }}>
 
-      <TouchableOpacity onPress={() => setCategory('Learning')}>
-        <Text>Learning</Text>
-      </TouchableOpacity>
+            <View style={{ flexDirection: 'row', width: '100%' }}>
+              <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
+                <Image
+                  style={{ height: 100, width: '100%', borderRadius: 2 }}
+                  source={{ uri: item.ADS_IMAGES }}
+                />
+              </View>
+              <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', lineHeihgt: 80 }}>
+                <Text style={{ color: '#b3b3b3', fontSize: 10 }}>{item.NAME}</Text>
+                <Text numberOfLines={2} style={{ color: '#494949', fontSize: 12 }}>{item.TITLE}</Text>
+                <Text style={{ color: 'green', fontSize: 12 }}>{item.PRICE}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Text style={{ color: '#b3b3b3', fontSize: 12 }}>Versand moglich</Text>
+
+
+                  <Pressable onPress={() => {
+                    firestore()
+                      .collection(`Stared Data ${user.USER_ID}`)
+                      .doc(item.DISCRIPTION)
+                      .set({
+                        IMAGE: item.ADS_IMAGES,
+                        PRICE: item.PRICE,
+                        DISCRIPTION: item.DISCRIPTION,
+                        CITY: item.CITY,
+                        CATEGORY: item.CATEGORY,
+                        UID: item.UID,
+                        TITLE: item.TITLE,
+                      })
+                  }}>
+                    <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Animatable.View>
+        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
+      </View>
+    )
+  })
+
+}
 
 
 
-
-      {loading ?
+      {/* {loading ?
         <Loader />
         :
-
         data.map((item, ind) => {
-          console.log(item.CATEGORY)
 
           return (
             <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
@@ -208,7 +353,7 @@ export default function SearchBar({ navigation }) {
                   UID: item.UID,
                 }
               )}>
-                <Animatable.View duration={1000} animation="bounceInLeft" style={{ alignItems: 'center' }}>
+                <Animatable.View style={{ alignItems: 'center' }}>
 
                   <View style={{ flexDirection: 'row', width: '100%' }}>
                     <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
@@ -242,33 +387,15 @@ export default function SearchBar({ navigation }) {
                           <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
                         </Pressable>
                       </View>
-                      {/* <TouchableOpacity onPress = {toggle}>
-  {show ? 
-      
-      <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
-      :
-      <AntDesign style={{ color: '#b3b3b3' }} name="star" size={18} />
-
-} 
-
-</TouchableOpacity> */}
                     </View>
                   </View>
-
-
-
-
-
-                  {/* <View>
-                    <Text style={{ textAlign: 'center', fontSize: 15, width: '100%', }}>Visit Ad</Text>
-                  </View> */}
                 </Animatable.View>
               </TouchableOpacity>
               {/* </TouchableOpacity> */}
-            </View>
+            {/* </View>
           )
         })
-      }
+      } */}
 
 
     </ScrollView>

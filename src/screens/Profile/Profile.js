@@ -41,10 +41,10 @@ function Profile({ navigation }) {
                 })
         }, [])
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
 
-        // submitPost()
-    }, [])
+    //     // submitPost()
+    // }, [])
 
 
     const takePhotoFromCamera = () => {
