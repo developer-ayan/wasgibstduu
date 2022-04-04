@@ -30,12 +30,13 @@ export default function ChatScreen({ route, navigation }) {
     }
     
         React.useEffect(() => {
+            getData()
             const user = userData?.USER_ID
             const chat_user = e
             const merge = merge_uid(user, e.USER_ID)
             get_messages(merge)
-            getData()
-        }, [data])
+            // getData()
+        }, [])
 
 
     const merge_uid = (uid1, uid2) => {
@@ -80,34 +81,22 @@ export default function ChatScreen({ route, navigation }) {
         ImagePicker.openPicker({
             multiple: true,
             waitAnimationEnd: false,
-
-            // width: 700,
-            // height: 500,
-            // cropping: true,
             includeExif: true,
             compressImageQuality: 0.8,
             maxFiles: 10,
             mediaType: 'any',
             includeBase64: true,
         }).then(image => {
-            // console.log("response => ", image)
             image.map((images) => {
-
                 arr.push({ path: images.path })
                 setUri(arr)
             })
 
-            // arr.push(image.path)
-            // console.log("Arr => ", arr)
-            // setUri(arr)
-            console.log("arrr =. ", uri.map((e) => console.log(e.path)))
         });
     }
 
 
     return (
-        // <ScrollView>
-
         <View style={{ backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                 <TouchableOpacity onPress={navigation.goBack}>

@@ -35,7 +35,7 @@ export default function Ads({ navigation }) {
 
   React.useEffect(() => {
     getData()
-  }, [state.NAME ])
+  }, [state.NAME , state.USER_ID])
 
   const CreateAds = async () => {
 

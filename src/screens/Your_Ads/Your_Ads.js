@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TextInput, ScrollView, Image, TouchableOpacity } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -16,40 +17,146 @@ import { useSelector } from 'react-redux';
 
 
 export default function manageAds({ navigation }) {
-  const [data, setData] = React.useState([])
-  const state = useSelector(state => state.user)
-  const all = useSelector(state => state)
-  console.log("All => ",all.all_data)
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [master, setMaster] = useState([])
+  const [userData, setUserData] = useState([])
 
+
+  const getData = async () => {
+    const value = await AsyncStorage.getItem('uid');
+    setUserData(JSON?.parse(value))
+}
+
+
+
+  // React.useEffect(() => {
+  //   firestore()
+  //     .collection('Category')
+  //     .doc('Your all ads there !')
+  //     .collection('Learning')
+  //     .onSnapshot(documentSnapshot => {
+  //       setData(documentSnapshot.docs.map(e => e.data()));
+  //     });
+  // }, [])
+  // firestore()
+  //   .collection('Category')
+  //   .doc('Your all ads there !')
+  //   .collection('Learning')
+  //   .get()
+  //   .then((correct) => {
+  //     correct.forEach(snapshot => {
+  //       // console.log(snapshot.data())
+  //       firestore()
+  //         .collection('Category')
+  //         .doc('Your all ads there !')
+  //         .collection('Learning')
+  //         .doc(snapshot.id)
+  //         .update({
+  //           AUTO_ID: snapshot.id
+  //         })
+
+  //     })
+  //   })
+
+  const [filterArray, setFilterArray] = useState([]);
+  const [autoMobiles, setAutoMobiles] = useState([]);
+  const [eletronics, setElectronics] = useState([]);
+  const [realStates, setRealStates] = useState([]);
+  const [jobs, setjobs] = useState([]);
+  const [Services, setServices] = useState([]);
+  const [learning, setLearning] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [phoneAndTablets, setPhoneAndTablets] = useState([]);
+
+  const SearchFilterArray = [ ...autoMobiles , ...phoneAndTablets , ...eletronics , ...realStates , ...data , ...jobs , ...Services ,...learning  , ...events]
 
   React.useEffect(() => {
+    getData()
     firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Fashion')
+      .onSnapshot(documentSnapshot => {
+        setData(documentSnapshot.docs.map(e => e.data()));
+        setMaster(documentSnapshot.docs.map(e => e.data()));
+      });
+
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Auto Mobiles')
+      .onSnapshot(documentSnapshot => {
+        setAutoMobiles(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
+      });
+
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Electronics')
+      .onSnapshot(documentSnapshot => {
+        setElectronics(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
+      });
+
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Phone & tablets')
+      .onSnapshot(documentSnapshot => {
+        setPhoneAndTablets(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
+      });
+
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Real States')
+      .onSnapshot(documentSnapshot => {
+        setRealStates(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
+      });
+
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Jobs')
+      .onSnapshot(documentSnapshot => {
+        setjobs(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
+        setLoading(false)
+      });
+
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Services')
+      .onSnapshot(documentSnapshot => {
+        setServices(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
+      });
+
+      firestore()
       .collection('Category')
       .doc('Your all ads there !')
       .collection('Learning')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setLearning(documentSnapshot.docs.map(e => e.data()));
+        // setMaster(documentSnapshot.docs.map(e => e.data()));
       });
-  }, [])
-  firestore()
-    .collection('Category')
-    .doc('Your all ads there !')
-    .collection('Learning')
-    .get()
-    .then((correct) => {
-      correct.forEach(snapshot => {
-        // console.log(snapshot.data())
-        firestore()
-          .collection('Category')
-          .doc('Your all ads there !')
-          .collection('Learning')
-          .doc(snapshot.id)
-          .update({
-            AUTO_ID: snapshot.id
-          })
 
-      })
-    })
+      firestore()
+      .collection('Category')
+      .doc('Your all ads there !')
+      .collection('Events')
+      .onSnapshot(documentSnapshot => {
+        setEvents(documentSnapshot.docs.map(e => e.data()));
+      });
+
+
+  }, [])
+
 
   return (
     <ScrollView style={{
@@ -84,9 +191,9 @@ export default function manageAds({ navigation }) {
           <Text style={{ color: 'black', fontSize: 20 }}>My Ads</Text>
           <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Manage your free and premium advertisement</Text>
         </View>
-        {data.map((e, index) => {
+        {SearchFilterArray.map((e, index) => {
           // console.log(e.AUTO_ID)
-          return e.UID === state.USER_ID && (
+          return e.UID === userData.USER_ID && (
             <View key={index}>
               <View style={{
                 padding: 10, borderRadius: 10, marginTop: 20, shadowColor: "#000",
