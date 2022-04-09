@@ -2,6 +2,7 @@ const initial_state = {
     user: {},
     allUsers: [],
     all_data: {},
+    uid : ''
 }
 function authReducer(state = initial_state, action) {
     switch (action.type) {
@@ -20,6 +21,11 @@ function authReducer(state = initial_state, action) {
             return ({
                 ...state,
                 allUsers: action.allUsers
+            })
+            case "GETUID":
+            return ({
+                ...state,
+                uid: action.uid
             })
         case "DATA":
             return ({

@@ -29,31 +29,6 @@ export default function Home({ navigation }) {
   }, [])
 
 
-
-
-  const ItemSeparatorView = () => {
-    return (
-      <View style={{ wdith: '100%', backgroundColor: 'red' }} />
-    )
-  }
-
-  const searchFilter = (text) => {
-    if (text) {
-      const newData = master.filter((item) => {
-        const ItemData = item.TITLE ? item.TITLE.toUpperCase()
-          : ''.toUpperCase()
-        const textData = text.toUpperCase()
-        return ItemData.indexOf(textData) > -1;
-      })
-      setData(newData)
-      setPassword(text)
-    } else {
-      setData(master)
-      setPassword(text)
-    }
-  }
-
-
   return (
     <Animatable.View animation="bounceInLeft" duration={1000} style={{ height: '100%' }}>
       {loading ?

@@ -27,15 +27,18 @@ export default function Ads({ navigation }) {
   const dispatch = useDispatch()
   const countries = ["Fashion", "Auto Mobiles", "Electronics", "Events", "Jobs", "Learning", "Phone & tablets", "Real States", "Services"]
   const [state, setState] = useState({})
+  const [image, setImage] = useState([])
 
   const getData = async () => {
     const value = await AsyncStorage.getItem('uid');
     setState(JSON?.parse(value))
   }
 
-  React.useEffect(() => {
-    getData()
-  }, [state.NAME , state.USER_ID])
+  useFocusEffect(
+    React.useCallback(() => {
+      getData()
+    }, [state.USER_ID])
+  )
 
   const CreateAds = async () => {
 
@@ -52,7 +55,8 @@ export default function Ads({ navigation }) {
     else if (city === '') {
       alert('required title')
     }else {
-      const imageUrl = await hondlet()
+      const imageUrl = await ImageHandle()
+
       let user = {
         category,
         title,
@@ -97,7 +101,7 @@ export default function Ads({ navigation }) {
   })
 
 
-  const hondlet = async () => {
+  const ImageHandle = async () => {
     const uploadUri = uri;
     let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
 

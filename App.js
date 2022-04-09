@@ -4,12 +4,16 @@ import MyStack from './src/comonents/Stack/Stack';
 import LoginStack from './src/comonents/Stack/LoginStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
+import { useSelector } from 'react-redux';
 export default function App() {
   const [save, setSave] = React.useState({});
+  const uid = useSelector(state => state.user)
+  console.log("Uid in app.js",uid)
 
   const get_data = async () => {
     try {
       const value = await AsyncStorage.getItem('uid');
+      console.log(value)
       if (value !== 'null') {
         // We have data!!
         setSave(JSON.parse(value));
@@ -19,6 +23,7 @@ export default function App() {
     }
   };
   React.useEffect(() => {
+    get_data()
     setTimeout(() => {
       SplashScreen.hide();
     }, 2000);
@@ -26,7 +31,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {save?.CONFIRM_PASSWORD ? <MyStack /> : <LoginStack />}
+      {uid?.CONFIRM_PASSWORD || save?.CONFIRM_PASSWORD ? <MyStack /> : <LoginStack />}
     </NavigationContainer>
   );
 }
