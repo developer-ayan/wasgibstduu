@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 export default function App() {
   const [save, setSave] = React.useState({});
   const uid = useSelector(state => state.user)
-  console.log("Uid in app.js",uid)
 
   const get_data = async () => {
     try {

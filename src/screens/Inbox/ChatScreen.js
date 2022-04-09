@@ -28,15 +28,27 @@ export default function ChatScreen({ route, navigation }) {
         const value = await AsyncStorage.getItem('uid');
         setUserData(JSON?.parse(value))
     }
-    
-        React.useEffect(() => {
-            getData()
-            const user = userData?.USER_ID
-            const chat_user = e
-            const merge = merge_uid(user, e.USER_ID)
-            get_messages(merge)
-            // getData()
-        }, [])
+
+    React.useEffect(() => {
+        getData()
+        const user = userData?.USER_ID
+        const chat_user = e
+        const merge = merge_uid(user, e.USER_ID)
+        get_messages(merge)
+
+        data.length !== 0 && 
+        firestore()
+        .collection('Users')
+        .doc(e?.USER_ID)
+        .collection('Messages')
+        .doc(e?.USER_ID)
+        .set({
+            message: data.pop(),
+            user : e
+        })
+      
+
+    }, [])
 
 
     const merge_uid = (uid1, uid2) => {
@@ -47,16 +59,9 @@ export default function ChatScreen({ route, navigation }) {
         }
     }
 
-    const get_messages = (uid) => {
-        firestore()
-            .collection(uid)
-            .orderBy('date')
-            .onSnapshot(documentSnapshot => {
-                setData(documentSnapshot.docs.map(e => e.data()));
-            });
-    }
 
-  
+
+
 
     const send_message = () => {
         if (message === '') {
@@ -74,6 +79,15 @@ export default function ChatScreen({ route, navigation }) {
                 })
             setMessage('')
         }
+    }
+
+    const get_messages = (uid) => {
+        firestore()
+            .collection(uid)
+            .orderBy('date')
+            .onSnapshot(documentSnapshot => {
+                setData(documentSnapshot.docs.map(e => e.data()));
+            });
     }
 
     const ImageGallery = () => {
