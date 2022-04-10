@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { useDispatch, useSelector } from 'react-redux';
-import { get_all_users } from '../../redux/actions/authAction';
+// import Entypo from 'react-native-vector-icons/Entypo';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { get_all_users } from '../../redux/actions/authAction';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import database from '@react-native-firebase/database'
 import firestore from '@react-native-firebase/firestore';
-import moment from 'moment';
+// import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Inbox() {
@@ -20,30 +20,30 @@ export default function Inbox() {
     const [user, setUser] = React.useState({})
 
 
-    
-  const getData = async () => {
-    const value = await AsyncStorage.getItem('uid');
-    setUser(JSON?.parse(value))
-  }
 
-  const string = 'P6QvoVpboaMwluKo7dIU5gMCwy73ZUQJ8p1CkTMCipkdHRaCUDJDMff2'
-  console.log(string.includes(user.USER_ID))
+    const getData = async () => {
+        const value = await AsyncStorage.getItem('uid');
+        setUser(JSON?.parse(value))
+    }
     // const dispatch = useDispatch()
     useFocusEffect(
 
         React.useCallback(() => {
-        getData()
-        firestore()
-        .collection('P6QvoVpboaMwluKo7dIU5gMCwy73ZUQJ8p1CkTMCipkdHRaCUDJDMff2')
-        .onSnapshot(documentSnapshot => {
-            setMsg(documentSnapshot.docs.map(e => e.data()));
-                });
+            getData()
+            firestore()
+                .collection('Inbox')
+                // .orderBy('date')
+                // .doc(user.USER_ID)
+                // .collection('Messages')
+                .onSnapshot((documentSnapshop) => {
+                    setMsg(documentSnapshop.docs.map((e) => e.data()))
+                    // console.log(documentSnapshop.docs.map((e) => e.data()))
+                })
         }, [])
+
     )
-    console.log("YASER => ",user)
 
 
-    // const lastMsg = msg.pop().msg;
 
 
     return (
@@ -75,33 +75,47 @@ export default function Inbox() {
                 </View>
             </View>
 
+            {msg?.length === 0 ? <Text>No have msg</Text> :
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30, justifyContent: 'space-between', backgroundColor: '#f7f7f7', padding: 5, borderRadius: 10 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Entypo name="user" size={50} color="#b1b1b1" style={{ marginHorizontal: 3, opacity: 0.5 }} />
-                    <View>
-                        <Text style={{ color: '#b1b1b1' }}>WDI Technology Pvt Ltd</Text>
-                        <Text style={{ color: '#b1b1b1' }}>Ad Iphont X</Text>
-                    </View>
-                </View>
+                msg?.map((item, index) => {
+                    return item.uid === user.USER_ID || item.user.USER_ID === user.USER_ID && (
+                        <View style = {{ backgroundColor: '#f7f7f7' ,  marginTop: 30,paddingVertical : 10 , borderRadius : 5}} key={index}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10 }}>
 
-                <View >
-                    <AntDesign name="delete" size={15} color="#b1b1b1" style={{ paddingVertical: 2 }} />
-                    <AntDesign name="staro" size={15} color="#b1b1b1" />
-                </View>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -12, justifyContent: 'space-between', backgroundColor: '#f7f7f7', paddingVertical: 5 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Entypo name="user" size={50} color="#b1b1b1" style={{ marginHorizontal: 5, opacity: 0.0 }} />
-                    <View style={{ marginHorizontal: 4 }}>
-                        {/* <Text style={{ color: '#b1b1b1' }}>{lastMsg}</Text> */}
-                        {/* <Text style={{ color: '#b1b1b1' }}>Like this iphone</Text> */}
-                        <Text style={{ color: '#b1b1b1', fontSize: 12, paddingVertical: 5 }}>May. 7th. 2021. at 12:44</Text>
+                                <View style={{ width: '16%', alignItems: 'center' }}>
+                                    <Image source={{ uri: item.user.PROFILE }} style={{ backgroundColor: 'red', height: 40, width: 40, borderRadius: 50 }} />
+                                </View>
 
-                    </View>
-                </View>
-            </View>
+                                <View style={{ width: '50%',  height : 40 , justifyContent : 'center' }}>
+                                    <Text style={{ color: '#b1b1b1' }}>IPHONE X</Text>
+                                </View>
+                                <View style={{ width: '30%', flexDirection: 'row', height: 40, alignItems: 'center', justifyContent: 'flex-end' }} >
+                                    <AntDesign name="delete" size={20} color="#b1b1b1" style={{ paddingVertical: 2, marginRight: 5 }} />
+                                    <AntDesign name="staro" size={20} color="#b1b1b1" />
+                                </View>
+                            </View>
 
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',}}>
+
+                                <View style={{ width: '15%', alignItems: 'center' }}>
+                                </View>
+
+                                <View style={{ width: '50%',  justifyContent : 'center' }}>
+                                <View style={{ marginHorizontal: 4 }}>
+                                        <Text numberOfLines={1} style={{ color: '#b1b1b1' }}>{item.message.msg}</Text>
+                                        <Text numberOfLines={1} style={{ color: '#b1b1b1' }}>Like this iphone</Text>
+                                        <Text numberOfLines={1} style={{ color: '#b1b1b1', fontSize: 12, paddingVertical: 5 }}>May. 7th. 2021. at 12:44</Text>
+                                    </View>
+                                </View>
+                                <View style={{ width: '30%', flexDirection: 'row', height: 40, alignItems: 'center', justifyContent: 'flex-end' }} >
+                                </View>
+                            </View>
+                        </View>
+                    )
+                })
+
+
+            }
 
 
 

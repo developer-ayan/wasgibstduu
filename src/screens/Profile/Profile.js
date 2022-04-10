@@ -38,6 +38,7 @@ function Profile({ navigation }) {
                 .doc(user.USER_ID)
                 .onSnapshot((e) => {
                     setData(e.data())
+                    console.log(data.PROFILE)
                 })
         }, [])
 
@@ -68,8 +69,8 @@ function Profile({ navigation }) {
             cropping: true,
             compressImageQuality: 0.7
         }).then(image => {
-            console.log(image);
             setImage(image.path);
+            setModalVisible(true)
             this.bs.current.snapTo(1);
         });
     }
@@ -105,11 +106,11 @@ function Profile({ navigation }) {
     bs = React.createRef();
     fall = new Animated.Value(1);
 
-    console.log("profileImage => ", profileImage)
+    // console.log("profileImage => ", profileImage)
 
     const submitPost = async () => {
         const imageUrl = await uploadImage()
-        console.log("imageUrl => ", imageUrl)
+        // console.log("imageUrl => ", imageUrl)
         setProfileImage(imageUrl)
         firestore()
             .collection('Users')
@@ -219,7 +220,7 @@ function Profile({ navigation }) {
                                 {user?.PROFILE === "" && user?.PROFILE === undefined ?
                                     <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
                                     :
-                                    <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: user?.PROFILE }} />
+                                    <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data?.PROFILE }} />
                                 }
 
 

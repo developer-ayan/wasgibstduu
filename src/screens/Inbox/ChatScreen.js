@@ -29,23 +29,41 @@ export default function ChatScreen({ route, navigation }) {
         setUserData(JSON?.parse(value))
     }
 
+
     React.useEffect(() => {
+        
         getData()
         const user = userData?.USER_ID
         const chat_user = e
         const merge = merge_uid(user, e.USER_ID)
         get_messages(merge)
 
-        data.length !== 0 && 
-        firestore()
-        .collection('Users')
-        .doc(e?.USER_ID)
-        .collection('Messages')
-        .doc(e?.USER_ID)
-        .set({
-            message: data.pop(),
-            user : e
-        })
+        if(data.length === 0){
+            console.log('no msgs')  
+        }else {
+
+            // firestore()
+            // .collection('Inbox')
+            // .doc(userData?.USER_ID)
+            // .set({
+            //     message: data.pop(),
+            //     uid : e.USER_ID,
+            //     user : userData,
+            // })
+
+            firestore()
+            .collection('Inbox')
+            .doc(e?.USER_ID)
+            .set({
+                message: data.pop(),
+                uid : userData.USER_ID,
+                uid2 : e.USER_ID,
+                user : e,
+            })
+        }
+
+
+      
       
 
     }, [])
