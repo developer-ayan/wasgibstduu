@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, FlatList, StyleSheet , Pressable } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,13 +8,13 @@ import Premium from './Premium';
 import Category from './Category';
 import Loader from '../../comonents/Loader/Loader';
 import * as Animatable from 'react-native-animatable';
+import { AuthContext } from '../../context/Auth';
 
 export default function Home({ navigation }) {
   const [data, setData] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const [master, setMaster] = React.useState([])
   const [password, setPassword] = React.useState('')
-
 
   React.useEffect(() => {
     firestore()

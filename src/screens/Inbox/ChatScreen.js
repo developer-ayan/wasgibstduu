@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
 import { get_all_users, get_messages, send_message } from '../../redux/actions/authAction';
 import firestore from '@react-native-firebase/firestore'
@@ -12,6 +12,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '@react-native-firebase/auth';
 import { useFocusEffect } from '@react-navigation/native';
+import { AuthContext } from '../../context/Auth';
 
 
 export default function ChatScreen({ route, navigation }) {
@@ -22,41 +23,33 @@ export default function ChatScreen({ route, navigation }) {
     const [message, setMessage] = React.useState('')
     const [data, setData] = React.useState([])
     const [uri, setUri] = React.useState()
-    const [userData, setUserData] = React.useState({})
-
-    const getData = async () => {
-        const value = await AsyncStorage.getItem('uid');
-        setUserData(JSON?.parse(value))
-    }
+  const { user } = useContext(AuthContext)
 
 
     React.useEffect(() => {
         
-        getData()
-        const user = userData?.USER_ID
-        const chat_user = e
-        const merge = merge_uid(user, e.USER_ID)
+        const merge = merge_uid(user?.USER_ID, e.USER_ID)
         get_messages(merge)
 
         if(data.length === 0){
             console.log('no msgs')  
         }else {
 
-            // firestore()
-            // .collection('Inbox')
-            // .doc(userData?.USER_ID)
-            // .set({
-            //     message: data.pop(),
-            //     uid : e.USER_ID,
-            //     user : userData,
-            // })
+            firestore()
+            .collection('Inbox')
+            .doc(user?.USER_ID)
+            .set({
+                message: data.pop(),
+                uid : e.USER_ID,
+                user : user,
+            })
 
             firestore()
             .collection('Inbox')
             .doc(e?.USER_ID)
             .set({
                 message: data.pop(),
-                uid : userData.USER_ID,
+                uid : user.USER_ID,
                 uid2 : e.USER_ID,
                 user : e,
             })
@@ -85,13 +78,13 @@ export default function ChatScreen({ route, navigation }) {
         if (message === '') {
             alert('please Enter your msg')
         } else {
-            const merge = merge_uid(userData?.USER_ID, e?.USER_ID)
+            const merge = merge_uid(user?.USER_ID, e?.USER_ID)
             firestore()
                 .collection(`${merge}`)
                 .add({
                     msg: message,
-                    name: userData?.NAME,
-                    uid: userData?.USER_ID,
+                    name: user?.NAME,
+                    uid: user?.USER_ID,
                     date: new Date().toUTCString()
 
                 })
@@ -148,7 +141,7 @@ export default function ChatScreen({ route, navigation }) {
             }}>
                 {
                     data.map((e, v) => {
-                        const uid = e.uid === userData?.USER_ID
+                        const uid = e.uid === user?.USER_ID
                         return (
                             <View key={v} style={{
                                 width: '100%',

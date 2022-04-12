@@ -29,13 +29,13 @@ export default function Send_offer({ navigation, route }) {
 
   function send_data() {
 
-    if(price === '' && discription === ''){
+    if (price === '' || discription === '') {
       alert('please write this field')
-    }else(
+    } else (
       firestore()
-        .collection('Users')
-        .doc(UID)
-        .collection('send_offer')
+        .collection('Bids')
+        .doc('Your all bids here !')
+        .collection(UID)
         .doc(TITLE + UID + DISCRIPTION)
         .set({
           IMAGE: IMAGE,
@@ -47,7 +47,7 @@ export default function Send_offer({ navigation, route }) {
           CATEGORY: CATEGORY,
           OFFERPRICE: price,
           OFFERDISCRIPTION: discription
-        })
+        }).then((e) => alert('True')).catch((err) => alert('error'))
     )
 
   }
@@ -85,11 +85,7 @@ export default function Send_offer({ navigation, route }) {
                 <Text style={styles.price}>{PRICE}</Text>
                 <View style={styles.Icon_view}>
                   <Text style={styles.Versand}>Versand moglich</Text>
-
-
-
                   <AntDesign style={styles.staro} name="staro" size={18} />
-
                 </View>
               </View>
             </View>
@@ -123,8 +119,7 @@ export default function Send_offer({ navigation, route }) {
       {/* </View> */}
 
       <TouchableOpacity onPress={send_data} style={{ padding: 20, color: '#b3b3b3', fontSize: 15, backgroundColor: '#00aa49', marginHorizontal: 30, borderRadius: 10, borderWidth: 1, borderColor: '#F0F0F0', width: '100%' }}>
-        <Text style={{ textAlign: 'center', color: 'white' }}
-        >Send Offer</Text>
+        <Text style={{ textAlign: 'center', color: 'white' }}>Send Offer</Text>
       </TouchableOpacity>
 
 
