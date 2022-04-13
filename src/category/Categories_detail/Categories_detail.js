@@ -11,7 +11,6 @@ import { useFocusEffect } from '@react-navigation/native';
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID, LIKE } = route.params;
-    console.log(UID)
     const [like, setLike] = React.useState(0)
     const [show, setshow] = React.useState(false)
     const [e, setE] = useState({})
@@ -19,7 +18,6 @@ export default function Categories_detail({ route, navigation }) {
 
     const getData = async () => {
         const value = await AsyncStorage.getItem('uid');
-        console.log("value => ", e)
         setUser(JSON?.parse(value))
     }
     useFocusEffect(
@@ -193,6 +191,7 @@ export default function Categories_detail({ route, navigation }) {
                             CATEGORY,
                             TITLE,
                             UID,
+                            NAME : e.NAME,
                         })}>
                             <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, marginBottom: 0, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 16, color: 'black' }}>Send Offer</Text>

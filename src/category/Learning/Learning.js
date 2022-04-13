@@ -53,7 +53,6 @@ export default function Learning({ navigation }) {
       .get()
       .then((correct) => {
         correct.forEach(snapshot => {
-          console.log(snapshot.data())
           firestore()
             .collection('Category')
             .doc('Your all ads there !')
@@ -70,13 +69,11 @@ export default function Learning({ navigation }) {
       // .doc('Your all ads there !')
       // .collection('Learning')
       // .onSnapshot(e => {
-      //   console.log("E => ",e.docs.map((e) => e.data()))
       // })
 
 
   }, [])
 
-  // console.log("STATRED DATA =>aa ",staredData)
 
 
   return (
@@ -148,7 +145,6 @@ export default function Learning({ navigation }) {
                               .get()
                               .then((correct) => {
                                 correct.forEach(snapshot => {
-                                  console.log(snapshot.data())
                                   firestore()
                                     .collection('Category')
                                     .doc('Your all ads there !')

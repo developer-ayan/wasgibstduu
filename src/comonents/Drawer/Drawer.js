@@ -45,7 +45,6 @@ function Drawer() {
           setData(e.docs.map((c) => c.data())))
     }, [])
 
-    console.log()
     const LAGON = 'login'
     return (
         <drawer.Navigator

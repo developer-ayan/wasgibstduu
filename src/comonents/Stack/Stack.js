@@ -47,9 +47,7 @@ function MyStack() {
             const userDetail = await AsyncStorage.getItem('userData')
             const check = JSON.parse(userDetail);
             setSave(check)
-            console.log("DATA => ", check)
         } catch (e) {
-            // error reading value
             console.log(e);
         }
     }

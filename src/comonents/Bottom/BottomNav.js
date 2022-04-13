@@ -17,7 +17,6 @@ import { useSelector } from 'react-redux';
 export default function BottomNav() {
 
     const state = useSelector(state => state.user)
-    console.log("state => ", state)
     React.useEffect(() => {
         try {
             const userDetail = JSON.stringify(state)

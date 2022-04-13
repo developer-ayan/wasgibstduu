@@ -78,7 +78,6 @@ export default function Ads({ navigation }) {
 
   }
 
-  // console.log(category)
 
   const ImageGallery = () => {
     ImagePicker.openPicker({

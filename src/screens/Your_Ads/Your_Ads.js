@@ -192,7 +192,6 @@ export default function manageAds({ navigation }) {
           <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Manage your free and premium advertisement</Text>
         </View>
         {SearchFilterArray.map((e, index) => {
-          // console.log(e.AUTO_ID)
           return e.UID === userData.USER_ID && (
             <View key={index}>
               <View style={{
@@ -220,9 +219,7 @@ export default function manageAds({ navigation }) {
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, justifyContent: 'space-between', paddingHorizontal: 10 }}>
                   <Text style={{ fontSize: 25, color: 'black' }}>{e.PRICE}</Text>
                   <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() =>
-                      console.log(e.AUTO_ID)
-                    }>
+                    <TouchableOpacity>
                       <AntDesign name="edit" size={22} color="#b1b1b1" style={{ color: 'black', paddingVertical: 2, width: 40 }} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() =>

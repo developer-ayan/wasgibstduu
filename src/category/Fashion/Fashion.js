@@ -44,7 +44,6 @@ export default function Fashion({ navigation }) {
 
 
 
-  // console.log("DATA => ",data)
 
   return  (
     

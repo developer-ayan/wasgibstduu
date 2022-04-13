@@ -18,46 +18,23 @@ import { AuthContext } from '../../context/Auth';
 export default function ChatScreen({ route, navigation }) {
 
 
-    const { e, current_user } = route.params
+    const { e } = route.params
     const chat_user_profile = e.PROFILE
     const [message, setMessage] = React.useState('')
     const [data, setData] = React.useState([])
     const [uri, setUri] = React.useState()
-  const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
 
     React.useEffect(() => {
-        
+
         const merge = merge_uid(user?.USER_ID, e.USER_ID)
         get_messages(merge)
 
-        if(data.length === 0){
-            console.log('no msgs')  
-        }else {
-
-            firestore()
-            .collection('Inbox')
-            .doc(user?.USER_ID)
-            .set({
-                message: data.pop(),
-                uid : e.USER_ID,
-                user : user,
-            })
-
-            firestore()
-            .collection('Inbox')
-            .doc(e?.USER_ID)
-            .set({
-                message: data.pop(),
-                uid : user.USER_ID,
-                uid2 : e.USER_ID,
-                user : e,
-            })
-        }
 
 
-      
-      
+
+
 
     }, [])
 
@@ -87,6 +64,17 @@ export default function ChatScreen({ route, navigation }) {
                     uid: user?.USER_ID,
                     date: new Date().toUTCString()
 
+                })
+
+            firestore()
+                .collection('Inbox')
+                .doc(merge)
+                .set({
+                    message: message,
+                    uid: merge,
+                    user1: user?.USER_ID,
+                    user2: e.USER_ID,
+                    user: e,
                 })
             setMessage('')
         }
@@ -119,7 +107,6 @@ export default function ChatScreen({ route, navigation }) {
 
         });
     }
-
 
     return (
         <View style={{ backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>

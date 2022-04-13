@@ -15,7 +15,6 @@ export default function Premium({ navigation }) {
             setData(documentSnapshot.docs.map(e => e.data()));
           });
       }, [])
-    // console.log("DATA => ", 'true' : 'false')
     return (
 
         <View>

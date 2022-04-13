@@ -22,7 +22,7 @@ import {
 } from '../../comonents/Constant/Constant';
 
 export default function Send_offer({ navigation, route }) {
-  const { IMAGE, PRICE, DISCRIPTION, CITY, CATEGORY, TITLE, UID } = route.params
+  const { IMAGE, PRICE, DISCRIPTION, CITY, CATEGORY, TITLE, UID , profile , NAME } = route.params
   const [price, setPrice] = React.useState('')
   const [discription, setDiscription] = React.useState('')
 
@@ -46,7 +46,10 @@ export default function Send_offer({ navigation, route }) {
           CITY: CITY,
           CATEGORY: CATEGORY,
           OFFERPRICE: price,
-          OFFERDISCRIPTION: discription
+          OFFERDISCRIPTION: discription,
+          PROFILE : profile,
+          NAME : NAME
+        
         }).then((e) => alert('True')).catch((err) => alert('error'))
     )
 

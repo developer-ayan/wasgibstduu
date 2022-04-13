@@ -19,15 +19,12 @@ import { useSelector } from 'react-redux';
 export default function manageAds({ navigation }) {
   const [data, setData] = React.useState([])
   const user = useSelector(state => state.user)
-  // var tabId = id.split(" ").pop(); // => "Tabs1"
-  // console.log(tabId)
 
   React.useEffect(() => {
     firestore().collection(`Stared Data ${user.USER_ID}`)
       // .doc(user.USER_ID.pop())
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()))
-        console.log(data.length === 0 ? true : false)
       });
   }, [])
 
@@ -74,7 +71,6 @@ export default function manageAds({ navigation }) {
         ) :
 
         data.map((item, ind) => {
-          console.log("data => ", item)
           return (
             <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 , borderWidth : 50 , borderColor : 'blue' }}>
               <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',

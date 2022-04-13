@@ -31,7 +31,6 @@ export default function SearchBar({ navigation }) {
   const [events, setEvents] = useState([]);
   const [phoneAndTablets, setPhoneAndTablets] = useState([]);
 
-  console.log("price1 => ", filterPrice)
 
 
   const [show, setshow] = React.useState(false)
@@ -126,7 +125,6 @@ export default function SearchBar({ navigation }) {
 
   }, [])
 
-  console.log(SearchFilterArray)
 
 
 
@@ -136,13 +134,11 @@ export default function SearchBar({ navigation }) {
     })
 
     setFilterArray(newData)
-    // console.log("newData => ", newData)
   }
 
   const searchFilter = (text) => {
     if (text) {
       const newData = SearchFilterArray.filter((item) => {
-        console.log("item => ", item)
         const ItemData = item.TITLE ? item.TITLE.toUpperCase()
           : ''.toUpperCase()
         const textData = text.toUpperCase()

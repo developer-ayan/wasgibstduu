@@ -13,7 +13,6 @@ function CustomDrawer(props) {
 
     const [data, setData] = React.useState({})
     const { user } = useContext(AuthContext)
-    console.log("asasda",user)
 
 
     React.useEffect(() => {
@@ -25,7 +24,6 @@ function CustomDrawer(props) {
             })
     }, [user?.USER_ID])
 
-    // console.log("DATA => ", data.PROFILE === "" ? 'NOT AVAILABLE PICTURE' : data.PROFILE)
 
     return (
         <View style={{ flex: 1 }}>

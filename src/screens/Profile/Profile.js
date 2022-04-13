@@ -38,7 +38,6 @@ function Profile({ navigation }) {
                 .doc(user.USER_ID)
                 .onSnapshot((e) => {
                     setData(e.data())
-                    console.log(data.PROFILE)
                 })
         }, [])
 
@@ -55,7 +54,6 @@ function Profile({ navigation }) {
             cropping: true,
             compressImageQuality: 0.7
         }).then(image => {
-            console.log(image);
             setImage(image.path);
             setModalVisible(true)
             this.bs.current.snapTo(1);
@@ -106,11 +104,9 @@ function Profile({ navigation }) {
     bs = React.createRef();
     fall = new Animated.Value(1);
 
-    // console.log("profileImage => ", profileImage)
 
     const submitPost = async () => {
         const imageUrl = await uploadImage()
-        // console.log("imageUrl => ", imageUrl)
         setProfileImage(imageUrl)
         firestore()
             .collection('Users')
@@ -146,7 +142,6 @@ function Profile({ navigation }) {
             await task;
             const url = await storageRef.getDownloadURL()
 
-            console.log("url  => ", url)
             setUploading(false)
 
             return url;
