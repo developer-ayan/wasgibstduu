@@ -34,10 +34,8 @@ export default function Fashion({ navigation }) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Fashion')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Fashion'));
         setLoading(false)
       });
   }, [])

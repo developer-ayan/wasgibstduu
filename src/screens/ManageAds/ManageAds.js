@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, TextInput, ScrollView, Image, TouchableOpacity, Pressable } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,6 +10,7 @@ import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import * as Animatable from 'react-native-animatable';
 import { useSelector } from 'react-redux';
+import { AuthContext } from '../../context/Auth';
 
 
 
@@ -18,7 +19,7 @@ import { useSelector } from 'react-redux';
 
 export default function manageAds({ navigation }) {
   const [data, setData] = React.useState([])
-  const user = useSelector(state => state.user)
+  const {user} = useContext(AuthContext)
 
   React.useEffect(() => {
     firestore().collection(`Stared Data ${user.USER_ID}`)
@@ -72,7 +73,7 @@ export default function manageAds({ navigation }) {
 
         data.map((item, ind) => {
           return (
-            <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 , borderWidth : 50 , borderColor : 'blue' }}>
+            <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10  }}>
               <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
                 {
                   IMAGE: item.IMAGE,

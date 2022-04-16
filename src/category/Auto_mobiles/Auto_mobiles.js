@@ -31,10 +31,8 @@ export default function Auto_mobiles({ navigation }) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Auto Mobiles')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Auto Mobiles'));
         setLoading(false)
       });
   }, [])

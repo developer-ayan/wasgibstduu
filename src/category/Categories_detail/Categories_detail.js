@@ -201,6 +201,7 @@ export default function Categories_detail({ route, navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate('chatscreen', {
                             e,
                             current_user: user,
+                            title : TITLE
                         })}>
                             <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 16, color: 'black' }}>Send Message</Text>

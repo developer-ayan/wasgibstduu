@@ -35,10 +35,8 @@ export default function jobs({ navigation }) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Jobs')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Jobs'));
         setLoading(false)
       });
   }, [])

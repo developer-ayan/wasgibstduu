@@ -36,6 +36,7 @@ import Your_Ads from '../../screens/Your_Ads/Your_Ads';
 import Send_offer from '../../category/Send_offer/Send_offer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logout from '../../screens/Logout/Logout';
+import StaredChat from '../../screens/Inbox/StaredChat'
 const Stack = createStackNavigator();
 function MyStack() {
 
@@ -61,20 +62,10 @@ function MyStack() {
         
         <Stack.Navigator screenOptions={{ headerShown: false, presentation: 'modal', animation: 'slide_from_right', }}>
 
-            {/* Authentication  */}
-
-            {/* {!save ? 
-            
-        } */}
-            
-
-            {/* bottom navigation */}
-
             <Stack.Screen name="BottomNav" component={BottomNav} options={{ animation: 'slide_from_right' }} />
 
-            {/* Display Screens */}
-
             <Stack.Screen name="PremiumAddsManage" component={PremiumAddsManage} options={{ animation: 'slide_from_right' }} />
+            <Stack.Screen name="Stared_chats" component={StaredChat} />
             <Stack.Screen name="chatscreen" component={ChatScreen}  />
             <Stack.Screen name="manageAds" component={manageAds}  />
             <Stack.Screen name="Your_Ads" component={Your_Ads} />
@@ -83,8 +74,6 @@ function MyStack() {
             <Stack.Screen name="Home" component={Home}/>
             <Stack.Screen name="Ads" component={Ads} />
             <Stack.Screen name="Logout" component={Logout} />
-
-
 
             {/* Category */}
 

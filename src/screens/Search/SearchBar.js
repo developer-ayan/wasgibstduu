@@ -43,86 +43,11 @@ export default function SearchBar({ navigation }) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Fashion')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
         setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Auto Mobiles')
-      .onSnapshot(documentSnapshot => {
-        setAutoMobiles(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Electronics')
-      .onSnapshot(documentSnapshot => {
-        setElectronics(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Phone & tablets')
-      .onSnapshot(documentSnapshot => {
-        setPhoneAndTablets(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Real States')
-      .onSnapshot(documentSnapshot => {
-        setRealStates(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Jobs')
-      .onSnapshot(documentSnapshot => {
-        setjobs(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
         setLoading(false)
       });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Services')
-      .onSnapshot(documentSnapshot => {
-        setServices(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Learning')
-      .onSnapshot(documentSnapshot => {
-        setLearning(documentSnapshot.docs.map(e => e.data()));
-        // setMaster(documentSnapshot.docs.map(e => e.data()));
-      });
-
-      firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Events')
-      .onSnapshot(documentSnapshot => {
-        setEvents(documentSnapshot.docs.map(e => e.data()));
-      });
-
-
   }, [])
 
 
@@ -132,13 +57,12 @@ export default function SearchBar({ navigation }) {
     const newData = master.filter((item) => {
       return parseInt(item.PRICE) <= filterPrice || item.CITY == city.toUpperCase() || item.CATEGORY == category.toUpperCase();
     })
-
     setFilterArray(newData)
   }
 
   const searchFilter = (text) => {
     if (text) {
-      const newData = SearchFilterArray.filter((item) => {
+      const newData = data.filter((item) => {
         const ItemData = item.TITLE ? item.TITLE.toUpperCase()
           : ''.toUpperCase()
         const textData = text.toUpperCase()

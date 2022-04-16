@@ -18,7 +18,8 @@ import { AuthContext } from '../../context/Auth';
 export default function ChatScreen({ route, navigation }) {
 
 
-    const { e } = route.params
+    const { e, title } = route.params
+    console.log("chat screen ",title)
     const chat_user_profile = e.PROFILE
     const [message, setMessage] = React.useState('')
     const [data, setData] = React.useState([])
@@ -27,15 +28,8 @@ export default function ChatScreen({ route, navigation }) {
 
 
     React.useEffect(() => {
-
         const merge = merge_uid(user?.USER_ID, e.USER_ID)
         get_messages(merge)
-
-
-
-
-
-
     }, [])
 
 
@@ -57,19 +51,21 @@ export default function ChatScreen({ route, navigation }) {
         } else {
             const merge = merge_uid(user?.USER_ID, e?.USER_ID)
             firestore()
+                .collection('chatting')
+                .doc(merge)
                 .collection(`${merge}`)
                 .add({
                     msg: message,
                     name: user?.NAME,
                     uid: user?.USER_ID,
                     date: new Date().toUTCString()
-
                 })
 
             firestore()
                 .collection('Inbox')
                 .doc(merge)
                 .set({
+                    title: title,
                     message: message,
                     uid: merge,
                     user1: user?.USER_ID,
@@ -82,7 +78,9 @@ export default function ChatScreen({ route, navigation }) {
 
     const get_messages = (uid) => {
         firestore()
-            .collection(uid)
+        .collection('chatting')
+        .doc(uid)
+        .collection(uid)
             .orderBy('date')
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
@@ -125,6 +123,9 @@ export default function ChatScreen({ route, navigation }) {
                 // borderColor: 'black',
                 // height: '80%',
                 // flexDirection: 'column-reverse'
+               flex : 1,
+               borderWidth : 1,
+           
             }}>
                 {
                     data.map((e, v) => {
@@ -134,8 +135,7 @@ export default function ChatScreen({ route, navigation }) {
                                 width: '100%',
                                 flexDirection: 'row',
                                 justifyContent: uid ? 'flex-end' : 'flex-start',
-                                alignItems: 'center'
-
+                                alignItems: 'center',
                             }}>
 
                                 {uid ? null :

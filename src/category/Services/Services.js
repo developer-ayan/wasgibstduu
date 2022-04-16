@@ -32,22 +32,13 @@ export default function Services({ navigation }) {
 
   const user = useSelector(state => state.user)
 
-  React.useEffect(() => {
-    firestore().collection('Services')
-      .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
-        setLoading(false)
-      });
-  }, [])
 
 
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Services')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Services'));
         setLoading(false)
       });
   }, [])

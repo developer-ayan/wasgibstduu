@@ -33,16 +33,15 @@ export default function Events({ navigation }) {
 
   const user = useSelector(state => state.user)
 
-  React.useEffect(() => {
-    firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Events')
-      .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
-        setLoading(false)
-      });
-  }, [])
+    React.useEffect(() => {
+      firestore()
+        .collection('Category')
+        .onSnapshot(documentSnapshot => {
+          setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Events'));
+          setLoading(false)
+        });
+    }, [])
+  
 
   return (
     <ScrollView style={styles.ScrollView}>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   View,
   Image,
@@ -19,6 +19,7 @@ import {
   Colors,
   Sizes
 } from '../../comonents/Constant/Constant';
+import { AuthContext } from '../../context/Auth';
 
 export default function Phone_and_screen({ navigation }) {
 
@@ -30,15 +31,14 @@ export default function Phone_and_screen({ navigation }) {
     setshow(!show)
   }
 
-  const user = useSelector(state => state.user)
+ const {user } = useContext(AuthContext)
+
 
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Phone & tablets')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Phone & tablets'));
         setLoading(false)
       });
   }, [])
@@ -99,7 +99,7 @@ export default function Phone_and_screen({ navigation }) {
 
                           <Pressable onPress={() => {
                             firestore()
-                              .collection(`Stared Data ${user.USER_ID}`)
+                              .collection(`Stared Data ${user?.USER_ID}`)
                               .doc(item.DISCRIPTION)
                               .set({
                                 IMAGE: item.ADS_IMAGES,

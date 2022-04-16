@@ -36,42 +36,12 @@ export default function Learning({ navigation }) {
   const user = useSelector(state => state.user)
 
   React.useEffect(() => {
-
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Learning')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Learning'));
         setLoading(false)
       });
-
-    firestore()
-      .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Learning')
-      .get()
-      .then((correct) => {
-        correct.forEach(snapshot => {
-          firestore()
-            .collection('Category')
-            .doc('Your all ads there !')
-            .collection('Learning')
-            .doc(snapshot.id)
-            .update({
-              AUTO_ID: snapshot.id
-            })
-        })
-      })
-
-      // firestore()
-      // .collection('Category')
-      // .doc('Your all ads there !')
-      // .collection('Learning')
-      // .onSnapshot(e => {
-      // })
-
-
   }, [])
 
 

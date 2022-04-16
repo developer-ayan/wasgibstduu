@@ -72,8 +72,6 @@ function create_ads(user) {
         const User_data = user
                 firestore()
                     .collection(`Category`)
-                    .doc('Your all ads there !')
-                    .collection(`${User_data.category}`)
                     .add({
                         CATEGORY: User_data.category,
                         TITLE: User_data.title,

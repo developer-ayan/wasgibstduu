@@ -16,14 +16,12 @@ export default function Home({ navigation }) {
   const [master, setMaster] = React.useState([])
   const [password, setPassword] = React.useState('')
 
+
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Fashion')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
-        setMaster(documentSnapshot.docs.map(e => e.data()));
         setLoading(false)
       });
   }, [])

@@ -31,10 +31,8 @@ export default function Electronics({ navigation }) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
-      .doc('Your all ads there !')
-      .collection('Electronics')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
+        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Electronics'));
         setLoading(false)
       });
   }, [])
@@ -49,7 +47,7 @@ export default function Electronics({ navigation }) {
       </TouchableOpacity>
 
       <View style={styles.Main_ads_veiw}>
-        <Text style={styles.Ads_name}>{Categories_detail.auto_mobiles}</Text>
+        <Text style={styles.Ads_name}>{Categories_detail.electronics}</Text>
         <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
       </View>
 

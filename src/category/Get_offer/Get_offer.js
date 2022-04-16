@@ -72,7 +72,9 @@ function Get_offer() {
             data.map((e, v) => {
               return (
                 <TouchableOpacity key={v} onPress={() => navigation.navigate('chatscreen', {
-                  e,
+                 e: e.user,
+                  title : e.TITLE,
+                  
               })}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderColor: '#F8F8F8', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'white' }}>
                     <View>
