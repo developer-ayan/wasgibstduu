@@ -11,8 +11,13 @@ import { firebase } from '@react-native-firebase/auth';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 
-export default function Ads({ navigation }) {
+
+export default function EditAds({ navigation , route }) {
+    const {data} = route.params
+
+    console.log("data ",data)
 
   const [uri, setUri] = React.useState(null)
   const [category, setCategory] = React.useState('')
@@ -46,20 +51,24 @@ export default function Ads({ navigation }) {
 
       const imageUrl = await ImageHandle()
 
-      let user = {
-        
-        category : state.EMAIL ==='Info@wasgibstdu.de' ? 'Premiums' : category,
-        title,
-        discription,
-        price,
-        city,
-        imageUrl,
-        name: state.NAME,
-        UID: state.USER_ID,
-        EMAIL : state?.EMAIL
-      }
-      dispatch(create_ads(user))
-      navigation.navigate('Home')
+      firestore()
+      .collection(`Category`)
+      .doc(data.AUTO_ID)
+      .set({
+          CATEGORY: category === '' ? data.CATEGORY : category,
+          TITLE: title === '' ? data.TITLE : title,
+          DISCRIPTION: discription === '' ? data.DISCRIPTION : discription,
+          PRICE: price === '' ? data.PRICE : price,
+          CITY: city === "" ? data.CITY : city,
+          ADS_IMAGES: uri === null && uri === null ?  data.ADS_IMAGES : imageUrl,
+          UID: data.UID,
+          NAME: data.NAME,
+          LIKE: data.LIKE,
+          TIME_ADS: data.TIME_ADS,
+          EMAIL : data.EMAIL
+      })
+
+      navigation.goBack()
       setTitle('')
       setDiscription('')
       setPrice('')
@@ -135,11 +144,11 @@ export default function Ads({ navigation }) {
             </TouchableOpacity>
           </View>
           {state.EMAIL === 'Info@wasgibstdu.de' ?
-            <Text style={styles.CreateAd}>Create Premium Ads</Text>
+            <Text style={styles.CreateAd}>Edit Ads</Text>
             :
-            <Text style={styles.CreateAd}>Create Ad</Text>
+            <Text style={styles.CreateAd}>Edit Ads</Text>
           }
-          <Text style={styles.Advertisments}>Create new advertisement</Text>
+          <Text style={styles.Advertisments}>Edit advertisement</Text>
         </View>
         {state.EMAIL === 'Info@wasgibstdu.de' ?
          null
@@ -153,7 +162,7 @@ export default function Ads({ navigation }) {
               <SelectDropdown
                 data={countries}
                 width="100%"
-                defaultButtonText='select a category'
+                defaultButtonText={data.CATEGORY}
                 // buttonStyle={{ width: '100%' }}
                 renderDropdownIcon={() => <Entypo name="chevron-down" size={20} color="#ababab" style={{ fontWeight: 'bold' }} />}
                 dropdownIconPosition='right'
@@ -185,6 +194,7 @@ export default function Ads({ navigation }) {
           <TextInput
             onChangeText={(text) => setTitle(text)}
             value={title}
+            // defaultValue={data.TITLE}
             style={styles.Input} />
         </View>
         <View style={{ marginTop: 20 }}>
@@ -193,34 +203,43 @@ export default function Ads({ navigation }) {
             onChangeText={(text) => setDiscription(text)}
             value={discription}
             multiline={true}
+            // defaultValue={data.DISCRIPTION}        
             style={styles.Input} />
         </View>
         <View style={{ marginTop: 20 }}>
           <Text style={styles.AdTitle}>PRICE</Text>
           <TextInput
             onChangeText={(text) => setPrice(text)}
-            value={price}
+            // defaultValue={data.PRICE}    
+            value={price}    
             style={styles.Input} />
         </View>
         <View style={{ marginTop: 20 }}>
           <Text style={styles.AdTitle}>CITY</Text>
           <TextInput
             onChangeText={(text) => setCity(text)}
-            value={city}
+            value={city}    
             placeholder='Select City'
             style={styles.Input} />
         </View>
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 20 , flexDirection : 'row' , alignItems : 'center'}}>
 
           <TouchableOpacity onPress={ImageGallery}>
-            <Text style={styles.AdTitle}>UPLOAD IMAGE</Text>
+          <View>
+            <Image
+              style={{ height: 95, width: 95, borderRadius: 2, marginTop: 1 }}
+              source={{ uri: 'https://icon-library.com/images/gallery-icon-png/gallery-icon-png-18.jpg' }}
+            />
+          </View>
           </TouchableOpacity>
+         
           <View>
             <Image
               style={{ height: 80, width: 80, borderRadius: 2, marginTop: 1 }}
-              source={{ uri: uri }}
+              source={{ uri: uri === null ? data.ADS_IMAGES  : uri }}
             />
           </View>
+         
         </View>
 
         {uploading ? (

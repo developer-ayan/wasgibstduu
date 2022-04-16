@@ -78,14 +78,7 @@ React.useEffect(() => {
           return (
             <View key={index}>
               <View style={{
-                padding: 10, borderRadius: 10, marginTop: 20, shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.18,
-                shadowRadius: 1.00,
-                elevation: 1,
+                padding: 10, borderRadius: 10, marginTop: 20,
               }}>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
@@ -102,16 +95,14 @@ React.useEffect(() => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, justifyContent: 'space-between', paddingHorizontal: 10 }}>
                   <Text style={{ fontSize: 25, color: 'black' }}>{e.PRICE}</Text>
                   <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('EditAds' ,{data : e})}>
                       <AntDesign name="edit" size={22} color="#b1b1b1" style={{ color: 'black', paddingVertical: 2, width: 40 }} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() =>
                       firestore()
                         .collection('Category')
                         .doc(e.AUTO_ID)
-                        .delete()
-                      
-
+                        .delete() 
                     }>
                       <AntDesign name="delete" size={22} color="#b1b1b1" style={{ color: 'black', paddingVertical: 2 }} />
                     </TouchableOpacity>

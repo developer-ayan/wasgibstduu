@@ -37,6 +37,7 @@ import Send_offer from '../../category/Send_offer/Send_offer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logout from '../../screens/Logout/Logout';
 import StaredChat from '../../screens/Inbox/StaredChat'
+import EditAds from '../../screens/EditAds/EditAds';
 const Stack = createStackNavigator();
 function MyStack() {
 
@@ -87,6 +88,7 @@ function MyStack() {
             <Stack.Screen name="Learning" component={Learning}  />
             <Stack.Screen name="Services" component={Services}  />
             <Stack.Screen name="Fashion" component={Fashion}  />
+            <Stack.Screen name="EditAds" component={EditAds}  />
             <Stack.Screen name="Events" component={Events}  />
             <Stack.Screen name="Jobs" component={Jobs}  />
 

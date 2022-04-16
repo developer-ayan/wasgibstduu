@@ -1,5 +1,5 @@
 import { Button, View, Image, Text, TouchableOpacity, ScrollView, ActivityIndicator, Pressable, StyleSheet, ImageBackground, Modal } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -12,6 +12,7 @@ import Animated from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native';
+import { AuthContext } from '../../context/Auth';
 
 function Profile({ navigation }) {
     // const [image, setImage] = React.useState(null)
@@ -25,21 +26,17 @@ function Profile({ navigation }) {
     const [modalVisible, setModalVisible] = React.useState(false);
 
     const [transeferred, setTranseferred] = React.useState(0)
-    const [user, setUser] = React.useState({})
+    const { user } = useContext(AuthContext)
+    console.log("asda ",user)
 
-    const getData = async () => {
-        const value = await AsyncStorage.getItem('uid');
-        setUser(JSON?.parse(value))
-    }
-        React.useEffect(() => {
-            getData()
-            firestore()
-                .collection('Users')
-                .doc(user.USER_ID)
-                .onSnapshot((e) => {
-                    setData(e.data())
-                })
-        }, [])
+    React.useEffect(() => {
+        firestore()
+            .collection('Users')
+            .doc(user?.USER_ID)
+            .onSnapshot((e) => {
+                setData(e.data())
+            })
+    }, [])
 
     // React.useEffect(() => {
 
@@ -212,7 +209,7 @@ function Profile({ navigation }) {
                     <View style={{ width: '100%' }}>
                         <View style={{ alignItems: 'center', paddingVertical: 20, paddingBottom: 70 }}>
                             <View>
-                                {user?.PROFILE === "" && user?.PROFILE === undefined ?
+                                {data?.PROFILE === "" && data?.PROFILE === undefined ?
                                     <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU' }} />
                                     :
                                     <Image style={{ borderRadius: 100, height: 100, width: 100 }} source={{ uri: data?.PROFILE }} />
@@ -235,15 +232,15 @@ function Profile({ navigation }) {
                 <View style={{ marginTop: -50, backgroundColor: 'white', borderTopRightRadius: 30, borderTopLeftRadius: 30 }}>
                     <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 20 }}>
                         <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 50 }}>Username</Text>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user?.NAME}</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{data?.NAME}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
                         <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 70 }}>Phone</Text>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user?.PHONE}</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{data?.PHONE}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingVertical: 20, backgroundColor: '#f7f7f7', marginRight: 10, marginLeft: 10, borderRadius: 10, marginTop: 10 }}>
                         <Text style={{ fontSize: 10, color: '#b3b3b3', marginRight: 30 }}>Email Address</Text>
-                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{user?.EMAIL}</Text>
+                        <Text style={{ fontSize: 10, color: '#b3b3b3' }}>{data?.EMAIL}</Text>
                     </View>
                 </View>
 

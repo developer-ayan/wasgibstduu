@@ -194,7 +194,6 @@ export default function Login({ }) {
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', lineHeight: 30 }}>
               <TextInput
                 placeholder="Email Address"
-                autoCapitalize="none"
                 onChangeText={(val) => textInputChange(val)}
                 onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
                 style={{ padding: 20, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
@@ -235,7 +234,6 @@ export default function Login({ }) {
               <TextInput
                 placeholder="Your Password"
                 secureTextEntry={true}
-                autoCapitalize="none"
                 onChangeText={(val) => handlePasswordChange(val)}
                 style={{ padding: 20, width: "82%", color: '#b3b3b3', fontSize: 14, opacity: 0.4 }}
               />

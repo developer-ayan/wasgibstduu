@@ -22,8 +22,6 @@ function signUp(user) {
                         PASSWORD: user.password,
                         CONFIRM_PASSWORD: user.confirm,
                     })
-
-
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
@@ -70,6 +68,7 @@ const sign_in = (user) => {
 function create_ads(user) {
     return (dispatch) => {
         const User_data = user
+        console.log(User_data)
                 firestore()
                     .collection(`Category`)
                     .add({
@@ -82,7 +81,8 @@ function create_ads(user) {
                         UID: User_data.UID,
                         NAME: User_data.name,
                         LIKE: [""],
-                        TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date())
+                        TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date()),
+                        EMAIL : User_data.EMAIL
                     })
             
     }
