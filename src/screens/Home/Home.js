@@ -82,6 +82,7 @@ export default function Home({ navigation }) {
   {/* <View style = {{width : '10%'}}></View> */}
 
             {data.map((item , index) => {
+              console.log(item.ADS_IMAGES.map((item) => item))
               return(
                 <View key={index} style={{ width : '48%' , backgroundColor : 'white'  , marginBottom : 10  }}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
@@ -96,7 +97,7 @@ export default function Home({ navigation }) {
                 )}>
                   <Image
                     style={{ width: '100%', height: 120 }}
-                    source={{ uri: item.ADS_IMAGES }}
+                    source={{ uri: item.ADS_IMAGES?.[0] }}
                   />
                   <View style={{ paddingHorizontal: 8 }}>
                     <Text style={{ paddingVertical: 5, color: '#d3d3d3', fontSize: 8 }}>{item.CATEGORY} - {item.CITY}</Text>

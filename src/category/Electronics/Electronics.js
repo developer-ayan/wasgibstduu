@@ -78,9 +78,9 @@ export default function Electronics({ navigation }) {
                   <Animatable.View duration={1000} animation="bounceInLeft" style={styles.Animatable}>
                     <View style={styles.Animatable_child}>
                       <View style={styles.Animatable_child_to_child}>
-                        <Image
+                      <Image
                           style={styles.Animatable_image}
-                          source={{ uri: item.ADS_IMAGES }}
+                          source={{ uri: item.ADS_IMAGES?.[0]}}
                         />
                       </View>
                       <View style={styles.Animatable_Para}>

@@ -38,7 +38,6 @@ export default function SearchBar({ navigation }) {
     setshow(!show)
   }
 
-  const SearchFilterArray = [ ...autoMobiles , ...phoneAndTablets , ...eletronics , ...realStates , ...data , ...jobs , ...Services ,...learning  , ...events]
 
   React.useEffect(() => {
     firestore()
@@ -49,6 +48,7 @@ export default function SearchBar({ navigation }) {
         setLoading(false)
       });
   }, [])
+
 
 
 
@@ -207,11 +207,12 @@ export default function SearchBar({ navigation }) {
         </View>
       </View>
 
-      {filterArray.length === 0 ?
+      {data.length === 0 ?
         loading ?
           <Loader />
           :
-          SearchFilterArray.map((item, ind) => {
+          data.map((item, ind) => {
+            console.log("adsadasda",item.ADS_IMAGES)
             return (
               <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
@@ -231,9 +232,9 @@ export default function SearchBar({ navigation }) {
 
                     <View style={{ flexDirection: 'row', width: '100%' }}>
                       <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
-                        <Image
+                      <Image
                           style={{ height: 100, width: '100%', borderRadius: 2 }}
-                          source={{ uri: item.ADS_IMAGES }}
+                          source={{ uri: item.ADS_IMAGES?.[0] }}
                         />
                       </View>
                       <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', lineHeihgt: 80 }}>
@@ -273,7 +274,7 @@ export default function SearchBar({ navigation }) {
         loading ?
           <Loader />
           :
-          filterArray.map((item, ind) => {
+          data.map((item, ind) => {
 
             return (
               <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
@@ -295,7 +296,7 @@ export default function SearchBar({ navigation }) {
                       <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
                         <Image
                           style={{ height: 100, width: '100%', borderRadius: 2 }}
-                          source={{ uri: item.ADS_IMAGES }}
+                          source={{ uri: item.ADS_IMAGES?.[0] }}
                         />
                       </View>
                       <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', lineHeihgt: 80 }}>

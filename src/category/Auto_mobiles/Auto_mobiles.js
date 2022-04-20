@@ -80,7 +80,7 @@ export default function Auto_mobiles({ navigation }) {
                       <View style={styles.Animatable_child_to_child}>
                         <Image
                           style={styles.Animatable_image}
-                          source={{ uri: item.ADS_IMAGES }}
+                          source={{ uri: item.ADS_IMAGES?.[0]}}
                         />
                       </View>
                       <View style={styles.Animatable_Para}>

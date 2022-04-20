@@ -22,7 +22,7 @@ import {
 } from '../../comonents/Constant/Constant';
 
 export default function Send_offer({ navigation, route }) {
-  const { IMAGE, PRICE, DISCRIPTION, CITY, CATEGORY, TITLE, UID , profile , NAME , e } = route.params
+  const { IMAGE, PRICE, DISCRIPTION, CITY, CATEGORY, TITLE, UID, profile, NAME, e } = route.params
   const [price, setPrice] = React.useState('')
   const [discription, setDiscription] = React.useState('')
 
@@ -47,11 +47,11 @@ export default function Send_offer({ navigation, route }) {
           CATEGORY: CATEGORY,
           OFFERPRICE: price,
           OFFERDISCRIPTION: discription,
-          PROFILE : profile,
-          NAME : NAME,
-          user : e
-          
-        
+          PROFILE: profile,
+          NAME: NAME,
+          user: e
+
+
         }).then((e) => alert('True')).catch((err) => alert('error'))
     )
 
@@ -81,7 +81,7 @@ export default function Send_offer({ navigation, route }) {
               <View style={styles.Animatable_child_to_child}>
                 <Image
                   style={styles.Animatable_image}
-                  source={{ uri: IMAGE }}
+                  source={{ uri: IMAGE[0] }}
                 />
               </View>
               <View style={styles.Animatable_Para}>

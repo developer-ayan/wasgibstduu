@@ -41,10 +41,15 @@ export default function Ads({ navigation }) {
   )
 
 
+  
+
+  
+
+
+
   const CreateAds = async () => {
 
 
-      const imageUrl = await ImageHandle()
 
       let user = {
         
@@ -53,7 +58,7 @@ export default function Ads({ navigation }) {
         discription,
         price,
         city,
-        imageUrl,
+        imageUrl : image ,
         name: state.NAME,
         UID: state.USER_ID,
         EMAIL : state?.EMAIL
@@ -65,6 +70,7 @@ export default function Ads({ navigation }) {
       setPrice('')
       setCity('')
       setCategory('')
+      setImage([])
 
   }
 
@@ -76,6 +82,46 @@ export default function Ads({ navigation }) {
       cropping: true
     }).then(image => {
       setUri(image.path)
+      const ImageHandle = async () => {
+        const uploadUri = uri;
+        let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+    
+        const extansion = fileName.split('.').pop();
+        const name = fileName.split('.').slice(0, -1).join('.');
+        fileName = name + Date.now() + '.' + extansion;
+    
+        setUploading(true);
+        setTranseferred(0)
+    
+        const storageRef = storage().ref(`photos/${id}`)
+        const task = storageRef.putFile(uploadUri)
+    
+        task.on('state_changed', taskSnapshot => {
+          setTranseferred(
+            Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+          )
+        });
+    
+        try {
+          await task;
+    
+          const url = await storageRef.getDownloadURL()
+    
+          setImage((previuos) => {
+            return [...previuos, url];
+          });
+    
+          setUploading(false)
+          Alert.alert('Your Ad Has Been Upload')
+          return url;
+        } catch (e) {
+          console.log(e)
+        }
+        setUri(null)
+      }
+
+      ImageHandle()
+
     });
   }
 
@@ -115,6 +161,10 @@ export default function Ads({ navigation }) {
 
       const url = await storageRef.getDownloadURL()
 
+      setImage((previuos) => {
+        return [...previuos, url];
+      });
+
       setUploading(false)
       Alert.alert('Your Ad Has Been Upload')
       return url;
@@ -123,6 +173,9 @@ export default function Ads({ navigation }) {
     }
     setUri(null)
   }
+
+
+
 
   return (
     <ScrollView style={{ flex: 1, }}>

@@ -17,7 +17,6 @@ import firestore from '@react-native-firebase/firestore';
 export default function EditAds({ navigation , route }) {
     const {data} = route.params
 
-    console.log("data ",data)
 
   const [uri, setUri] = React.useState(null)
   const [category, setCategory] = React.useState('')
@@ -67,14 +66,12 @@ export default function EditAds({ navigation , route }) {
           TIME_ADS: data.TIME_ADS,
           EMAIL : data.EMAIL
       })
-
       navigation.goBack()
       setTitle('')
       setDiscription('')
       setPrice('')
       setCity('')
       setCategory('')
-
   }
 
 

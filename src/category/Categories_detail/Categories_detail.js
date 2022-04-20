@@ -8,6 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { SliderBox } from 'react-native-image-slider-box';
 
 export default function Categories_detail({ route, navigation }) {
     const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID, LIKE } = route.params;
@@ -43,24 +44,29 @@ export default function Categories_detail({ route, navigation }) {
         setLike(like - 1)
     }
 
+
     return (
         <ScrollView style={{ backgroundColor: 'white' }}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginHorizontal: 10 }}>
-                {/* icon back */}
                 <TouchableOpacity onPress={navigation.goBack}>
                     <Text style={{ color: 'white', fontSize: 20, marginVertical: 15, }}>
-                        {/* {isEnabled ? } */}
                         <Feather name="arrow-left" size={25} color="black" />
                     </Text>
-
                 </TouchableOpacity>
 
             </View>
 
             <View>
-                <Image
-                    style={{ width: '100%', height: 300, borderRadius: 5 }}
-                    source={{ uri: IMAGE }}
+                <SliderBox
+                    sliderBoxHeight={250}
+                    circleLoop={true}
+                    autoplay ={true}
+                    dotColor={'white'}
+                    inactiveDotColor={'gray'}
+                    images={IMAGE}
+                    onCurrentImagePressed={index =>
+                        console.warn(`image ${index + 1} pressed`)
+                    }
                 />
             </View>
             <View style={{
@@ -84,9 +90,7 @@ export default function Categories_detail({ route, navigation }) {
 
                         <AntDesign
                             name='sharealt' size={25}
-                            style={{
-                                color: 'red',
-                            }} />
+                            style={{color: 'red',}} />
 
                     </Text>
                     <Text>
@@ -168,8 +172,9 @@ export default function Categories_detail({ route, navigation }) {
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Image
                         style={{ width: 300, height: 300, borderRadius: 5, marginTop: 20 }}
-                        source={{ uri: IMAGE }}
+                        source={{ uri: IMAGE[0] }}
                     />
+
                 </View>
             </View>
 
@@ -191,7 +196,7 @@ export default function Categories_detail({ route, navigation }) {
                             CATEGORY,
                             TITLE,
                             UID,
-                            NAME : e.NAME,
+                            NAME: e.NAME,
                         })}>
                             <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, marginBottom: 0, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 16, color: 'black' }}>Send Offer</Text>
@@ -201,7 +206,7 @@ export default function Categories_detail({ route, navigation }) {
                         <TouchableOpacity onPress={() => navigation.navigate('chatscreen', {
                             e,
                             current_user: user,
-                            title : TITLE
+                            title: TITLE
                         })}>
                             <View style={{ backgroundColor: '#f0f2f5', flexDirection: 'row', justifyContent: 'center', padding: 15, margin: 10, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 16, color: 'black' }}>Send Message</Text>
