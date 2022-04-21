@@ -82,7 +82,6 @@ export default function Home({ navigation }) {
   {/* <View style = {{width : '10%'}}></View> */}
 
             {data.map((item , index) => {
-              console.log(item.ADS_IMAGES.map((item) => item))
               return(
                 <View key={index} style={{ width : '48%' , backgroundColor : 'white'  , marginBottom : 10  }}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
