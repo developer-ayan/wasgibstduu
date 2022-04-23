@@ -1,27 +1,53 @@
 import React, { useContext } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Pressable } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Pressable , ActivityIndicator } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 import Premium from './Premium';
 import Category from './Category';
+import { AuthContext } from '../../context/Auth';
 
 export default function Home({ navigation }) {
   const [data, setData] = React.useState([])
   const [loading, setLoading] = React.useState(true)
+  const [messages, setMessages] = React.useState([])
+  const {user, setMessageCounting} = useContext(AuthContext)
+
+  const ChatInbox = () => {
+    firestore()
+      .collection('Inbox')
+      .onSnapshot((documentSnapshop) => {
+        setMessages(documentSnapshop.docs.map((e) => e.data()).filter(function (item) {
+          return item.user1.uid === user?.USER_ID || item.user2.uid === user?.USER_ID
+        }))
+        setLoading(false)
+      })
+  }
+  const filter1 = messages?.filter((item ) => item.user1.uid !== user.USER_ID)
+
+  setMessageCounting(filter1.length)
 
 
   React.useEffect(() => {
+    ChatInbox()
     firestore()
       .collection('Category')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
-        setLoading(false)
+        setTimeout(() => {
+          setLoading(false)
+        },200);
       });
   }, [])
 
 
-  return (
+  return loading ?
+  (<ActivityIndicator
+    color={'black'}
+    size={'large'}
+    style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} />
+  )
+  : (
 
     <ScrollView style={{
       flex: 1,

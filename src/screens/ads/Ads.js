@@ -102,7 +102,6 @@ export default function Ads({ navigation }) {
 
   }
 
-  console.log("image ",image)
 
 
   const ImageGallery = () => {

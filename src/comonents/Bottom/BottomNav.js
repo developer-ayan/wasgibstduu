@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -13,10 +13,12 @@ import Drawer from '../Drawer/Drawer';
 import Profile from '../../screens/Profile/Profile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
+import { AuthContext } from '../../context/Auth';
 
 export default function BottomNav() {
 
     const state = useSelector(state => state.user)
+    const {messageCounting} = useContext(AuthContext)
     React.useEffect(() => {
         try {
             const userDetail = JSON.stringify(state)
@@ -65,7 +67,7 @@ export default function BottomNav() {
                 name="Inbox"
                 component={Inbox}
                 options={{
-                    tabBarBadge: 3,
+                    tabBarBadge: messageCounting,
                     tabBarLabel: <Entypo name="dot-single" size={15} />,           
                     tabBarIcon: ({ color }) => (
                         <Fontisto name="email" color={color} size={23} />
@@ -85,17 +87,6 @@ export default function BottomNav() {
                 }}
             />
 
-            {/* <Tab.Screen
-                name="Profile"
-                component={Profile}
-                
-                options={{
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,
-                    tabBarIcon: ({ color }) => (
-                        <AntDesign name="user" color={color} size={23} />
-                    ),
-                }}
-            /> */}
 
         </Tab.Navigator>
 

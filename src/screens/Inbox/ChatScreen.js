@@ -1,5 +1,5 @@
-import React, { useCallback, useContext, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image , ActivityIndicator } from 'react-native'
 import { get_all_users, get_messages, send_message } from '../../redux/actions/authAction';
 import firestore from '@react-native-firebase/firestore'
 import database from '@react-native-firebase/database'
@@ -24,11 +24,16 @@ export default function ChatScreen({ route, navigation }) {
     const [data, setData] = React.useState([])
     const [uri, setUri] = React.useState()
     const { user } = useContext(AuthContext)
+    const scrollViewRef = useRef();
+    const [loading , setLoading] = useState(true)
 
 
 
 
     React.useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 200);
         const merge = merge_uid(user?.USER_ID, e.USER_ID)
         get_messages(merge)
     }, [])
@@ -121,7 +126,11 @@ export default function ChatScreen({ route, navigation }) {
         });
     }
 
-    return (
+    return loading ?
+    <ActivityIndicator
+        color={'black'}
+        size={'large'}
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : (
         <View style={{ backgroundColor: 'white', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                 <TouchableOpacity onPress={navigation.goBack}>
@@ -137,13 +146,11 @@ export default function ChatScreen({ route, navigation }) {
                     e.PROFILE}} style={{ height: 40, width: 40, borderRadius: 100 }} />
 
             </View>
-            <ScrollView style={{
-                // borderWidth: 1,
-                // borderColor: 'black',
-                // height: '80%',
-                // flexDirection: 'column-reverse'
+            <ScrollView
+            ref={scrollViewRef}
+            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+            style={{
                 flex: 1,
-
             }}>
                 {
                     data.map((e, v) => {

@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  StyleSheet
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -32,18 +33,22 @@ export default function Services({ navigation }) {
 
   const user = useSelector(state => state.user)
 
-
-
   React.useEffect(() => {
     firestore()
       .collection('Category')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Services'));
-        setLoading(false)
+        setTimeout(() => {
+          setLoading(false)
+        }, 100);
       });
   }, [])
 
-  return (
+  return loading ?
+  <ActivityIndicator
+      color={'black'}
+      size={'large'}
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : (
     <ScrollView style={styles.ScrollView}>
 
       <TouchableOpacity onPress={navigation.goBack}>
@@ -57,10 +62,8 @@ export default function Services({ navigation }) {
         <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
       </View>
 
-      {loading ?
-        <Loader />
-        :
-        data.length === 0 ?
+    
+        {data.length === 0 ?
           <View style={styles.View_data_length}>
 
             <Text style={styles.View_data_length_Not_avalaible}>Ads is not avalaible </Text>
@@ -120,8 +123,8 @@ export default function Services({ navigation }) {
                 </TouchableOpacity>
               </View>
             )
-          })
-      }
+          })}
+      
 
 
     </ScrollView>

@@ -32,9 +32,10 @@ export default function Inbox() {
                 setMessages(documentSnapshop.docs.map((e) => e.data()).filter(function (item) {
                     return item.user1.uid === user?.USER_ID || item.user2.uid === user?.USER_ID
                 }))
+                setTimeout(() => {
+                    setLoading(false)
+                }, 100);
             })
-
-        setLoading(false)
     }
 
 
@@ -45,12 +46,10 @@ export default function Inbox() {
     )
 
     const deleteChat = (uid) => {
-
         firestore()
             .collection('Inbox')
             .doc(uid)
             .delete()
-
     }
 
     const deleteChatting = (uid) => {

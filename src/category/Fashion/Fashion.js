@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -36,19 +36,23 @@ export default function Fashion({ navigation }) {
       .collection('Category')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Fashion'));
-        setLoading(false)
+       setTimeout(() => {
+          setLoading(false)
+       }, 100);
       });
   }, [])
 
 
 
 
-  return  (
+  return loading ?
+  <ActivityIndicator
+      color={'black'}
+      size={'large'}
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> :  (
     
     <ScrollView style={styles.ScrollView}>
-      {loading === true ? 
-      <ActivityIndicator  color='black' size={30} style = {{  marginTop : '95%'}}/>
-     : 
+   
      <View>
 <TouchableOpacity onPress={navigation.goBack}>
         <Text style={styles.Arrow_left}>
@@ -73,7 +77,18 @@ export default function Fashion({ navigation }) {
             console.log(item.UID)
             return (
               <View key={ind} style={styles.main_view_map}>
-                <TouchableOpacity onPress={() => console.log(item)}>
+                <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
+                  {
+                    IMAGE: item.ADS_IMAGES,
+                    PRICE: item.PRICE,
+                    DISCRIPTION: item.DISCRIPTION,
+                    CITY: item.CITY,
+                    CATEGORY: item.CATEGORY,
+                    TITLE: item.TITLE,
+                    UID: item.UID,
+                    LIKE: item.LIKE,
+                  }
+                )}>
                   <Animatable.View style={styles.Animatable}>
                     <View style={styles.Animatable_child}>
                       <View style={styles.Animatable_child_to_child}>
@@ -116,7 +131,7 @@ export default function Fashion({ navigation }) {
           })
       }
      </View>
-    }
+    
 
       
 

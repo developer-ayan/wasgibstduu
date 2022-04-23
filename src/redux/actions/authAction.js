@@ -68,7 +68,6 @@ const sign_in = (user) => {
 function create_ads(user) {
     return (dispatch) => {
         const User_data = user
-        console.log(User_data)
                 firestore()
                     .collection(`Category`)
                     .add({

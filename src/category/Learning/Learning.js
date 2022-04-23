@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  StyleSheet
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -40,13 +41,19 @@ export default function Learning({ navigation }) {
       .collection('Category')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Learning'));
-        setLoading(false)
+        setTimeout(() => {
+          setLoading(false)
+        }, 100);
       });
   }, [])
 
 
 
-  return (
+  return loading ?
+  <ActivityIndicator
+      color={'black'}
+      size={'large'}
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : (
     <ScrollView style={styles.ScrollView}>
 
       <TouchableOpacity onPress={navigation.goBack}>

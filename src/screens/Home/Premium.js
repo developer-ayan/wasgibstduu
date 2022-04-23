@@ -11,7 +11,6 @@ export default function Premium({ navigation }) {
           .collection('Category')
           .onSnapshot(documentSnapshot => {
             setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.EMAIL === 'Info@wasgibstdu.de'));
-            console.log(documentSnapshot.docs.map(e => e.data()).filter((item) => item.EMAIL === 'Info@wasgibstdu.de'));
           });
       }, [])
     return (

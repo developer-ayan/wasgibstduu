@@ -26,17 +26,16 @@ const drawer = createDrawerNavigator();
 function Drawer() {
 
     const [data, setData] = React.useState([])
-    const [modal, setmodal] = React.useState(false)
-    // const {user} = useContext(AuthContext)
+    const {user} = useContext(AuthContext)
   
-    // React.useEffect(() => {
-    //   firestore()
-    //     .collection('Bids')
-    //     .doc('Your all bids here !')
-    //     .collection(user?.USER_ID)
-    //     .onSnapshot(e =>
-    //       setData(e.docs.map((c) => c.data())))
-    // }, [])
+    React.useEffect(() => {
+      firestore()
+        .collection('Bids')
+        .doc('Your all bids here !')
+        .collection(user?.USER_ID)
+        .onSnapshot(e =>
+          setData(e.docs.map((c) => c.data())))
+    }, [])
 
     return (
         <drawer.Navigator

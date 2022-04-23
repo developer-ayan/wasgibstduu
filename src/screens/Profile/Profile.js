@@ -19,6 +19,7 @@ function Profile({ navigation }) {
     const [image, setImage] = React.useState('https://api.adorable.io/avatars/80/abott@adorable.png');
     const [data, setData] = React.useState([])
     const [profileImage, setProfileImage] = React.useState('')
+    const [loading, setLoading] = React.useState(true)
 
     const [renderImage, setRenderImage] = React.useState('')
 
@@ -27,9 +28,11 @@ function Profile({ navigation }) {
 
     const [transeferred, setTranseferred] = React.useState(0)
     const { user } = useContext(AuthContext)
-    console.log("asda ",user)
 
     React.useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 200);
         firestore()
             .collection('Users')
             .doc(user?.USER_ID)
@@ -148,7 +151,11 @@ function Profile({ navigation }) {
         }
     }
 
-    return (
+    return loading ?
+    <ActivityIndicator
+        color={'black'}
+        size={'large'}
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : (
 
         <ScrollView style={{ backgroundColor: 'white' }}>
 

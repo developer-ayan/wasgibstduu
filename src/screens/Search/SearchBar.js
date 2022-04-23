@@ -212,7 +212,6 @@ export default function SearchBar({ navigation }) {
           <Loader />
           :
           data.map((item, ind) => {
-            console.log("adsadasda",item.ADS_IMAGES)
             return (
               <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
