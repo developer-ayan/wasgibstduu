@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import manageAds from '../../screens/ManageAds/ManageAds';
 import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsManage';
@@ -19,33 +19,25 @@ import Get_offer from '../../category/Get_offer/Get_offer';
 import Logout from '../../screens/Logout/Logout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore'
+import { AuthContext } from '../../context/Auth';
 
 const drawer = createDrawerNavigator();
 
 function Drawer() {
 
     const [data, setData] = React.useState([])
-    const [user, setUser] = React.useState({})
     const [modal, setmodal] = React.useState(false)
+    // const {user} = useContext(AuthContext)
   
-    const getData = async () => {
-      const value = await AsyncStorage.getItem('uid');
-      setUser(JSON?.parse(value))
-  }
-  
-  
-  
-    React.useEffect(() => {
-      getData()
-      firestore()
-        .collection('Users')
-        .doc(user.USER_ID)
-        .collection('send_offer')
-        .onSnapshot(e =>
-          setData(e.docs.map((c) => c.data())))
-    }, [])
+    // React.useEffect(() => {
+    //   firestore()
+    //     .collection('Bids')
+    //     .doc('Your all bids here !')
+    //     .collection(user?.USER_ID)
+    //     .onSnapshot(e =>
+    //       setData(e.docs.map((c) => c.data())))
+    // }, [])
 
-    const LAGON = 'login'
     return (
         <drawer.Navigator
             drawerContent={props => <CustomDrawer {...props} />}
@@ -101,7 +93,7 @@ function Drawer() {
 
                 }}
             />
-            <drawer.Screen name={`Bids ${ data.length === 0 ? null  : ` (` + data.length + `)`}`} component={Get_offer}
+            <drawer.Screen name={`Bids ${ data.length === 0 ? ''  : ` (` + data.length + `)`}`} component={Get_offer}
                 options={{
                     
                     drawerIcon: ({ color }) =>

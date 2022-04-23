@@ -26,6 +26,8 @@ export default function Send_offer({ navigation, route }) {
   const [price, setPrice] = React.useState('')
   const [discription, setDiscription] = React.useState('')
 
+  console.log(e)
+
 
   function send_data() {
 
@@ -47,11 +49,9 @@ export default function Send_offer({ navigation, route }) {
           CATEGORY: CATEGORY,
           OFFERPRICE: price,
           OFFERDISCRIPTION: discription,
-          PROFILE: profile,
+          PROFILE: 'profile',
           NAME: NAME,
           user: e
-
-
         }).then((e) => alert('True')).catch((err) => alert('error'))
     )
 

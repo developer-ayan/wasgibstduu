@@ -25,6 +25,7 @@ function CustomDrawer(props) {
     }, [user?.USER_ID])
 
 
+
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>

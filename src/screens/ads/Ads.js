@@ -102,6 +102,8 @@ export default function Ads({ navigation }) {
 
   }
 
+  console.log("image ",image)
+
 
   const ImageGallery = () => {
     ImagePicker.openPicker({
@@ -111,9 +113,7 @@ export default function Ads({ navigation }) {
     }).then(image => {
       setUri(image.path)
       const url = ImageHandle()
-      setImage((previuos) => {
-        return [...previuos, url];
-      });
+     
     });
   }
 
@@ -153,7 +153,9 @@ export default function Ads({ navigation }) {
 
       const url = await storageRef.getDownloadURL()
 
-     
+      setImage((previuos) => {
+        return [...previuos, url];
+      });
 
       setUploading(false)
       Alert.alert('Your Ad Has Been Upload')
@@ -163,7 +165,6 @@ export default function Ads({ navigation }) {
     }
     setUri(null)
   }
-  console.log("image ",image)
 
 
 

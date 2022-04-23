@@ -17,20 +17,20 @@ export default function Categories_detail({ route, navigation }) {
     const [e, setE] = useState({})
     const [user, setUser] = useState({})
 
+    console.log(e)
+
     const getData = async () => {
         const value = await AsyncStorage.getItem('uid');
         setUser(JSON?.parse(value))
     }
-    useFocusEffect(
-        React.useCallback(() => {
+        React.useEffect(() => {
+            getData()
             firestore().collection('Users')
                 .doc(UID)
                 .onSnapshot(documentSnapshot => {
                     setE(documentSnapshot.data())
                 });
-            getData()
         }, [])
-    )
 
     const toggle = () => {
         setshow(!show)

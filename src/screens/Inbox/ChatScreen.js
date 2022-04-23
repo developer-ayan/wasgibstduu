@@ -19,12 +19,13 @@ export default function ChatScreen({ route, navigation }) {
 
 
     const { e, title } = route.params
-    console.log("chat screen ",title)
     const chat_user_profile = e.PROFILE
     const [message, setMessage] = React.useState('')
     const [data, setData] = React.useState([])
     const [uri, setUri] = React.useState()
     const { user } = useContext(AuthContext)
+
+
 
 
     React.useEffect(() => {
@@ -68,9 +69,23 @@ export default function ChatScreen({ route, navigation }) {
                     title: title,
                     message: message,
                     uid: merge,
-                    user1: user?.USER_ID,
-                    user2: e.USER_ID,
-                    user: e,
+                    user1: {
+                        uid: user.USER_ID,
+                        status: 'seen',
+                        profile : user.PROFILE === '' || user.PROFILE === undefined ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : user.PROFILE,
+                        user : user
+                    },
+                    user2: {
+                        uid: e.USER_ID,
+                        status: 'unseen',
+                        profile : e.PROFILE === '' || e.PROFILE === undefined ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : e.PROFILE,
+                        user : e
+                    },
+                    
+                    user: [
+                        {user : e},
+                    {user : user}
+                    ],
                 })
             setMessage('')
         }
@@ -78,9 +93,9 @@ export default function ChatScreen({ route, navigation }) {
 
     const get_messages = (uid) => {
         firestore()
-        .collection('chatting')
-        .doc(uid)
-        .collection(uid)
+            .collection('chatting')
+            .doc(uid)
+            .collection(uid)
             .orderBy('date')
             .onSnapshot(documentSnapshot => {
                 setData(documentSnapshot.docs.map(e => e.data()));
@@ -115,7 +130,11 @@ export default function ChatScreen({ route, navigation }) {
                     </Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black' }}>{e.NAME}</Text>
-                <Image source={{ uri: e.PROFILE }} style={{ height: 40, width: 40, borderRadius: 100 }} />
+            
+                <Image source={{ uri: chat_user_profile === "" || chat_user_profile === undefined ?
+                    'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+                    :
+                    e.PROFILE}} style={{ height: 40, width: 40, borderRadius: 100 }} />
 
             </View>
             <ScrollView style={{
@@ -123,9 +142,8 @@ export default function ChatScreen({ route, navigation }) {
                 // borderColor: 'black',
                 // height: '80%',
                 // flexDirection: 'column-reverse'
-               flex : 1,
-               borderWidth : 1,
-           
+                flex: 1,
+
             }}>
                 {
                     data.map((e, v) => {
@@ -139,7 +157,7 @@ export default function ChatScreen({ route, navigation }) {
                             }}>
 
                                 {uid ? null :
-                                    <Image source={{ uri: chat_user_profile === "" ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : chat_user_profile }} style={{ height: 40, width: 40, borderRadius: 100, marginLeft: 5 }} />
+                                    <Image source={{ uri: chat_user_profile === "" || chat_user_profile === undefined ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' : chat_user_profile }} style={{ height: 40, width: 40, borderRadius: 100, marginLeft: 5 }} />
                                 }
                                 <Text style={{
                                     width: '75%',

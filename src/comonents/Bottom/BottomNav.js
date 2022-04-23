@@ -65,11 +65,12 @@ export default function BottomNav() {
                 name="Inbox"
                 component={Inbox}
                 options={{
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,
-
+                    tabBarBadge: 3,
+                    tabBarLabel: <Entypo name="dot-single" size={15} />,           
                     tabBarIcon: ({ color }) => (
                         <Fontisto name="email" color={color} size={23} />
                     ),
+                    
                 }}
             />
             <Tab.Screen

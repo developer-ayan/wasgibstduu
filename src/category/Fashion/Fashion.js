@@ -73,18 +73,7 @@ export default function Fashion({ navigation }) {
             console.log(item.UID)
             return (
               <View key={ind} style={styles.main_view_map}>
-                <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
-                  {
-                    IMAGE: item.ADS_IMAGES,
-                    PRICE: item.PRICE,
-                    DISCRIPTION: item.DISCRIPTION,
-                    CITY: item.CITY,
-                    CATEGORY: item.CATEGORY,
-                    TITLE: item.TITLE,
-                    UID: item.UID,
-                    LIKE: item.LIKE,
-                  }
-                )}>
+                <TouchableOpacity onPress={() => console.log(item)}>
                   <Animatable.View style={styles.Animatable}>
                     <View style={styles.Animatable_child}>
                       <View style={styles.Animatable_child_to_child}>
