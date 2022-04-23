@@ -56,7 +56,10 @@ export default function Inbox() {
         firestore()
             .collection('chatting')
             .doc(uid)
-            .delete()
+            .collection(uid)
+            .get().then((querySnapshot) => {
+                Promise.all(querySnapshot.docs.map((d) => d.ref.delete()));
+            })
     }
 
     const combineFunction = (uid) => {
@@ -115,7 +118,7 @@ export default function Inbox() {
 
                     messages?.map((item, index) => {
 
-                        let filter1 = item.user.filter((item) => item.user.USER_ID !== user.USER_ID )
+                        let filter1 = item.user.filter((item) => item.user.USER_ID !== user.USER_ID)
 
                         return (
                             <View style={{ backgroundColor: '#f7f7f7', marginTop: 30, paddingVertical: 10, borderRadius: 5 }} key={index}>
@@ -125,15 +128,15 @@ export default function Inbox() {
                                     title: item.title
                                 })}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10 }}>
-                                  
+
                                         <View style={{ width: '16%', alignItems: 'center' }}>
-                                            <Image source={{ uri: item.user1.uid == user?.USER_ID ? item.user2.profile : item.user1.profile}} style={{ backgroundColor: 'red', height: 40, width: 40, borderRadius: 50 }} />
+                                            <Image source={{ uri: item.user1.uid == user?.USER_ID ? item.user2.profile : item.user1.profile }} style={{ backgroundColor: 'red', height: 40, width: 40, borderRadius: 50 }} />
                                         </View>
-                                
-                                
+
+
 
                                         <View style={{ width: '50%', height: 40, justifyContent: 'center' }}>
-                                          <Text style={{ color: item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black' }}>{item.title}</Text>
+                                            <Text style={{ color: item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black' }}>{item.title}</Text>
                                         </View>
                                         <View style={{ width: '30%', flexDirection: 'row', height: 40, alignItems: 'center', justifyContent: 'flex-end', paddingRight: 10 }} >
                                             <TouchableOpacity onPress={() => combineFunction(item.uid)}>
@@ -152,7 +155,7 @@ export default function Inbox() {
 
                                         <View style={{ width: '50%', justifyContent: 'center' }}>
                                             <View style={{ marginHorizontal: 4 }}>
-                                                <Text numberOfLines={1} style={{color : item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black'}}>{item.message}</Text>
+                                                <Text numberOfLines={1} style={{ color: item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black' }}>{item.message}</Text>
                                                 <Text numberOfLines={1} style={{ color: item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black', fontSize: 12, paddingBottom: 5 }}>May. 7th. 2021. at 12:44</Text>
                                             </View>
                                         </View>
