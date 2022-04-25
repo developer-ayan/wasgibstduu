@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert, Modal, ActivityIndicator, Pressable } from "react-native";
+import React, { useState } from 'react'
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity, Image, Alert, Modal } from "react-native";
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,14 +12,13 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
-
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function Ads({ navigation }) {
 
   const [uri, setUri] = React.useState(null)
   const [category, setCategory] = React.useState('')
   const [title, setTitle] = React.useState('')
-  const [titleVisible, setTitleVisible] = React.useState(true)
   const [discription, setDiscription] = React.useState('')
   const [price, setPrice] = React.useState('')
   const [city, setCity] = React.useState('')
@@ -34,21 +33,6 @@ export default function Ads({ navigation }) {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalText, setModalText] = React.useState('');
 
-  
-  const [data, setData] = React.useState({
-    title: '',
-    description: '',
-    price: '',
-    city: '',
-    secureTextEntry: true,
-    isValidUser: true,
-    isValidDescription: true,
-    isValidPrice: true,
-    isValidCity: true,
-  });
-
-
-
   const getData = async () => {
     const value = await AsyncStorage.getItem('uid');
     setState(JSON?.parse(value))
@@ -60,111 +44,17 @@ export default function Ads({ navigation }) {
     }, [state.USER_ID])
   )
 
-
-
-  const CreateAds = async () => {
-
-    if (category === '') {
-      setModalVisible(true)
-      setModalText('Required your category field')
-      setTimeout(() => {
-      setModalVisible(false)
-      }, 1000);
-    }
-   else if (uri === null || uri === undefined) {
-      setModalVisible(true)
-      setModalText('Image is field')
-      setTimeout(() => {
-      setModalVisible(false)
-      }, 1000);
-    } else {
-      let user = {
-        category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
-        title : data.title,
-        discription : data.description,
-        price : data.price,
-        city :  data.city,
-        imageUrl: image,
-        name: state.NAME,
-        UID: state.USER_ID,
-        EMAIL: state?.EMAIL
-      }
-      dispatch(create_ads(user))
-      navigation.navigate('Home')
-      setTitle('')
-      setDiscription('')
-      setPrice('')
-      setCity('')
-      setCategory('')
-      setImage([])
-    }
-
-
-  }
-
-
-
-  const ImageGallery = () => {
-    ImagePicker.openPicker({
-      width: 700,
-      height: 500,
-      cropping: true
-    }).then(image => {
-      setUri(image.path)
-      const url = ImageHandle()
-     
-    });
-  }
-
-  React.useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setId(user.uid)
-      } else {
-        Alert('User Is Not Login')
-      }
-    });
-  })
-
-
-  const ImageHandle = async () => {
-    const uploadUri = uri;
-    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
-
-    const extansion = fileName.split('.').pop();
-    const name = fileName.split('.').slice(0, -1).join('.');
-    fileName = name + Date.now() + '.' + extansion;
-
-    setUploading(true);
-    setTranseferred(0)
-
-    const storageRef = storage().ref(`photos/${id}`)
-    const task = storageRef.putFile(uploadUri)
-
-    task.on('state_changed', taskSnapshot => {
-      setTranseferred(
-        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
-      )
-    });
-
-    try {
-      await task;
-
-      const url = await storageRef.getDownloadURL()
-
-      setImage((previuos) => {
-        return [...previuos, url];
-      });
-
-      setUploading(false)
-      Alert.alert('Your Ad Has Been Upload')
-      return url;
-    } catch (e) {
-      console.log(e)
-    }
-    setUri(null)
-  }
-
+  const [data, setData] = React.useState({
+    title: '',
+    description: '',
+    price: '',
+    city: '',
+    secureTextEntry: true,
+    isValidUser: true,
+    isValidDescription: true,
+    isValidPrice: true,
+    isValidCity: true,
+  });
 
 
 
@@ -238,6 +128,101 @@ export default function Ads({ navigation }) {
     }
   }
 
+  console.log(image)
+
+
+
+
+  const CreateAds = async () => {
+
+
+
+    let user = {
+
+      category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
+      title,
+      discription,
+      price,
+      city,
+      imageUrl: image,
+      name: state.NAME,
+      UID: state.USER_ID,
+      EMAIL: state?.EMAIL
+    }
+    dispatch(create_ads(user))
+    navigation.navigate('Home')
+    setTitle('')
+    setDiscription('')
+    setPrice('')
+    setCity('')
+    setCategory('')
+    setImage([])
+
+  }
+
+
+  const ImageGallery = () => {
+    ImagePicker.openPicker({
+      width: 700,
+      height: 500,
+      cropping: true
+    }).then(image => {
+      const ImageHandle = async () => {
+        const uploadUri = image.path;
+        let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+
+        const extansion = fileName.split('.').pop();
+        const name = fileName.split('.').slice(0, -1).join('.');
+        fileName = name + Date.now() + '.' + extansion;
+
+        setUploading(true);
+        setTranseferred(0)
+
+        const storageRef = storage().ref(`photos/${id}`)
+        const task = storageRef.putFile(uploadUri)
+
+        task.on('state_changed', taskSnapshot => {
+          setTranseferred(
+            Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
+          )
+        });
+
+        try {
+          await task;
+
+          const url = await storageRef.getDownloadURL()
+
+          setImage((previuos) => {
+            return [...previuos, url];
+          });
+
+          setUploading(false)
+          Alert.alert('Your Ad Has Been Upload')
+          return url;
+        } catch (e) {
+          console.log(e)
+        }
+        setUri(null)
+      }
+
+      ImageHandle()
+
+    });
+  }
+
+  React.useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setId(user.uid)
+      } else {
+        Alert('User Is Not Login')
+      }
+    });
+  })
+
+
+
+
 
 
   return (
@@ -252,12 +237,20 @@ export default function Ads({ navigation }) {
         }}
       >
         <View style={styles.centeredView}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', width: '70%', backgroundColor: 'white', paddingHorizontal: 30, paddingVertical: 30, borderRadius: 10  }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: '70%', backgroundColor: 'white', paddingHorizontal: 30, paddingVertical: 30, borderRadius: 10 }}>
             <Text style={{ color: '#525252', fontWeight: 'bold' }}>{modalText}</Text>
           </View>
         </View>
       </Modal>
       <View style={styles.MainView}>
+        {/* padding: 15,
+    backgroundColor: '#f7f7f7',
+    fontWeight: 'bold',
+    opacity: 0.7,
+    color: '#ababab',
+    fontSize: 15,
+    fontFamily: 'Roboto' */}
+
 
         {/* icon back */}
         <View>
@@ -360,11 +353,43 @@ export default function Ads({ navigation }) {
 
         <View style={{ marginTop: 20 }}>
           <Text style={styles.AdTitle}>CITY</Text>
-          <TextInput
+
+          <GooglePlacesAutocomplete
+          placeholder='Search your city'
+          minLength={2}
+          autoFocus={false}
+          query={{
+            key: 'AIzaSyD-Kn_zmf_zUgSKaJ-tcTTeZT7Ap3mXOTY',
+            language: 'en',
+            // type: '(cities)',
+          }}
+          returnKeyType={'default'}
+          fetchDetails={true}
+          styles={{
+            textInputContainer: {
+              paddingVertical: 4,
+              backgroundColor: '#f7f7f7'
+            },
+            textInput: {
+              color: '#ababab',
+              fontSize: 15,
+              backgroundColor: '#f7f7f7',
+              fontWeight: 'bold',
+              opacity: 0.7,
+
+
+            },
+            predefinedPlacesDescription: {
+              color: '#1faadb',
+            },
+          }}
+        />
+
+          {/* <TextInput
             onChangeText={(val) => textInputCityChange(val)}
             multiline={true}
             style={styles.Input}
-          />
+          /> */}
         </View>
         {data.isValidCity ? null :
           <Animatable.View animation="bounceInLeft" duration={1000} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 0, paddingBottom: 10, marginTop: 20 }}>
@@ -492,12 +517,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 13,
     opacity: 0.7
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: 'rgba(52, 52, 52, 0.8)'
-},
+  }
 
 })

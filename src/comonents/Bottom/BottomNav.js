@@ -14,6 +14,7 @@ import Profile from '../../screens/Profile/Profile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { AuthContext } from '../../context/Auth';
+import firestore from '@react-native-firebase/firestore'
 
 export default function BottomNav() {
 
@@ -26,6 +27,20 @@ export default function BottomNav() {
         } catch (e) {
             // saving error
         }
+        firestore()
+        .collection('Category')
+        .get()
+        .then((correct) => {
+          correct.forEach(snapshot => {
+            firestore()
+              .collection('Category')
+              .doc(snapshot.id)
+              .update({
+                AUTO_ID: snapshot.id
+              })
+    
+          })
+        })
     }, [])
     const Tab = createMaterialBottomTabNavigator();
     return (

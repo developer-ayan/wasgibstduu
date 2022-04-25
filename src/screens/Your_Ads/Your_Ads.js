@@ -11,17 +11,12 @@ import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../context/Auth';
-
-
-
-
-
+import * as Animatable from 'react-native-animatable';
 
 export default function manageAds({ navigation }) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const { user } = useContext(AuthContext)
-
 
   React.useEffect(() => {
     firestore()
@@ -58,7 +53,10 @@ export default function manageAds({ navigation }) {
       <View style={{ flex: 1,flexDirection : 'column', justifyContent: 'center', alignItems: 'center' }}>
         <Text style = {{color : 'black' , fontSize : 20 , fontWeight : 'bold'}}>Go to create your ads</Text>
          <View>
-            <TouchableOpacity style = {{backgroundColor : 'green' , padding : 20 , borderRadius : 50 , marginTop : 20}} onPress={navigation.goBack}>
+            <TouchableOpacity  onPress={
+              () => navigation.navigate(
+                'Ads', { screen: 'Ads' }
+              )} style = {{backgroundColor : 'green' , padding : 20 , borderRadius : 50 , marginTop : 20}} >
               <Text style={{ color: 'white', fontSize: 20}}>
                 <Feather name="arrow-left" size={25} color="white"  />
               </Text>

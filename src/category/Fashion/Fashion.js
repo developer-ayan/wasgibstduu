@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   View,
   Image,
@@ -20,11 +20,13 @@ import {
   Sizes
 } from '../../comonents/Constant/Constant';
 import { ActivityIndicator } from 'react-native-paper';
+import { AuthContext } from '../../context/Auth';
 
 export default function Fashion({ navigation }) {
 
   const [data, setData] = React.useState([])
   const [loading, setLoading] = React.useState(true)
+  const {user} = useContext(AuthContext)
   const [show, setshow] = React.useState(false)
   const toggle = () => {
     setshow(!show)
@@ -74,7 +76,8 @@ export default function Fashion({ navigation }) {
           </View>
           :
           data.map((item, ind) => {
-            console.log(item.UID)
+    const filterLike = item.LIKE.filter((item) => item === user?.USER_ID)
+
             return (
               <View key={ind} style={styles.main_view_map}>
                 <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
@@ -87,6 +90,8 @@ export default function Fashion({ navigation }) {
                     TITLE: item.TITLE,
                     UID: item.UID,
                     LIKE: item.LIKE,
+                    USER_LIKE : filterLike[0],
+                    AUTO_ID: item.AUTO_ID,
                   }
                 )}>
                   <Animatable.View style={styles.Animatable}>

@@ -11,19 +11,23 @@ import { useFocusEffect } from '@react-navigation/native';
 import { SliderBox } from 'react-native-image-slider-box';
 
 export default function Categories_detail({ route, navigation }) {
-    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID, LIKE } = route.params;
-    const [like, setLike] = React.useState(0)
-    const [show, setshow] = React.useState(false)
-    const [e, setE] = useState({})
+    const { CATEGORY, TITLE, PRICE, CITY, DISCRIPTION, IMAGE, UID, LIKE, AUTO_ID , USER_LIKE} = route.params;
     const [user, setUser] = useState({})
+    const [like, setLike] = React.useState(0)
 
-    console.log(e)
+ 
+    
+    const [e, setE] = useState({})
+    // console.log()
 
     const getData = async () => {
         const value = await AsyncStorage.getItem('uid');
         setUser(JSON?.parse(value))
     }
-        React.useEffect(() => {
+   
+
+    useFocusEffect(
+        React.useCallback(()   => {
             getData()
             firestore().collection('Users')
                 .doc(UID)
@@ -31,10 +35,33 @@ export default function Categories_detail({ route, navigation }) {
                     setE(documentSnapshot.data())
                 });
         }, [])
+    )
+
+    const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID) 
+
+console.log(show)
 
     const toggle = () => {
         setshow(!show)
+        console.log(show)
+        if (show === true) {
+            firestore().collection('Category')
+            .doc(AUTO_ID)
+            .update({
+                LIKE: firestore.FieldValue.arrayRemove(user?.USER_ID)
+            })
+        }
+        else {
+            
+
+                firestore().collection('Category')
+                .doc(AUTO_ID)
+                .update({
+                    LIKE: [user?.USER_ID]
+                })
+        }
     }
+
 
     const increment = () => {
         setLike(like + 1)
@@ -50,9 +77,23 @@ export default function Categories_detail({ route, navigation }) {
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginHorizontal: 10 }}>
                 <TouchableOpacity onPress={navigation.goBack}>
                     <Text style={{ color: 'white', fontSize: 20, marginVertical: 15, }}>
+                        {/* {isEnabled ? } */}
                         <Feather name="arrow-left" size={25} color="black" />
                     </Text>
+
                 </TouchableOpacity>
+                <TouchableOpacity onPress={toggle}>
+                    <Text style={{ marginVertical: 15 }}>
+                        {show ?
+                            <AntDesign name="heart" size={25} color="red" />
+                            :
+                            <AntDesign name="hearto" size={25} color="red" />
+                        }
+
+                    </Text>
+                </TouchableOpacity>
+
+
 
             </View>
 
@@ -60,7 +101,7 @@ export default function Categories_detail({ route, navigation }) {
                 <SliderBox
                     sliderBoxHeight={250}
                     circleLoop={true}
-                    autoplay ={true}
+                    autoplay={true}
                     dotColor={'white'}
                     inactiveDotColor={'gray'}
                     images={IMAGE}
@@ -90,7 +131,7 @@ export default function Categories_detail({ route, navigation }) {
 
                         <AntDesign
                             name='sharealt' size={25}
-                            style={{color: 'red',}} />
+                            style={{ color: 'red', }} />
 
                     </Text>
                     <Text>

@@ -24,6 +24,7 @@ export default function Inbox() {
 
 
 
+
     const ChatInbox = () => {
         setLoading(true)
         firestore()
@@ -62,9 +63,19 @@ export default function Inbox() {
             })
     }
 
+    const DeleteStaredChat = (uid) => {
+        firestore()
+            .collection('Stared Chat')
+            .doc('user stared chats')
+            .collection(user.USER_ID)
+            .doc(uid)
+            .delete()
+    }
+
     const combineFunction = (uid) => {
         deleteChatting(uid)
         deleteChat(uid)
+        DeleteStaredChat(uid)
     }
 
     const Stared = (uid, data) => {
@@ -90,7 +101,12 @@ export default function Inbox() {
         <ActivityIndicator
             color={'black'}
             size={'large'}
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : (
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : 
+            messages?.length === 0 ?
+                <View style ={{flex : 1 , alignItems : 'center' , justifyContent: 'center',}}>
+                    <Text style = {{color : 'black' , fontSize : 20 , fontWeight : 'bold'}}>Empty Inbox</Text>
+                </View> :
+            (
             <ScrollView style={{
                 flex: 1,
                 backgroundColor: '#ffffff',
@@ -114,7 +130,7 @@ export default function Inbox() {
                     </TouchableOpacity>
                 </View>
 
-                {messages?.length === 0 ? <Text>No have msg</Text> :
+                {
 
                     messages?.map((item, index) => {
 
