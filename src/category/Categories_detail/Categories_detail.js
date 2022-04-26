@@ -57,11 +57,9 @@ export default function Categories_detail({route, navigation}) {
 
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
 
-  console.log(show);
 
   const toggle = () => {
     setshow(!show);
-    console.log(show);
     if (show === true) {
       firestore()
         .collection('Category')

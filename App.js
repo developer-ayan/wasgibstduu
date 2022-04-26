@@ -28,13 +28,13 @@ export default function App() {
   };
 
   React.useEffect(() => {
-    get_data();
+    get_data()
     setTimeout(() => {
-      SplashScreen.hide();
+      SplashScreen.hide()
     }, 2000);
   }, []);
 
-  setUser(uid?.CONFIRM_PASSWORD ? uid : save)
+  setUser(save)
   return loading ? (
     <ActivityIndicator
       color={'black'}

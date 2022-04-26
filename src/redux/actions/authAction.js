@@ -79,7 +79,7 @@ function create_ads(user) {
         LIKE: [''],
         TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date()),
         EMAIL: User_data.EMAIL,
-        staredUsers : ['']
+        staredUsers : ['123456']
       });
   };
 }

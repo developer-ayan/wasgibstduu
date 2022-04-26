@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Pressable,
   StyleSheet,
-  Alert
+  Alert,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,6 +22,7 @@ import {
 } from '../../comonents/Constant/Constant';
 import {ActivityIndicator} from 'react-native-paper';
 import {AuthContext} from '../../context/Auth';
+import {firebase} from '@react-native-firebase/auth';
 
 export default function Fashion({navigation}) {
   const [data, setData] = React.useState([]);
@@ -46,26 +47,37 @@ export default function Fashion({navigation}) {
   }, []);
 
   const StaredHandler = item => {
-    const filterStaredData = item.staredUsers.includes(user?.USER_ID);
-    if (filterStaredData === true) {
-      const filterStared = data.filter(function (item) {
-        return item !== user?.USER_ID;
-      });
-      firestore().collection('Category').doc(item.AUTO_ID).update({
-        staredUsers: filterStared,
-      });
-      Alert.alert('Remove From Stared Ad')
+    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+    let forDeletion = [user?.USER_ID];
 
-    } else {
+    let arr = item?.staredUsers;
+
+    arr = arr.filter(item => !forDeletion.includes(item));
+
+    if (filterStaredData === true) {
+      firestore()
+        .collection('Category')
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
+        });
+      Alert.alert('Remove From Stared Ad');
+    } else if (filterStaredData === false) {
+      firestore()
+        .collection(`Category`)
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: [...arr, user?.USER_ID],
+        });
+      Alert.alert('Add To Stared Ad');
+    } else if (filterStaredData === undefined) {
       firestore()
         .collection(`Category`)
         .doc(item.AUTO_ID)
         .update({
           staredUsers: [user?.USER_ID],
         });
-      Alert.alert('Add To Stared Ad')
-
-
+      Alert.alert('Add To Stared Ad');
     }
   };
 
@@ -104,9 +116,10 @@ export default function Fashion({navigation}) {
           </View>
         ) : (
           data.map((item, ind) => {
-            const filterLike = item.LIKE.filter(item => item === user?.USER_ID);
-            const filterStaredData = item.staredUsers.includes(user?.USER_ID);
-
+            const filterLike = item?.LIKE?.filter(
+              item => item === user?.USER_ID,
+            );
+            const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
             return (
               <View key={ind} style={styles.main_view_map}>
@@ -142,24 +155,20 @@ export default function Fashion({navigation}) {
                         <View style={styles.Icon_view}>
                           <Text style={styles.Versand}>Versand moglich</Text>
 
-                          
-
                           <Pressable onPress={() => StaredHandler(item)}>
-                            {filterStaredData === true ?
-                            <AntDesign
-                              style={[styles.staro,{color : 'gold'}]}
-                              name="star"
-                              size={18}
-                            />
-
-                            :
-                            <AntDesign
-                            style={styles.staro}
-                            name="staro"
-                            size={18}
-                          />
-                            
-                          }
+                            {filterStaredData === true ? (
+                              <AntDesign
+                                style={[styles.staro, {color: 'gold'}]}
+                                name="star"
+                                size={18}
+                              />
+                            ) : (
+                              <AntDesign
+                                style={styles.staro}
+                                name="staro"
+                                size={18}
+                              />
+                            )}
                           </Pressable>
                         </View>
                       </View>

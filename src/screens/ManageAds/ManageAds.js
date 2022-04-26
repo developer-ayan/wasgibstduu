@@ -35,19 +35,15 @@ export default function manageAds({navigation}) {
           setData(
             documentSnapshot.docs
               .map(e => e.data())
-              .filter(item => item.staredUsers.includes(user.USER_ID)),
+              .filter(item => item?.staredUsers?.includes(user.USER_ID)),
           );
           setLoading(false);
         });
     }, []);
 
-  const array = [
-    [123, 333],
-    [456, 555],
-  ];
 
   const StaredHandler = (uid, data) => {
-    const filterStared = data.filter(function (item) {
+    const filterStared = data?.filter(function (item) {
       return item !== user?.USER_ID;
     });
     setLoading(true);
