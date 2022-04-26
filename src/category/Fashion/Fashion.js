@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, {useContext} from 'react';
 import {
   View,
   Image,
@@ -7,124 +7,159 @@ import {
   TouchableOpacity,
   Pressable,
   StyleSheet,
-} from 'react-native'
+  Alert
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
-import firestore from '@react-native-firebase/firestore'
+import firestore from '@react-native-firebase/firestore';
 import Loader from '../../comonents/Loader/Loader';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   Categories_detail,
   Colors,
-  Sizes
+  Sizes,
 } from '../../comonents/Constant/Constant';
-import { ActivityIndicator } from 'react-native-paper';
-import { AuthContext } from '../../context/Auth';
+import {ActivityIndicator} from 'react-native-paper';
+import {AuthContext} from '../../context/Auth';
 
-export default function Fashion({ navigation }) {
-
-  const [data, setData] = React.useState([])
-  const [loading, setLoading] = React.useState(true)
-  const {user} = useContext(AuthContext)
-  const [show, setshow] = React.useState(false)
+export default function Fashion({navigation}) {
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const {user} = useContext(AuthContext);
+  const [show, setshow] = React.useState(false);
   const toggle = () => {
-    setshow(!show)
-  }
-
+    setshow(!show);
+  };
 
   React.useEffect(() => {
     firestore()
       .collection('Category')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Fashion'));
-       setTimeout(() => {
-          setLoading(false)
-       }, 100);
+        setData(
+          documentSnapshot.docs
+            .map(e => e.data())
+            .filter(item => item.CATEGORY === 'Fashion'),
+        );
+        setLoading(false);
       });
-  }, [])
+  }, []);
+
+  const StaredHandler = item => {
+    const filterStaredData = item.staredUsers.includes(user?.USER_ID);
+    if (filterStaredData === true) {
+      const filterStared = data.filter(function (item) {
+        return item !== user?.USER_ID;
+      });
+      firestore().collection('Category').doc(item.AUTO_ID).update({
+        staredUsers: filterStared,
+      });
+      Alert.alert('Remove From Stared Ad')
+
+    } else {
+      firestore()
+        .collection(`Category`)
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: [user?.USER_ID],
+        });
+      Alert.alert('Add To Stared Ad')
 
 
+    }
+  };
 
-
-  return loading ?
-  <ActivityIndicator
+  return loading ? (
+    <ActivityIndicator
       color={'black'}
-      size={'large'}
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> :  (
-    
+      size={'small'}
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+    />
+  ) : (
     <ScrollView style={styles.ScrollView}>
-   
-     <View>
-<TouchableOpacity onPress={navigation.goBack}>
-        <Text style={styles.Arrow_left}>
-          <Feather name="arrow-left" size={25} color="black" />
-        </Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={navigation.goBack}>
+          <Text style={styles.Arrow_left}>
+            <Feather name="arrow-left" size={25} color="black" />
+          </Text>
+        </TouchableOpacity>
 
-      <View style={styles.Main_ads_veiw}>
-        <Text style={styles.Ads_name}>{Categories_detail.fashion}</Text>
-        <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
-      </View>
+        <View style={styles.Main_ads_veiw}>
+          <Text style={styles.Ads_name}>{Categories_detail.fashion}</Text>
+          <Text style={styles.Ads_name_para}>
+            {Categories_detail.fashion_second_para}
+          </Text>
+        </View>
 
-      {
-        data.length === 0 ?
+        {data.length === 0 ? (
           <View style={styles.View_data_length}>
-
-            <Text style={styles.View_data_length_Not_avalaible}>Ads is not avalaible </Text>
-            <AntDesign name='exclamationcircleo' size={25} style={styles.View_data_length_icon} />
+            <Text style={styles.View_data_length_Not_avalaible}>
+              Ads is not avalaible{' '}
+            </Text>
+            <AntDesign
+              name="exclamationcircleo"
+              size={25}
+              style={styles.View_data_length_icon}
+            />
           </View>
-          :
+        ) : (
           data.map((item, ind) => {
-    const filterLike = item.LIKE.filter((item) => item === user?.USER_ID)
+            const filterLike = item.LIKE.filter(item => item === user?.USER_ID);
+            const filterStaredData = item.staredUsers.includes(user?.USER_ID);
+
 
             return (
               <View key={ind} style={styles.main_view_map}>
-                <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
-                  {
-                    IMAGE: item.ADS_IMAGES,
-                    PRICE: item.PRICE,
-                    DISCRIPTION: item.DISCRIPTION,
-                    CITY: item.CITY,
-                    CATEGORY: item.CATEGORY,
-                    TITLE: item.TITLE,
-                    UID: item.UID,
-                    LIKE: item.LIKE,
-                    USER_LIKE : filterLike[0],
-                    AUTO_ID: item.AUTO_ID,
-                  }
-                )}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Categories_detail', {
+                      IMAGE: item.ADS_IMAGES,
+                      PRICE: item.PRICE,
+                      DISCRIPTION: item.DISCRIPTION,
+                      CITY: item.CITY,
+                      CATEGORY: item.CATEGORY,
+                      TITLE: item.TITLE,
+                      UID: item.UID,
+                      LIKE: item.LIKE,
+                      USER_LIKE: filterLike[0],
+                      AUTO_ID: item.AUTO_ID,
+                    })
+                  }>
                   <Animatable.View style={styles.Animatable}>
                     <View style={styles.Animatable_child}>
                       <View style={styles.Animatable_child_to_child}>
-                      <Image
+                        <Image
                           style={styles.Animatable_image}
-                          source={{ uri: item.ADS_IMAGES?.[0]}}
+                          source={{uri: item.ADS_IMAGES?.[0]}}
                         />
                       </View>
                       <View style={styles.Animatable_Para}>
-                        <Text style={styles.username}>ayan ahmed</Text>
-                        <Text numberOfLines={2} style={styles.title}>{item.TITLE}</Text>
+                        <Text style={styles.username}>{item.NAME}</Text>
+                        <Text numberOfLines={2} style={styles.title}>
+                          {item.TITLE}
+                        </Text>
                         <Text style={styles.price}>{item.PRICE}</Text>
                         <View style={styles.Icon_view}>
                           <Text style={styles.Versand}>Versand moglich</Text>
 
+                          
 
-                          <Pressable onPress={() => {
-                            firestore()
-                              .collection(`Stared Data ${user.USER_ID}`)
-                              .doc(item.DISCRIPTION)
-                              .set({
-                                IMAGE: item.ADS_IMAGES,
-                                PRICE: item.PRICE,
-                                DISCRIPTION: item.DISCRIPTION,
-                                CITY: item.CITY,
-                                CATEGORY: item.CATEGORY,
-                                UID: item.UID,
-                                TITLE: item.TITLE,
-                              })
-                          }}>
-                            <AntDesign style={styles.staro} name="staro" size={18} />
+                          <Pressable onPress={() => StaredHandler(item)}>
+                            {filterStaredData === true ?
+                            <AntDesign
+                              style={[styles.staro,{color : 'gold'}]}
+                              name="star"
+                              size={18}
+                            />
+
+                            :
+                            <AntDesign
+                            style={styles.staro}
+                            name="staro"
+                            size={18}
+                          />
+                            
+                          }
                           </Pressable>
                         </View>
                       </View>
@@ -132,22 +167,17 @@ export default function Fashion({ navigation }) {
                   </Animatable.View>
                 </TouchableOpacity>
               </View>
-            )
+            );
           })
-      }
-     </View>
-    
-
-      
-
-
+        )}
+      </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   ScrollView: {
-    flex : 1,
+    flex: 1,
     backgroundColor: Colors.white,
     paddingHorizontal: Sizes.thirteen,
   },
@@ -157,53 +187,53 @@ const styles = StyleSheet.create({
     marginTop: Sizes.ten,
   },
   Main_ads_veiw: {
-    marginVertical: Sizes.twenty
+    marginVertical: Sizes.twenty,
   },
   Ads_name: {
     color: Colors.black,
-    fontSize: Sizes.twenty
+    fontSize: Sizes.twenty,
   },
   Ads_name_para: {
     color: Colors.ads_para,
     fontSize: Sizes.fouteen,
-    marginTop: Sizes.five
+    marginTop: Sizes.five,
   },
   View_data_length: {
     flexDirection: 'row',
     height: 500,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   View_data_length_Not_avalaible: {
-    fontSize: Sizes.fifteen
+    fontSize: Sizes.fifteen,
   },
   View_data_length_icon: {
     color: Colors.red,
-    paddingHorizontal: Sizes.ten
+    paddingHorizontal: Sizes.ten,
   },
   main_view_map: {
     marginHorizontal: 1,
     backgroundColor: Colors.white,
     borderRadius: Sizes.two,
-    marginTop: Sizes.ten
+    marginTop: Sizes.ten,
   },
   Animatable: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   Animatable_child: {
     flexDirection: 'row',
-    width: '100%'
+    width: '100%',
   },
   Animatable_child_to_child: {
     width: '40%',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   Animatable_image: {
     height: Sizes.hundred,
     width: '100%',
-    borderRadius: Sizes.two
+    borderRadius: Sizes.two,
   },
   Animatable_Para: {
     flexDirection: 'column',
@@ -211,30 +241,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: Sizes.ten,
     padding: Sizes.five,
     width: '60%',
-    lineHeihgt: 80
+    lineHeihgt: 80,
   },
   username: {
     color: Colors.card_username,
-    fontSize: Sizes.ten
+    fontSize: Sizes.ten,
   },
   title: {
     color: Colors.card_title,
-    fontSize: Sizes.twelve
+    fontSize: Sizes.twelve,
   },
   price: {
     color: Colors.green,
-    fontSize: Sizes.twelve
+    fontSize: Sizes.twelve,
   },
   Icon_view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   Versand: {
     color: Colors.card_username,
-    fontSize: Sizes.twelve
+    fontSize: Sizes.twelve,
   },
   staro: {
-    color: Colors.card_username
-  }
-})
+    color: Colors.card_username,
+  },
+});

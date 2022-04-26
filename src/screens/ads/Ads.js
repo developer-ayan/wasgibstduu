@@ -75,6 +75,8 @@ export default function Ads({navigation}) {
     isValidCity: true,
   });
 
+  console.log("title ",data.title)
+
   const textInputTitleChange = val => {
     var re = /^$/;
     if (re.test(val)) {
@@ -145,28 +147,28 @@ export default function Ads({navigation}) {
     }
   };
 
-  console.log(image);
 
   const CreateAds = async () => {
     let user = {
       category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
-      title,
-      discription,
-      price,
-      city,
+      title : data.title,
+      discription : data.description,
+      price : data.price,
+      city : data.city,
       imageUrl: image,
       name: state.NAME,
       UID: state.USER_ID,
       EMAIL: state?.EMAIL,
     };
     dispatch(create_ads(user));
-    navigation.navigate('Home');
     setTitle('');
     setDiscription('');
     setPrice('');
     setCity('');
     setCategory('');
     setImage([]);
+    navigation.goBack();
+
   };
 
   const ImageGallery = () => {
@@ -390,7 +392,9 @@ export default function Ads({navigation}) {
             }}>
             <Text
               style={{
-                padding: 17,
+                paddingVertical: 17,
+                paddingLeft: 17,
+                paddingRight: 3,
                 fontWeight: 'bold',
                 opacity: 0.7,
                 color: '#ababab',

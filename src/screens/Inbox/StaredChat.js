@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, ScrollView, Image , ActivityIndicator} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import Entypo from 'react-native-vector-icons/Entypo';
@@ -20,6 +20,7 @@ export default function StaredChat() {
   const [allResultsVisible, setAllResultsVisible] = React.useState(false);
   const [messages, setMessages] = React.useState([]);
   const {user} = useContext(AuthContext);
+  const [loading , setLoading] = useState(true)
 
   React.useEffect(() => {
     firestore()
@@ -29,10 +30,20 @@ export default function StaredChat() {
 
       .onSnapshot(document =>
         setMessages(document.docs.map(item => item.data().item)),
+        setLoading(false)
       );
   }, [user?.USER_ID]);
 
-  return (
+  return loading ?
+  <ActivityIndicator
+      color={'black'}
+      size={'large'}
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : 
+      messages?.length === 0 ?
+          <View style ={{flex : 1 , alignItems : 'center' , justifyContent: 'center',}}>
+              <Text style = {{color : 'black' , fontSize : 20 , fontWeight : 'bold'}}>No Have Stared Chats</Text>
+          </View> :
+  (
     <ScrollView
       style={{
         flex: 1,
@@ -107,7 +118,7 @@ export default function StaredChat() {
                   justifyContent: 'space-between',
                   borderRadius: 10,
                 }}>
-                <View style={{width: '16%', alignItems: 'center'}}>
+                {/* <View style={{width: '16%', alignItems: 'center'}}>
                   <Image
                     source={{uri: item.user.PROFILE}}
                     style={{
@@ -117,7 +128,10 @@ export default function StaredChat() {
                       borderRadius: 50,
                     }}
                   />
-                </View>
+                </View> */}
+                <View style={{ width: '16%', alignItems: 'center' }}>
+                                            <Image source={{ uri: item.user1.uid == user?.USER_ID ? item.user2.profile : item.user1.profile }} style={{ backgroundColor: 'red', height: 40, width: 40, borderRadius: 50 }} />
+                                        </View>
 
                 <View
                   style={{width: '50%', height: 40, justifyContent: 'center'}}>

@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Modal,
+  ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -62,8 +65,6 @@ export default function EditAds({navigation, route}) {
   );
 
   const CreateAds = async () => {
-    const imageUrl = await ImageHandle();
-
     firestore()
       .collection(`Category`)
       .doc(data.AUTO_ID)
@@ -73,7 +74,7 @@ export default function EditAds({navigation, route}) {
         DISCRIPTION: discription === '' ? data.DISCRIPTION : discription,
         PRICE: price === '' ? data.PRICE : price,
         CITY: city === '' ? data.CITY : city,
-        ADS_IMAGES: uri === null && uri === null ? data.ADS_IMAGES : imageUrl,
+        ADS_IMAGES: image.length === 0 ? data.ADS_IMAGES : image,
         UID: data.UID,
         NAME: data.NAME,
         LIKE: data.LIKE,
@@ -94,7 +95,47 @@ export default function EditAds({navigation, route}) {
       height: 500,
       cropping: true,
     }).then(image => {
-      setUri(image.path);
+      const ImageHandle = async () => {
+        const uploadUri = image.path;
+        let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+        const extansion = fileName.split('.').pop();
+        const name = fileName.split('.').slice(0, -1).join('.');
+        fileName = name + Date.now() + '.' + extansion;
+
+        setUploading(true);
+        setTranseferred(0);
+
+        const storageRef = storage().ref(`photos/${id}`);
+        const task = storageRef.putFile(uploadUri);
+
+        task.on('state_changed', taskSnapshot => {
+          setTranseferred(
+            Math.round(
+              taskSnapshot.bytesTransferred / taskSnapshot.totalBytes,
+            ) * 100,
+          );
+        });
+
+        try {
+          await task;
+
+          const url = await storageRef.getDownloadURL();
+
+          setImage(previuos => {
+            return [...previuos, url];
+          });
+
+          setUploading(false);
+          Alert.alert('Your Ad Has Been Upload');
+          return url;
+        } catch (e) {
+          console.log(e);
+        }
+        setUri(null);
+      };
+
+      ImageHandle();
     });
   };
 
@@ -108,43 +149,40 @@ export default function EditAds({navigation, route}) {
     });
   });
 
-  const ImageHandle = async () => {
-    const uploadUri = uri;
-    let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-
-    const extansion = fileName.split('.').pop();
-    const name = fileName.split('.').slice(0, -1).join('.');
-    fileName = name + Date.now() + '.' + extansion;
-
-    setUploading(true);
-    setTranseferred(0);
-
-    const storageRef = storage().ref(`photos/${id}`);
-    const task = storageRef.putFile(uploadUri);
-
-    task.on('state_changed', taskSnapshot => {
-      setTranseferred(
-        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
-      );
-    });
-
-    try {
-      await task;
-
-      const url = await storageRef.getDownloadURL();
-
-      setUploading(false);
-      Alert.alert('Your Ad Has Been Upload');
-      return url;
-    } catch (e) {
-      console.log(e);
-    }
-    setUri(null);
-  };
 
   return (
     <ScrollView style={{flex: 1}}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={uploading}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setUploading(!uploading);
+        }}>
+        <View style={ {flex : 1 ,  backgroundColor: 'rgba(52, 52, 52, 0.8)', justifyContent : 'center' , alignItems: 'center',}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '70%',
+              backgroundColor: 'white',
+              paddingHorizontal: 30,
+              paddingVertical: 20,
+              borderRadius: 5,
+            }}>
+            <ActivityIndicator
+              size="large"
+              color="#525252"
+              style={{marginRight: 10}}
+            />
+            <Text style={{color: '#525252', fontWeight: 'bold'}}>
+              Configuring Image ...
+            </Text>
+          </View>
+        </View>
+      </Modal>
+
       <View style={styles.MainView}>
         {/* icon back */}
         <View>
@@ -195,9 +233,6 @@ export default function EditAds({navigation, route}) {
                 }}
                 buttonStyle={{backgroundColor: '#f7f7f7', width: '100%'}}
                 rowStyle={{backgroundColor: 'white'}}
-                // buttonTextStyle={{ textAlign: "left", color: '#ababab', fontWeight: 'bold', fontSize: 15 }}
-                // dropdownStyle={{ backgroundColor: 'red', borderRadius: 10 }}
-                // rowTextStyle={{ color: 'white' }}
                 onSelect={(selectedItem, index) => {
                   setCategory(selectedItem);
                 }}
@@ -215,8 +250,8 @@ export default function EditAds({navigation, route}) {
           <Text style={styles.AdTitle}>AD TITLE</Text>
           <TextInput
             onChangeText={text => setTitle(text)}
-            value={title}
-            // defaultValue={data.TITLE}
+            // value={title}
+            defaultValue={data.TITLE}
             style={styles.Input}
           />
         </View>
@@ -224,49 +259,126 @@ export default function EditAds({navigation, route}) {
           <Text style={styles.AdTitle}>DISCRIPTION</Text>
           <TextInput
             onChangeText={text => setDiscription(text)}
-            value={discription}
+            // value={discription}
+            defaultValue={data.DISCRIPTION}
             multiline={true}
-            // defaultValue={data.DISCRIPTION}
             style={styles.Input}
           />
         </View>
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>PRICE</Text>
-          <TextInput
-            onChangeText={text => setPrice(text)}
-            // defaultValue={data.PRICE}
-            value={price}
-            style={styles.Input}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              backgroundColor: '#f7f7f7',
+              paddingVertical: 3,
+            }}>
+            <Text
+              style={{
+                paddingVertical: 17,
+                paddingLeft: 17,
+                paddingRight: 3,
+                fontWeight: 'bold',
+                opacity: 0.7,
+                color: '#ababab',
+                fontSize: 15,
+              }}>
+              $
+            </Text>
+            <TextInput
+              onChangeText={text => setPrice(text)}
+            defaultValue={data.PRICE}
+              keyboardType="number-pad"
+              style={{
+                fontFamily: 'Roboto',
+                width: '86%',
+                fontWeight: 'bold',
+                opacity: 0.7,
+                color: '#ababab',
+                fontSize: 15,
+              }}
+            />
+          </View>
         </View>
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>CITY</Text>
           <TextInput
             onChangeText={text => setCity(text)}
-            value={city}
+            defaultValue={data.CITY}
+            // value={city}
             placeholder="Select City"
             style={styles.Input}
           />
         </View>
         <View
-          style={{marginTop: 20, flexDirection: 'row', alignItems: 'center'}}>
+          style={{
+            marginTop: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}>
           <TouchableOpacity onPress={ImageGallery}>
             <View>
               <Image
-                style={{height: 95, width: 95, borderRadius: 2, marginTop: 1}}
+                style={{
+                  height: 60,
+                  width: 60,
+                  borderRadius: 50,
+                  marginTop: 1,
+                  marginHorizontal: 12,
+                  borderWidth: 1,
+                }}
                 source={{
-                  uri: 'https://icon-library.com/images/gallery-icon-png/gallery-icon-png-18.jpg',
+                  uri: 'https://www.ubuntupit.com/wp-content/uploads/2020/05/Simple-Gallery-Photo-and-Video-Manager-Editor.png',
                 }}
               />
             </View>
           </TouchableOpacity>
 
           <View>
-            <Image
+            {/* <Image
               style={{height: 80, width: 80, borderRadius: 2, marginTop: 1}}
               source={{uri: uri === null ? data.ADS_IMAGES : uri}}
-            />
+            /> */}
           </View>
+          {image?.length === 0
+            ? data.ADS_IMAGES.map((item, ind) => {
+                console.log(item);
+                return (
+                  <View style={{marginHorizontal: 6, marginTop: 20}}>
+                    <Image
+                      style={{
+                        height: 60,
+                        width: 60,
+                        borderRadius: 50,
+                        marginTop: 1,
+                        marginHorizontal: 3,
+                        borderWidth: 1,
+                      }}
+                      source={{uri: item}}
+                    />
+                  </View>
+                );
+              })
+            : image.map((item, ind) => {
+                return (
+                  <View style={{marginHorizontal: 6, marginTop: 20}}>
+                    <Image
+                      style={{
+                        height: 60,
+                        width: 60,
+                        borderRadius: 50,
+                        marginTop: 1,
+                        marginHorizontal: 3,
+                        borderWidth: 1,
+                      }}
+                      source={{uri: item}}
+                    />
+                  </View>
+                );
+              })}
         </View>
 
         {uploading ? (

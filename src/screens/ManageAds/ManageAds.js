@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   Image,
   TouchableOpacity,
   Pressable,
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,21 +21,51 @@ import firestore from '@react-native-firebase/firestore';
 import * as Animatable from 'react-native-animatable';
 import {useSelector} from 'react-redux';
 import {AuthContext} from '../../context/Auth';
+import {Colors, Sizes} from '../../comonents/Constant/Constant';
 
 export default function manageAds({navigation}) {
   const [data, setData] = React.useState([]);
   const {user} = useContext(AuthContext);
+  const [loading, setLoading] = useState(true)
 
-  React.useEffect(() => {
-    firestore()
-      .collection(`Stared Data ${user.USER_ID}`)
-      // .doc(user.USER_ID.pop())
-      .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()));
-      });
-  }, []);
+    React.useEffect(() => {
+      firestore()
+        .collection('Category')
+        .onSnapshot(documentSnapshot => {
+          setData(
+            documentSnapshot.docs
+              .map(e => e.data())
+              .filter(item => item.staredUsers.includes(user.USER_ID)),
+          );
+          setLoading(false);
+        });
+    }, []);
 
-  return (
+  const array = [
+    [123, 333],
+    [456, 555],
+  ];
+
+  const StaredHandler = (uid, data) => {
+    const filterStared = data.filter(function (item) {
+      return item !== user?.USER_ID;
+    });
+    setLoading(true);
+
+    firestore().collection('Category').doc(uid).update({
+      staredUsers: filterStared,
+    });
+
+    setLoading(false);
+  };
+
+  return loading ? (
+    <ActivityIndicator
+      color={'black'}
+      size={'small'}
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+    />
+  ) : (
     <ScrollView
       style={{
         flex: 1,
@@ -88,86 +120,39 @@ export default function manageAds({navigation}) {
         </View>
       ) : (
         data.map((item, ind) => {
-          return (
-            <View
-              key={ind}
-              style={{
-                marginHorizontal: 1,
-                backgroundColor: 'white',
-                borderRadius: 2,
-                marginTop: 10,
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Categories_detail', {
-                    IMAGE: item.IMAGE,
-                    PRICE: item.PRICE,
-                    DISCRIPTION: item.DISCRIPTION,
-                    CITY: item.CITY,
-                    CATEGORY: item.CATEGORY,
-                    UID: item.UID,
-                  })
-                }>
-                <Animatable.View
-                  duration={1000}
-                  animation="bounceInLeft"
-                  style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    borderColor: '#F0F0F0',
-                    borderBottomWidth: 1,
-                    alignItems: 'center',
-                    padding: 10,
-                  }}>
-                  <View
-                    style={{
-                      width: '40%',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                    }}>
-                    <Image
-                      style={{height: 130, width: '100%', borderRadius: 5}}
-                      source={{uri: item.IMAGE}}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 10,
-                      padding: 5,
-                      width: '60%',
-                      height: 130,
-                    }}>
-                    <Text style={{color: '#b3b3b3'}}>ayan ahmed</Text>
-                    <Text
-                      numberOfLines={2}
-                      style={{color: '#494949', fontSize: 14}}>
-                      {item.TITLE}
-                    </Text>
-                    <Text style={{color: 'green', fontSize: 18}}>
-                      {item.PRICE}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text style={{color: '#b3b3b3'}}>Versand moglich</Text>
+          // const filterLike = item.LIKE.filter(item => item === user?.USER_ID);
 
-                      <Pressable
-                        onPress={() => {
-                          firestore()
-                            .collection(`Stared Data ${user.USER_ID}`)
-                            .doc(item.DISCRIPTION)
-                            .delete();
-                        }}>
-                        <AntDesign
-                          style={{color: '#f7b217'}}
-                          name="star"
-                          size={20}
-                        />
-                      </Pressable>
+          return (
+            <View key={ind} style={styles.main_view_map}>
+              <TouchableOpacity onPress={() => console.log('item ', item)}>
+                <Animatable.View style={styles.Animatable}>
+                  <View style={styles.Animatable_child}>
+                    <View style={styles.Animatable_child_to_child}>
+                      <Image
+                        style={styles.Animatable_image}
+                        source={{uri: item.ADS_IMAGES?.[0]}}
+                      />
+                    </View>
+                    <View style={styles.Animatable_Para}>
+                      <Text style={styles.username}>{item.NAME}</Text>
+                      <Text numberOfLines={2} style={styles.title}>
+                        {item.TITLE}
+                      </Text>
+                      <Text style={styles.price}>{item.PRICE}</Text>
+                      <View style={styles.Icon_view}>
+                        <Text style={styles.Versand}>Versand moglich</Text>
+
+                        <Pressable
+                          onPress={() =>
+                            StaredHandler(item.AUTO_ID, item.staredUsers)
+                          }>
+                          <AntDesign
+                            style={styles.staro}
+                            name="star"
+                            size={18}
+                          />
+                        </Pressable>
+                      </View>
                     </View>
                   </View>
                 </Animatable.View>
@@ -183,3 +168,97 @@ export default function manageAds({navigation}) {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  ScrollView: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    paddingHorizontal: Sizes.thirteen,
+  },
+  Arrow_left: {
+    color: Colors.white,
+    fontSize: Sizes.twenty,
+    marginTop: Sizes.ten,
+  },
+  Main_ads_veiw: {
+    marginVertical: Sizes.twenty,
+  },
+  Ads_name: {
+    color: Colors.black,
+    fontSize: Sizes.twenty,
+  },
+  Ads_name_para: {
+    color: Colors.ads_para,
+    fontSize: Sizes.fouteen,
+    marginTop: Sizes.five,
+  },
+  View_data_length: {
+    flexDirection: 'row',
+    height: 500,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  View_data_length_Not_avalaible: {
+    fontSize: Sizes.fifteen,
+  },
+  View_data_length_icon: {
+    color: Colors.red,
+    paddingHorizontal: Sizes.ten,
+  },
+  main_view_map: {
+    marginHorizontal: 1,
+    backgroundColor: Colors.white,
+    borderRadius: Sizes.two,
+    marginTop: Sizes.ten,
+  },
+  Animatable: {
+    alignItems: 'center',
+  },
+  Animatable_child: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  Animatable_child_to_child: {
+    width: '40%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  Animatable_image: {
+    height: Sizes.hundred,
+    width: '100%',
+    borderRadius: Sizes.two,
+  },
+  Animatable_Para: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingHorizontal: Sizes.ten,
+    padding: Sizes.five,
+    width: '60%',
+    lineHeihgt: 80,
+  },
+  username: {
+    color: Colors.card_username,
+    fontSize: Sizes.ten,
+  },
+  title: {
+    color: Colors.card_title,
+    fontSize: Sizes.twelve,
+  },
+  price: {
+    color: Colors.green,
+    fontSize: Sizes.twelve,
+  },
+  Icon_view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  Versand: {
+    color: Colors.card_username,
+    fontSize: Sizes.twelve,
+  },
+  staro: {
+    color: 'gold',
+  },
+});

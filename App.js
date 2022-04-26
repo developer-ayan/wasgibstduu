@@ -8,7 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {useSelector} from 'react-redux';
 import {AuthContext} from './src/context/Auth';
 export default function App() {
-  const {setUser} = useContext(AuthContext);
+  const {setUser , user} = useContext(AuthContext);
   const [save, setSave] = React.useState({});
   const uid = useSelector(state => state.user);
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ export default function App() {
     }, 2000);
   }, []);
 
-  setUser(uid?.CONFIRM_PASSWORD ? uid : save);
+  setUser(uid?.CONFIRM_PASSWORD ? uid : save)
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -43,7 +43,7 @@ export default function App() {
     />
   ) : (
     <NavigationContainer>
-      {uid?.CONFIRM_PASSWORD || save?.CONFIRM_PASSWORD ? (
+      {user?.USER_ID ? (
         <MyStack />
       ) : (
         <LoginStack />

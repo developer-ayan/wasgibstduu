@@ -70,14 +70,22 @@ export default function Categories_detail({route, navigation}) {
           LIKE: firestore.FieldValue.arrayRemove(user?.USER_ID),
         });
     } else {
+      let forDeletion = [user?.USER_ID];
+
+      let arr = LIKE;
+
+      arr = arr.filter(item => !forDeletion.includes(item));
+
       firestore()
         .collection('Category')
         .doc(AUTO_ID)
         .update({
-          LIKE: [user?.USER_ID],
+          LIKE: [...arr, user?.USER_ID],
         });
     }
   };
+
+  // !!! Read below about array.includes(...) support !!!
 
   const increment = () => {
     setLike(like + 1);
