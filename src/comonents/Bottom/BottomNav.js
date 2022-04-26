@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import React, {useContext} from 'react';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -12,98 +12,89 @@ import Home from '../../screens/Home/Home';
 import Drawer from '../Drawer/Drawer';
 import Profile from '../../screens/Profile/Profile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from 'react-redux';
-import { AuthContext } from '../../context/Auth';
-import firestore from '@react-native-firebase/firestore'
+import {useSelector} from 'react-redux';
+import {AuthContext} from '../../context/Auth';
+import firestore from '@react-native-firebase/firestore';
 
 export default function BottomNav() {
+  const state = useSelector(state => state.user);
+  const {messageCounting} = useContext(AuthContext);
+  React.useEffect(() => {
+    try {
+      const userDetail = JSON.stringify(state);
+      AsyncStorage.setItem('userData', userDetail);
+    } catch (e) {
+      // saving error
+    }
+    firestore()
+      .collection('Category')
+      .get()
+      .then(correct => {
+        correct.forEach(snapshot => {
+          firestore().collection('Category').doc(snapshot.id).update({
+            AUTO_ID: snapshot.id,
+          });
+        });
+      });
+  }, []);
+  const Tab = createMaterialBottomTabNavigator();
+  return (
+    <Tab.Navigator
+      initialRouteName="Drawer"
+      activeColor="black"
+      barStyle={{backgroundColor: '#ffffff'}}>
+      <Tab.Screen
+        name="Drawer"
+        component={Drawer}
+        options={{
+          tabBarLabel: <Entypo name="dot-single" size={15} />,
+          tabBarIcon: ({color}) => (
+            <Octicons name="home" color={color} size={23} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="manageAds"
+        component={manageAds}
+        options={{
+          tabBarLabel: <Entypo name="dot-single" size={15} />,
+          tabBarIcon: ({color}) => (
+            <AntDesign name="staro" color={color} size={23} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Ads"
+        component={Ads}
+        options={{
+          tabBarLabel: <Entypo name="dot-single" size={15} />,
+          tabBarIcon: ({color}) => (
+            <AntDesign name="plussquareo" color={color} size={23} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Inbox"
+        component={Inbox}
+        options={{
+          tabBarBadge: messageCounting,
+          tabBarLabel: <Entypo name="dot-single" size={15} />,
+          tabBarIcon: ({color}) => (
+            <Fontisto name="email" color={color} size={23} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: <Entypo name="dot-single" size={15} />,
 
-    const state = useSelector(state => state.user)
-    const {messageCounting} = useContext(AuthContext)
-    React.useEffect(() => {
-        try {
-            const userDetail = JSON.stringify(state)
-            AsyncStorage.setItem('userData', userDetail)
-        } catch (e) {
-            // saving error
-        }
-        firestore()
-        .collection('Category')
-        .get()
-        .then((correct) => {
-          correct.forEach(snapshot => {
-            firestore()
-              .collection('Category')
-              .doc(snapshot.id)
-              .update({
-                AUTO_ID: snapshot.id
-              })
-    
-          })
-        })
-    }, [])
-    const Tab = createMaterialBottomTabNavigator();
-    return (
-        <Tab.Navigator
-            initialRouteName="Drawer"
-            activeColor="black"
-            barStyle={{ backgroundColor: '#ffffff' }}>
-            <Tab.Screen
-                name="Drawer"
-                component={Drawer}
-                options={{
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,
-                    tabBarIcon: ({ color }) => (
-                        <Octicons name="home" color={color} size={23} />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="manageAds"
-                component={manageAds}
-                options={{
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,
-                    tabBarIcon: ({ color }) => (
-                        <AntDesign name="staro" color={color} size={23} />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Ads"
-                component={Ads}
-                options={{
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,
-                    tabBarIcon: ({ color }) => (
-                        <AntDesign name="plussquareo" color={color} size={23} />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Inbox"
-                component={Inbox}
-                options={{
-                    tabBarBadge: messageCounting,
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,           
-                    tabBarIcon: ({ color }) => (
-                        <Fontisto name="email" color={color} size={23} />
-                    ),
-                    
-                }}
-            />
-            <Tab.Screen
-                name="Profile"
-                component={Profile}
-                options={{
-                    tabBarLabel: <Entypo name="dot-single" size={15} />,
-
-                    tabBarIcon: ({ color }) => (
-                        <AntDesign name="user" color={color} size={23} />
-                    ),
-                }}
-            />
-
-
-        </Tab.Navigator>
-
-    );
+          tabBarIcon: ({color}) => (
+            <AntDesign name="user" color={color} size={23} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
