@@ -22,6 +22,8 @@ import firestore from '@react-native-firebase/firestore';
 import Loader from '../../comonents/Loader/Loader';
 import {useSelector} from 'react-redux';
 // import Slider from './Slider'
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function SearchBar({navigation}) {
   const [data, setData] = React.useState([]);
@@ -45,12 +47,12 @@ export default function SearchBar({navigation}) {
   const [learning, setLearning] = useState([]);
   const [events, setEvents] = useState([]);
   const [phoneAndTablets, setPhoneAndTablets] = useState([]);
-
+  const [address, setAddress] = useState('');
   const [show, setshow] = React.useState(false);
   const toggle = () => {
     setshow(!show);
   };
-
+  console.log('address', address);
   React.useEffect(() => {
     firestore()
       .collection('Category')
@@ -90,13 +92,13 @@ export default function SearchBar({navigation}) {
   };
   const SelectedProperty = name => {
     if (selectedPropertyType == name) {
-      console.log(selectedPropertyType);
+      // console.log(selectedPropertyType);
       // setSelectedPropertyType(prev => prev.filter(item => item !== name));
     } else {
       setSelectedPropertyType(name);
     }
   };
-  console.log('property', selectedPropertyType);
+  // console.log('property', selectedPropertyType);
   const countries = [
     'Fashion',
     'Auto Mobiles',
@@ -110,7 +112,7 @@ export default function SearchBar({navigation}) {
   ];
 
   return (
-    <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       {/* {'MODAL OPEN '} */}
 
       <Modal
@@ -122,8 +124,53 @@ export default function SearchBar({navigation}) {
           setModalVisible(!modalVisible);
         }}>
         <ScrollView style={styles.centeredView}>
-          <Text>Ayan</Text>
-
+          {/* <Text>Ayan</Text> */}
+          <View style={[styles.Address_components]}>
+            <ScrollView
+              keyboardShouldPersistTaps={'always'}
+              contentContainerStyle={{
+                width: '100%',
+                flexDirection: 'row-reverse',
+              }}>
+              <GooglePlacesAutocomplete
+                nestedScrollEnabled={true}
+                autoFocus={false}
+                textInputProps={{
+                  placeholderTextColor: 'gray',
+                  color: 'gray',
+                  returnKeyType: 'next',
+                  fontSize: 14,
+                  multiline: true,
+                  // textAlign: Platform.OS === 'ios' ? 'right' : 'left',
+                  // textAlignVertical: 'center',
+                  alignContent: 'center',
+                  fontFamily: 'Roboto-Regular',
+                  value: address,
+                  onChangeText: setAddress,
+                }}
+                styles={{
+                  listView: {maxHeight: 150, width: '100%'},
+                }}
+                listViewDisplayed={false}
+                placeholder="Search City"
+                placeholderTextColor="gray"
+                onPress={(data, location = null) => {
+                  // 'details' is provided when fetchDetails = true
+                  console.log(data);
+                  console.log(location);
+                }}
+                // onPress={data => {
+                //   console.log(data.description, 'datas');
+                //   // setAddress(data.description);
+                //   // FetchCoordinates(data.description);
+                // }}
+                query={{
+                  key: 'AIzaSyD6H1cGAMzHOID3_rSUMB7Uxx1CE0SlP0c',
+                  language: 'en',
+                }}
+              />
+            </ScrollView>
+          </View>
           <View
             style={{
               flexDirection: 'row',
@@ -653,7 +700,7 @@ export default function SearchBar({navigation}) {
           );
         })
       )}
-    </ScrollView>
+    </View>
   );
 }
 
@@ -661,6 +708,16 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  closeIcon: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 18,
+    alignItems: 'center',
+    width: 18,
+    height: 18,
+    marginHorizontal: 5,
+    justifyContent: 'center',
   },
   Property_type_Buttons_Active: {
     borderRadius: 20,
@@ -675,6 +732,18 @@ const styles = StyleSheet.create({
   Property_type_text: {
     color: 'red',
     fontSize: 12,
+  },
+  Address_components: {
+    // marginLeft: 5,
+    width: '90%',
+    flexDirection: 'row',
+    // justifyContent: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#B3AEAD',
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    marginTop: 15,
   },
   Property_type_Buttons: {
     borderWidth: 1,
