@@ -24,6 +24,7 @@ import database from '@react-native-firebase/database';
 import {useDispatch, useSelector} from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import Feather from 'react-native-vector-icons/Feather';
@@ -31,16 +32,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {firebase} from '@react-native-firebase/auth';
 import {useFocusEffect} from '@react-navigation/native';
 import {AuthContext} from '../../context/Auth';
+import storage from '@react-native-firebase/storage';
 
 export default function ChatScreen({route, navigation}) {
   const {e, title} = route.params;
   const chat_user_profile = e.PROFILE;
   const [message, setMessage] = React.useState('');
   const [data, setData] = React.useState([]);
-  const [uri, setUri] = React.useState();
+  const [uri, setUri] = React.useState(null);
   const {user} = useContext(AuthContext);
   const scrollViewRef = useRef();
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = React.useState(false);
+  const [transeferred, setTranseferred] = React.useState(0);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -58,15 +62,18 @@ export default function ChatScreen({route, navigation}) {
     }
   };
 
+  const REGEXP = /^(?!\s*$).+/;
+
+  console.log(!REGEXP.test(message));
+
   const send_message = () => {
-    if (message === '') {
-      alert('please Enter your msg');
-    } else {
+    if (REGEXP.test(message)) {
       const merge = merge_uid(user?.USER_ID, e?.USER_ID);
       firestore().collection('chatting').doc(merge).collection(`${merge}`).add({
         msg: message,
         name: user?.NAME,
         uid: user?.USER_ID,
+        image: uri,
         date: new Date().toUTCString(),
       });
 
@@ -99,6 +106,9 @@ export default function ChatScreen({route, navigation}) {
           user: [{user: e}, {user: user}],
         });
       setMessage('');
+      setUri(null);
+    } else {
+      alert('Please type');
     }
   };
 
@@ -114,20 +124,53 @@ export default function ChatScreen({route, navigation}) {
   };
 
   const ImageGallery = () => {
-    var arr = [];
     ImagePicker.openPicker({
-      multiple: true,
-      waitAnimationEnd: false,
-      includeExif: true,
-      compressImageQuality: 0.8,
-      maxFiles: 10,
-      mediaType: 'any',
-      includeBase64: true,
+      width: 700,
+      height: 500,
+      cropping: true,
     }).then(image => {
-      image.map(images => {
-        arr.push({path: images.path});
-        setUri(arr);
-      });
+      const ImageHandle = async () => {
+        const uploadUri = image.path;
+        let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+        const extansion = fileName.split('.').pop();
+        const name = fileName.split('.').slice(0, -1).join('.');
+        fileName = name + Date.now() + '.' + extansion;
+
+        setUploading(true);
+        // setTranseferred(0);
+
+        const storageRef = storage().ref(`photos/`);
+        const task = storageRef.putFile(uploadUri);
+
+        task.on('state_changed', taskSnapshot => {
+          setTranseferred(
+            Math.round(
+              taskSnapshot.bytesTransferred / taskSnapshot.totalBytes,
+            ) * 100,
+          );
+        });
+
+        try {
+          await task;
+
+          const url = await storageRef.getDownloadURL();
+          setUri(url);
+
+          // setImage(previuos => {
+          //   return [...previuos, url];
+          // });
+
+          setUploading(false);
+          Alert.alert('Your Ad Has Been Upload');
+          return url;
+        } catch (e) {
+          console.log(e);
+        }
+        // setUri(null);
+      };
+
+      ImageHandle();
     });
   };
 
@@ -164,7 +207,9 @@ export default function ChatScreen({route, navigation}) {
         <Image
           source={{
             uri:
-              chat_user_profile === '' || chat_user_profile === undefined
+              chat_user_profile === '' ||
+              chat_user_profile === undefined ||
+              chat_user_profile === null
                 ? 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
                 : e.PROFILE,
           }}
@@ -207,7 +252,8 @@ export default function ChatScreen({route, navigation}) {
                   }}
                 />
               )}
-              <Text
+
+              <View
                 style={{
                   width: '75%',
                   marginVertical: 5,
@@ -218,14 +264,103 @@ export default function ChatScreen({route, navigation}) {
                   borderBottomRightRadius: uid ? 20 : 3,
                   borderTopLeftRadius: uid ? 5 : 3,
                   borderTopRightRadius: uid ? 5 : 3,
-                  color: uid ? 'white' : 'black',
                 }}>
-                {e.msg}
-              </Text>
+                {e.image === null ? null : (
+                  <Image
+                    source={{uri: e.image}}
+                    style={{
+                      height: 150,
+                      width: '100%',
+                      borderRadius: 5,
+                      marginBottom: 5,
+                    }}
+                  />
+                )}
+
+                <Text
+                  style={{
+                    color: uid ? 'white' : 'black',
+                  }}>
+                  {e.msg}
+                </Text>
+              </View>
             </View>
           );
         })}
       </ScrollView>
+
+      {
+        uploading ? 
+
+        <View
+        style={{
+          backgroundColor: '#007bff',
+          padding: 20,
+          marginHorizontal: 5,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        {uploading ? (
+          <ActivityIndicator
+            color={'white'}
+            size={'small'}
+            style={{marginRight: 20}}
+          />
+        ) : null}
+
+  
+          <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
+            1 selected image
+          </Text>
+       
+      </View>
+
+      :
+
+      <View
+      style={{
+        backgroundColor: '#007bff',
+        padding: 20,
+        marginHorizontal: 5,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}>
+      {uploading ? (
+        <ActivityIndicator
+          color={'white'}
+          size={'small'}
+          style={{marginRight: 20}}
+        />
+      ) : null}
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}>
+        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
+          1 selected image
+        </Text>
+        <TouchableOpacity onPress={() => setUri(null)}>
+          <Entypo
+            name="circle-with-cross"
+            size={20}
+            color="white"
+            style={{justifyContent: 'flex-end'}}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+      }
+
+
+
       <View
         style={{
           flexDirection: 'row',
@@ -240,7 +375,7 @@ export default function ChatScreen({route, navigation}) {
           <FontAwesome name="image" size={20} color="black" />
         </TouchableOpacity>
 
-        <View style={{width: '70%'}}>
+        <View style={{width: REGEXP.test(message) ? '70%' : '90%'}}>
           <TextInput
             onChangeText={text => setMessage(text)}
             value={message}
@@ -248,9 +383,13 @@ export default function ChatScreen({route, navigation}) {
           />
         </View>
 
-        <TouchableOpacity onPress={send_message} style={{padding: 15}}>
-          <Ionicons name="send" size={20} color="black" />
-        </TouchableOpacity>
+        {REGEXP.test(message) ? (
+          uploading ? null : (
+            <TouchableOpacity onPress={send_message} style={{padding: 15}}>
+              <Ionicons name="send" size={20} color="black" />
+            </TouchableOpacity>
+          )
+        ) : null}
       </View>
     </View>
     // </ScrollView>

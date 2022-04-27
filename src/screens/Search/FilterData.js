@@ -26,12 +26,12 @@ import {useFocusEffect} from '@react-navigation/native';
 
 export default function FilterData({navigation, route}) {
   const {data} = route.params;
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const {user} = useContext(AuthContext);
 
-  setTimeout(() => {
-    setLoading(false);
-  }, 100);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 100);
 
   const StaredHandler = item => {
     const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
@@ -40,8 +40,6 @@ export default function FilterData({navigation, route}) {
     let arr = item?.staredUsers;
 
     arr = arr.filter(item => !forDeletion.includes(item));
-
-    console.log(arr);
 
     if (filterStaredData === true) {
       firestore()
@@ -68,30 +66,30 @@ export default function FilterData({navigation, route}) {
     />
   ) : data.length === 0 ? (
     <View
-    style={{
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-    <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-      Go to create your ads
-    </Text>
-    <View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Ads')}
-        style={{
-          backgroundColor: 'green',
-          padding: 20,
-          borderRadius: 50,
-          marginTop: 20,
-        }}>
-        <Text style={{color: 'white', fontSize: 20}}>
-          <Feather name="arrow-left" size={25} color="white" />
-        </Text>
-      </TouchableOpacity>
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        Go to create your ads
+      </Text>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('BottomNav')}
+          style={{
+            backgroundColor: 'green',
+            padding: 20,
+            borderRadius: 50,
+            marginTop: 20,
+          }}>
+          <Text style={{color: 'white', fontSize: 20}}>
+            <Feather name="arrow-left" size={25} color="white" />
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
   ) : (
     <ScrollView style={styles.ScrollView}>
       <View>
@@ -108,79 +106,63 @@ export default function FilterData({navigation, route}) {
           </Text>
         </View>
 
-        {
-          data.map((item, ind) => {
-            const filterLike = item?.LIKE?.filter(
-              item => item === user?.USER_ID,
-            );
-            const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+        {data.map((item, ind) => {
+          const filterLike = item?.LIKE?.filter(item => item === user?.USER_ID);
+          const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
-            return (
-              <View key={ind} style={styles.main_view_map}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('Categories_detail', {
-                      IMAGE: item.ADS_IMAGES,
-                      PRICE: item.PRICE,
-                      DISCRIPTION: item.DISCRIPTION,
-                      CITY: item.CITY,
-                      CATEGORY: item.CATEGORY,
-                      TITLE: item.TITLE,
-                      UID: item.UID,
-                      LIKE: item.LIKE,
-                      USER_LIKE: filterLike[0],
-                      AUTO_ID: item.AUTO_ID,
-                    })
-                  }>
-                  <Animatable.View style={styles.Animatable}>
-                    <View style={styles.Animatable_child}>
-                      <View style={styles.Animatable_child_to_child}>
-                        <Image
-                          style={styles.Animatable_image}
-                          source={{uri: item.ADS_IMAGES?.[0]}}
-                        />
-                      </View>
-                      <View style={styles.Animatable_Para}>
-                        {item.UID === user?.USER_ID ? (
-                          <Text style={styles.username}>{'Your Ad'}</Text>
+          return (
+            <View key={ind} style={styles.main_view_map}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Categories_detail', {
+                    IMAGE: item.ADS_IMAGES,
+                    PRICE: item.PRICE,
+                    DISCRIPTION: item.DISCRIPTION,
+                    CITY: item.CITY,
+                    CATEGORY: item.CATEGORY,
+                    TITLE: item.TITLE,
+                    UID: item.UID,
+                    LIKE: item.LIKE,
+                    USER_LIKE: filterLike[0],
+                    AUTO_ID: item.AUTO_ID,
+                  })
+                }>
+                <Animatable.View style={styles.Animatable}>
+                  <View style={styles.Animatable_child}>
+                    <View style={styles.Animatable_child_to_child}>
+                      <Image
+                        style={styles.Animatable_image}
+                        source={{uri: item.ADS_IMAGES?.[0]}}
+                      />
+                    </View>
+                    <View style={styles.Animatable_Para}>
+                      {item.UID === user?.USER_ID ? (
+                        <Text style={styles.username}>{'Your Ad'}</Text>
+                      ) : (
+                        <Text style={styles.username}>{item.NAME}</Text>
+                      )}
+                      <Text numberOfLines={2} style={styles.title}>
+                        {item.TITLE}
+                      </Text>
+                      <Text style={styles.price}>{item.PRICE}</Text>
+                      <View style={styles.Icon_view}>
+                        {item.LIKE.length === 0 ? (
+                          <Text style={styles.Versand}>No Likes </Text>
                         ) : (
-                          <Text style={styles.username}>{item.NAME}</Text>
+                          <Text style={styles.Versand}>
+                            Likes {item.LIKE.length}
+                          </Text>
                         )}
-                        <Text numberOfLines={2} style={styles.title}>
-                          {item.TITLE}
-                        </Text>
-                        <Text style={styles.price}>{item.PRICE}</Text>
-                        <View style={styles.Icon_view}>
-                          <Text style={styles.Versand}>Versand moglich</Text>
 
-                          {item.UID === user?.USER_ID ? (
-                            <Text style={{color: 'white'}}>Ayan</Text>
-                          ) : (
-                            <Pressable onPress={() => StaredHandler(item)}>
-                              {filterStaredData === true ? (
-                                <AntDesign
-                                  style={[styles.staro, {color: 'gold'}]}
-                                  name="star"
-                                  size={18}
-                                />
-                              ) : (
-                                <AntDesign
-                                  style={styles.staro}
-                                  name="staro"
-                                  size={18}
-                                />
-                              )}
-                            </Pressable>
-                          )}
-                        </View>
+                        <Text style={{color: 'white'}}>Ayan</Text>
                       </View>
                     </View>
-                  </Animatable.View>
-                </TouchableOpacity>
-              </View>
-            );
-          })
-        }
+                  </View>
+                </Animatable.View>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );

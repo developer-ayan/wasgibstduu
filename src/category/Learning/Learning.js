@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react';
 import {
   View,
   Image,
@@ -7,166 +7,247 @@ import {
   TouchableOpacity,
   Pressable,
   StyleSheet,
-  ActivityIndicator
-} from 'react-native'
+  Alert,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
-import firestore from '@react-native-firebase/firestore'
+import firestore from '@react-native-firebase/firestore';
 import Loader from '../../comonents/Loader/Loader';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   Categories_detail,
   Colors,
-  Sizes
+  Sizes,
 } from '../../comonents/Constant/Constant';
+import {ActivityIndicator} from 'react-native-paper';
+import {AuthContext} from '../../context/Auth';
+import {firebase} from '@react-native-firebase/auth';
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function Learning({ navigation }) {
-
-  const [data, setData] = React.useState([])
-  const [dummy, setDummy] = React.useState([])
-  const [staredData, setStaredData] = React.useState()
-  const [loading, setLoading] = React.useState(true)
-  const [show, setshow] = React.useState(false)
-  const arr = []
-
+export default function Learning({navigation}) {
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const {user} = useContext(AuthContext);
+  const [show, setshow] = React.useState(false);
   const toggle = () => {
-    setshow(!show)
-  }
+    setshow(!show);
+  };
 
-  const user = useSelector(state => state.user)
+  useFocusEffect(
 
-  React.useEffect(() => {
+  React.useCallback(() => {
     firestore()
       .collection('Category')
       .onSnapshot(documentSnapshot => {
-        setData(documentSnapshot.docs.map(e => e.data()).filter((item) => item.CATEGORY === 'Learning'));
-        setTimeout(() => {
-          setLoading(false)
-        }, 100);
+        setData(
+          documentSnapshot.docs
+            .map(e => e.data())
+            .filter(item => item.CATEGORY === 'Learning'),
+        );
+        setLoading(false);
       });
   }, [])
+  )
 
 
+  const StaredHandler = item => {
+    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+    let forDeletion = [user?.USER_ID];
 
-  return loading ?
-  <ActivityIndicator
+    let arr = item?.staredUsers;
+
+    arr = arr.filter(item => !forDeletion.includes(item));
+
+
+    if (filterStaredData === true) {
+      firestore()
+        .collection('Category')
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
+        });
+      
+    } else if (filterStaredData === false) {
+      firestore()
+        .collection(`Category`)
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: [...arr , user?.USER_ID],
+        });
+    }
+  };
+
+  return loading ? (
+    <ActivityIndicator
       color={'black'}
-      size={'large'}
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : (
-    <ScrollView style={styles.ScrollView}>
-
-      <TouchableOpacity onPress={navigation.goBack}>
-        <Text style={styles.Arrow_left}>
-          <Feather name="arrow-left" size={25} color="black" />
-        </Text>
-      </TouchableOpacity>
-
-      <View style={styles.Main_ads_veiw}>
-        <Text style={styles.Ads_name} >{Categories_detail.learning}</Text>
-        <Text style={styles.Ads_name_para}>{Categories_detail.fashion_second_para}</Text>
+      size={'small'}
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+    />
+  ) : data.length === 0 ? (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        No Ads Avalaible Learning 
+      </Text>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            backgroundColor: 'green',
+            padding: 20,
+            borderRadius: 50,
+            marginTop: 20,
+          }}>
+          <Text style={{color: 'white', fontSize: 20}}>
+            <Feather name="arrow-left" size={25} color="white" />
+          </Text>
+        </TouchableOpacity>
       </View>
+    </View>
+  ) : (
+    <ScrollView style={styles.ScrollView}>
+      <View>
+        <TouchableOpacity onPress={navigation.goBack}>
+          <Text style={styles.Arrow_left}>
+            <Feather name="arrow-left" size={25} color="black" />
+          </Text>
+        </TouchableOpacity>
 
-      {loading ?
-        <Loader />
-        :
-        data.length === 0 ?
+        <View style={styles.Main_ads_veiw}>
+          <Text style={styles.Ads_name}>{Categories_detail.learning}</Text>
+          <Text style={styles.Ads_name_para}>
+            {Categories_detail.fashion_second_para}
+          </Text>
+        </View>
+
+        {data.length === 0 ? (
           <View style={styles.View_data_length}>
-
-            <Text style={styles.View_data_length_Not_avalaible}>Ads is not avalaible </Text>
-            <AntDesign name='exclamationcircleo' size={25} style={styles.View_data_length_icon} />
+            <Text style={styles.View_data_length_Not_avalaible}>
+              Ads is not avalaible{' '}
+            </Text>
+            <AntDesign
+              name="exclamationcircleo"
+              size={25}
+              style={styles.View_data_length_icon}
+            />
           </View>
-          :
+        ) : (
           data.map((item, ind) => {
-            // firestore()
-            //   .collection('Users')
-            //   .doc(item.UID)
-            //   .onSnapshot(e => {
-            //     setName(e.data().NAME)
-            //   })
+            const filterLike = item?.LIKE?.filter(
+              item => item === user?.USER_ID,
+            );
+            const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+
 
             return (
               <View key={ind} style={styles.main_view_map}>
-                <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
-                  {
-                    IMAGE: item.ADS_IMAGES,
-                    PRICE: item.PRICE,
-                    DISCRIPTION: item.DISCRIPTION,
-                    CITY: item.CITY,
-                    CATEGORY: item.CATEGORY,
-                    TITLE: item.TITLE,
-                    UID: item.UID,
-                  }
-                )}>
-                  <Animatable.View duration={1000} animation="bounceInLeft" style={styles.Animatable}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Categories_detail', {
+                      IMAGE: item.ADS_IMAGES,
+                      PRICE: item.PRICE,
+                      DISCRIPTION: item.DISCRIPTION,
+                      CITY: item.CITY,
+                      CATEGORY: item.CATEGORY,
+                      TITLE: item.TITLE,
+                      UID: item.UID,
+                      LIKE: item.LIKE,
+                      USER_LIKE: filterLike[0],
+                      AUTO_ID: item.AUTO_ID,
+                    })
+                  }>
+                  <Animatable.View style={styles.Animatable}>
                     <View style={styles.Animatable_child}>
                       <View style={styles.Animatable_child_to_child}>
-                      <Image
+                        <Image
                           style={styles.Animatable_image}
-                          source={{ uri: item.ADS_IMAGES?.[0]}}
+                          source={{uri: item.ADS_IMAGES?.[0]}}
                         />
                       </View>
                       <View style={styles.Animatable_Para}>
+                        {item.UID === user?.USER_ID ?
+                        <Text style={styles.username}>{'Your Ad'}</Text>
+                        :
                         <Text style={styles.username}>{item.NAME}</Text>
-                        <Text numberOfLines={2} style={styles.title}>{item.TITLE}</Text>
+                        
+                      }
+                        <Text numberOfLines={2} style={styles.title}>
+                          {item.TITLE}
+                        </Text>
                         <Text style={styles.price}>{item.PRICE}</Text>
                         <View style={styles.Icon_view}>
+                        {item.UID === user?.USER_ID ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                            }}>
+                            <Text
+                              style={[
+                                styles.Versand,
+                                {color: 'black', fontWeight: 'bold'},
+                              ]}>
+                              Owned Ad
+                            </Text>
+                            <FontAwesome
+                              style={[styles.staro, {color: 'gray'}]}
+                              name="user-circle-o"
+                              size={20}
+                            />
+                          </View>
+                        ) : (
                           <Text style={styles.Versand}>Versand moglich</Text>
+                        )}
 
-
-                          <Pressable onPress={() => {
-                            firestore()
-                              .collection('Category')
-                              .doc('Your all ads there !')
-                              .collection('Learning')
-                              .get()
-                              .then((correct) => {
-                                correct.forEach(snapshot => {
-                                  firestore()
-                                    .collection('Category')
-                                    .doc('Your all ads there !')
-                                    .collection('Learning')
-                                    .doc(snapshot.id)
-                                    .collection('Stared Data')
-                                    .doc(user.USER_ID)
-                                    .set({
-                                      IMAGE: item.ADS_IMAGES,
-                                      PRICE: item.PRICE,
-                                      DISCRIPTION: item.DISCRIPTION,
-                                      CITY: item.CITY,
-                                      CATEGORY: item.CATEGORY,
-                                      UID: item.UID,
-                                      TITLE: item.TITLE,
-                                    })
-                                })
-                              })
-                          }}>
-                            {/* {staredData ? 
-                            <AntDesign style={styles.staro} name="star" size={18} />
-                            :
-                            <AntDesign style={styles.staro} name="staro" size={18} />
-
-                            } */}
+                          {item.UID === user?.USER_ID ? 
+                          <Text style = {{color :'white'}}>Ayan</Text>
+                          :
+                          <Pressable onPress={() => StaredHandler(item)}>
+                            {filterStaredData === true ? (
+                              <AntDesign
+                                style={[styles.staro, {color: 'gold'}]}
+                                name="star"
+                                size={18}
+                              />
+                            ) : (
+                              <AntDesign
+                                style={styles.staro}
+                                name="staro"
+                                size={18}
+                              />
+                            )}
                           </Pressable>
+
+                        } 
+
                         </View>
                       </View>
                     </View>
                   </Animatable.View>
                 </TouchableOpacity>
               </View>
-            )
+            );
           })
-      }
-
-
+        )}
+      </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   ScrollView: {
+    flex: 1,
     backgroundColor: Colors.white,
-    paddingHorizontal: Sizes.thirteen
+    paddingHorizontal: Sizes.thirteen,
   },
   Arrow_left: {
     color: Colors.white,
@@ -174,53 +255,53 @@ const styles = StyleSheet.create({
     marginTop: Sizes.ten,
   },
   Main_ads_veiw: {
-    marginVertical: Sizes.twenty
+    marginVertical: Sizes.twenty,
   },
   Ads_name: {
     color: Colors.black,
-    fontSize: Sizes.twenty
+    fontSize: Sizes.twenty,
   },
   Ads_name_para: {
     color: Colors.ads_para,
     fontSize: Sizes.fouteen,
-    marginTop: Sizes.five
+    marginTop: Sizes.five,
   },
   View_data_length: {
     flexDirection: 'row',
     height: 500,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   View_data_length_Not_avalaible: {
-    fontSize: Sizes.fifteen
+    fontSize: Sizes.fifteen,
   },
   View_data_length_icon: {
     color: Colors.red,
-    paddingHorizontal: Sizes.ten
+    paddingHorizontal: Sizes.ten,
   },
   main_view_map: {
     marginHorizontal: 1,
     backgroundColor: Colors.white,
     borderRadius: Sizes.two,
-    marginTop: Sizes.ten
+    marginTop: Sizes.ten,
   },
   Animatable: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   Animatable_child: {
     flexDirection: 'row',
-    width: '100%'
+    width: '100%',
   },
   Animatable_child_to_child: {
     width: '40%',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   Animatable_image: {
     height: Sizes.hundred,
     width: '100%',
-    borderRadius: Sizes.two
+    borderRadius: Sizes.two,
   },
   Animatable_Para: {
     flexDirection: 'column',
@@ -228,30 +309,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: Sizes.ten,
     padding: Sizes.five,
     width: '60%',
-    lineHeihgt: 80
+    lineHeihgt: 80,
   },
   username: {
     color: Colors.card_username,
-    fontSize: Sizes.ten
+    fontSize: Sizes.ten,
   },
   title: {
     color: Colors.card_title,
-    fontSize: Sizes.twelve
+    fontSize: Sizes.twelve,
   },
   price: {
     color: Colors.green,
-    fontSize: Sizes.twelve
+    fontSize: Sizes.twelve,
   },
   Icon_view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   Versand: {
     color: Colors.card_username,
-    fontSize: Sizes.twelve
+    fontSize: Sizes.twelve,
   },
   staro: {
-    color: Colors.card_username
-  }
-})
+    color: Colors.card_username,
+  },
+});

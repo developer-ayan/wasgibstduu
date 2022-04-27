@@ -147,15 +147,18 @@ export default function Home({navigation}) {
           {/* <View style = {{width : '10%'}}></View> */}
 
           {data.map((item, index) => {
+             const filterLike = item?.LIKE?.filter(
+              item => item === user?.USER_ID,
+            );
             return (
               <View
                 key={index}
                 style={{
-                  width: '48%',
+                  width: '47%',
                   backgroundColor: 'white',
                   marginBottom: 10,
                 }}>
-                <TouchableOpacity
+                   <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('Categories_detail', {
                       IMAGE: item.ADS_IMAGES,
@@ -166,10 +169,12 @@ export default function Home({navigation}) {
                       TITLE: item.TITLE,
                       UID: item.UID,
                       LIKE: item.LIKE,
+                      USER_LIKE: filterLike[0],
+                      AUTO_ID: item.AUTO_ID,
                     })
                   }>
                   <Image
-                    style={{width: '100%', height: 120}}
+                    style={{width: '100%', height: 80}}
                     source={{uri: item.ADS_IMAGES?.[0]}}
                   />
                   <View style={{paddingHorizontal: 8}}>

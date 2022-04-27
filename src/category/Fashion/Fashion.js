@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import firestore from '@react-native-firebase/firestore';
@@ -23,7 +24,7 @@ import {
 import {ActivityIndicator} from 'react-native-paper';
 import {AuthContext} from '../../context/Auth';
 import {firebase} from '@react-native-firebase/auth';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function Fashion({navigation}) {
   const [data, setData] = React.useState([]);
@@ -35,21 +36,19 @@ export default function Fashion({navigation}) {
   };
 
   useFocusEffect(
-
-  React.useCallback(() => {
-    firestore()
-      .collection('Category')
-      .onSnapshot(documentSnapshot => {
-        setData(
-          documentSnapshot.docs
-            .map(e => e.data())
-            .filter(item => item.CATEGORY === 'Fashion'),
-        );
-        setLoading(false);
-      });
-  }, [])
-  )
-
+    React.useCallback(() => {
+      firestore()
+        .collection('Category')
+        .onSnapshot(documentSnapshot => {
+          setData(
+            documentSnapshot.docs
+              .map(e => e.data())
+              .filter(item => item.CATEGORY === 'Fashion'),
+          );
+          setLoading(false);
+        });
+    }, []),
+  );
 
   const StaredHandler = item => {
     const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
@@ -59,8 +58,6 @@ export default function Fashion({navigation}) {
 
     arr = arr.filter(item => !forDeletion.includes(item));
 
-    console.log(arr)
-
     if (filterStaredData === true) {
       firestore()
         .collection('Category')
@@ -68,13 +65,12 @@ export default function Fashion({navigation}) {
         .update({
           staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
         });
-      
     } else if (filterStaredData === false) {
       firestore()
         .collection(`Category`)
         .doc(item.AUTO_ID)
         .update({
-          staredUsers: [...arr , user?.USER_ID],
+          staredUsers: [...arr, user?.USER_ID],
         });
     }
   };
@@ -85,6 +81,32 @@ export default function Fashion({navigation}) {
       size={'small'}
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
     />
+  ) : data.length === 0 ? (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        No Ads Avalaible Fashion
+      </Text>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            backgroundColor: 'green',
+            padding: 20,
+            borderRadius: 50,
+            marginTop: 20,
+          }}>
+          <Text style={{color: 'white', fontSize: 20}}>
+            <Feather name="arrow-left" size={25} color="white" />
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   ) : (
     <ScrollView style={styles.ScrollView}>
       <View>
@@ -119,7 +141,6 @@ export default function Fashion({navigation}) {
             );
             const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
-
             return (
               <View key={ind} style={styles.main_view_map}>
                 <TouchableOpacity
@@ -146,40 +167,60 @@ export default function Fashion({navigation}) {
                         />
                       </View>
                       <View style={styles.Animatable_Para}>
-                        {item.UID === user?.USER_ID ?
-                        <Text style={styles.username}>{'Your Ad'}</Text>
-                        :
-                        <Text style={styles.username}>{item.NAME}</Text>
-                        
-                      }
+                        {item.UID === user?.USER_ID ? (
+                          <Text style={styles.username}>{'Your Ad'}</Text>
+                        ) : (
+                          <Text style={styles.username}>{item.NAME}</Text>
+                        )}
                         <Text numberOfLines={2} style={styles.title}>
                           {item.TITLE}
                         </Text>
                         <Text style={styles.price}>{item.PRICE}</Text>
                         <View style={styles.Icon_view}>
+                        {item.UID === user?.USER_ID ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                            }}>
+                            <Text
+                              style={[
+                                styles.Versand,
+                                {color: 'black', fontWeight: 'bold'},
+                              ]}>
+                              Owned Ad
+                            </Text>
+                            <FontAwesome
+                              style={[styles.staro, {color: 'gray'}]}
+                              name="user-circle-o"
+                              size={20}
+                            />
+                          </View>
+                        ) : (
                           <Text style={styles.Versand}>Versand moglich</Text>
+                        )}
 
-                          {item.UID === user?.USER_ID ? 
-                          <Text style = {{color :'white'}}>Ayan</Text>
-                          :
-                          <Pressable onPress={() => StaredHandler(item)}>
-                            {filterStaredData === true ? (
-                              <AntDesign
-                                style={[styles.staro, {color: 'gold'}]}
-                                name="star"
-                                size={18}
-                              />
-                            ) : (
-                              <AntDesign
-                                style={styles.staro}
-                                name="staro"
-                                size={18}
-                              />
-                            )}
-                          </Pressable>
-
-                        } 
-
+                          {item.UID === user?.USER_ID ? (
+                            <Text style={{color: 'white'}}>Ayan</Text>
+                          ) : (
+                            <Pressable onPress={() => StaredHandler(item)}>
+                              {filterStaredData === true ? (
+                                <AntDesign
+                                  style={[styles.staro, {color: 'gold'}]}
+                                  name="star"
+                                  size={18}
+                                />
+                              ) : (
+                                <AntDesign
+                                  style={styles.staro}
+                                  name="staro"
+                                  size={18}
+                                />
+                              )}
+                            </Pressable>
+                          )}
                         </View>
                       </View>
                     </View>

@@ -23,7 +23,7 @@ import * as Animatable from 'react-native-animatable';
 
 export default function manageAds({navigation}) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const {user} = useContext(AuthContext);
 
   React.useEffect(() => {
@@ -35,9 +35,7 @@ export default function manageAds({navigation}) {
             .map(e => e.data())
             .filter(item => item.UID === user?.USER_ID),
         );
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
+        
       });
   }, []);
   firestore()
@@ -51,6 +49,10 @@ export default function manageAds({navigation}) {
       });
     });
 
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -58,6 +60,8 @@ export default function manageAds({navigation}) {
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
     />
   ) : data.length === 0 ? (
+    
+    
     <View
       style={{
         flex: 1,

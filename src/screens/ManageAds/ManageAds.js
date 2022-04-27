@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
   StyleSheet,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,33 +26,34 @@ import {Colors, Sizes} from '../../comonents/Constant/Constant';
 export default function manageAds({navigation}) {
   const [data, setData] = React.useState([]);
   const {user} = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
-  React.useEffect(() => {
-    firestore()
-      .collection('Category')
-      .onSnapshot(documentSnapshot => {
-        setData(
-          documentSnapshot.docs
-            .map(e => e.data())
-            .filter(item => item?.staredUsers?.includes(user.USER_ID)),
-        );
-        setLoading(false);
-      });
-  }, []);
+    React.useEffect(() => {
+      firestore()
+        .collection('Category')
+        .onSnapshot(documentSnapshot => {
+          setData(
+            documentSnapshot.docs
+              .map(e => e.data())
+              .filter(item => item?.staredUsers?.includes(user.USER_ID)),
+          );
+          setLoading(false);
+        });
+    }, []);
+
 
   const StaredHandler = (uid, data) => {
-    console.log(data);
-    // const filterStared = data?.filter(function (item) {
-    //   return item !== user?.USER_ID;
-    // });
-    // setLoading(true);
+    console.log(data)
+    const filterStared = data?.filter(function (item) {
+      return item !== user?.USER_ID;
+    });
+    setLoading(true);
 
-    // firestore().collection('Category').doc(uid).update({
-    //   staredUsers: filterStared,
-    // });
+    firestore().collection('Category').doc(uid).update({
+      staredUsers: filterStared,
+    });
 
-    // setLoading(false);
+    setLoading(false);
   };
 
   return loading ? (

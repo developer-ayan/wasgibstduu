@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   TextInput,
@@ -10,6 +10,7 @@ import {
   Alert,
   Pressable,
   StyleSheet,
+  ActivityIndicator
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -25,6 +26,8 @@ import {useSelector} from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import {AuthContext} from '../../context/Auth';
+import { Colors, Sizes } from '../../comonents/Constant/Constant';
 
 export default function SearchBar({navigation}) {
   const [data, setData] = React.useState([]);
@@ -51,6 +54,7 @@ export default function SearchBar({navigation}) {
   const [address, setAddress] = useState('');
   const [show, setshow] = React.useState(false);
   const [landArea, setLandArea] = useState([0, 500]);
+  const {user} = useContext(AuthContext);
 
   const toggle = () => {
     setshow(!show);
@@ -66,17 +70,16 @@ export default function SearchBar({navigation}) {
   }, []);
   // const are = [12 , 22 , 23 ,24]
 
-
   const UltraFilter = () => {
     const filterArrayMaster = master.filter(
       item =>
         item.CATEGORY === selectedPropertyType &&
-        parseInt(item.PRICE.slice(1))  <= landArea[0] &&
+        parseInt(item.PRICE.slice(1)) <= landArea[0] &&
         item.CITY === address,
     );
     setModalVisible(!modalVisible);
 
-    navigation.navigate('FilterData' , {data : filterArrayMaster})
+    navigation.navigate('FilterData', {data: filterArrayMaster});
     setFilterArray(filterArrayMaster);
   };
   // console.log("Filter arr ",filterArray)
@@ -119,8 +122,40 @@ export default function SearchBar({navigation}) {
     'Services',
   ];
 
-  return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+  const StaredHandler = item => {
+    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+    let forDeletion = [user?.USER_ID];
+
+    let arr = item?.staredUsers;
+
+    arr = arr.filter(item => !forDeletion.includes(item));
+
+
+    if (filterStaredData === true) {
+      firestore()
+        .collection('Category')
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
+        });
+      
+    } else if (filterStaredData === false) {
+      firestore()
+        .collection(`Category`)
+        .doc(item.AUTO_ID)
+        .update({
+          staredUsers: [...arr , user?.USER_ID],
+        });
+    }
+  };
+
+  return loading ? (
+    <ActivityIndicator
+      color={'black'}
+      size={'small'}
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+    /> ) : (
+    <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
       {/* {'MODAL OPEN '} */}
 
       <Modal
@@ -484,7 +519,7 @@ export default function SearchBar({navigation}) {
             Price
           </Text>
           <View style={{paddingHorizontal: 20}}>
-          <MultiSlider
+            <MultiSlider
               values={[landArea[0]]}
               // sliderLength={280}
               onValuesChange={value => setLandArea(value)}
@@ -611,208 +646,100 @@ export default function SearchBar({navigation}) {
         </View>
       </View>
 
-      {data.length === 0 ? (
-        loading ? (
-          <Loader />
-        ) : (
-          data.map((item, ind) => {
-            return (
-              <View
-                key={ind}
-                style={{
-                  marginHorizontal: 1,
-                  backgroundColor: 'white',
-                  borderRadius: 2,
-                  marginTop: 10,
-                }}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('Categories_detail', {
-                      IMAGE: item.ADS_IMAGES,
-                      PRICE: item.PRICE,
-                      DISCRIPTION: item.DISCRIPTION,
-                      CITY: item.CITY,
-                      CATEGORY: item.CATEGORY,
-                      TITLE: item.TITLE,
-                      UID: item.UID,
-                    })
-                  }>
-                  <Text>real data</Text>
+      {data.map((item, ind) => {
+        const filterLike = item?.LIKE?.filter(item => item === user?.USER_ID);
+        const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
-                  <Animatable.View style={{alignItems: 'center'}}>
-                    <View style={{flexDirection: 'row', width: '100%'}}>
-                      <View
-                        style={{
-                          width: '40%',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                        }}>
-                        <Image
-                          style={{height: 100, width: '100%', borderRadius: 2}}
-                          source={{uri: item.ADS_IMAGES?.[0]}}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          paddingHorizontal: 10,
-                          padding: 5,
-                          width: '60%',
-                          lineHeihgt: 80,
-                        }}>
-                        <Text style={{color: '#b3b3b3', fontSize: 10}}>
-                          {item.NAME}
-                        </Text>
-                        <Text
-                          numberOfLines={2}
-                          style={{color: '#494949', fontSize: 12}}>
-                          {item.TITLE}
-                        </Text>
-                        <Text style={{color: 'green', fontSize: 12}}>
-                          {item.PRICE}
-                        </Text>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}>
-                          <Text style={{color: '#b3b3b3', fontSize: 12}}>
-                            Versand moglich
-                          </Text>
-
-                          <Pressable
-                            onPress={() => {
-                              firestore()
-                                .collection(`Stared Data ${user.USER_ID}`)
-                                .doc(item.DISCRIPTION)
-                                .set({
-                                  IMAGE: item.ADS_IMAGES,
-                                  PRICE: item.PRICE,
-                                  DISCRIPTION: item.DISCRIPTION,
-                                  CITY: item.CITY,
-                                  CATEGORY: item.CATEGORY,
-                                  UID: item.UID,
-                                  TITLE: item.TITLE,
-                                });
+        return (
+          <View key={ind} style={styles.main_view_map}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Categories_detail', {
+                  IMAGE: item.ADS_IMAGES,
+                  PRICE: item.PRICE,
+                  DISCRIPTION: item.DISCRIPTION,
+                  CITY: item.CITY,
+                  CATEGORY: item.CATEGORY,
+                  TITLE: item.TITLE,
+                  UID: item.UID,
+                  LIKE: item.LIKE,
+                  USER_LIKE: filterLike[0],
+                  AUTO_ID: item.AUTO_ID,
+                })
+              }>
+              <Animatable.View style={styles.Animatable}>
+                <View style={styles.Animatable_child}>
+                  <View style={styles.Animatable_child_to_child}>
+                    <Image
+                      style={styles.Animatable_image}
+                      source={{uri: item.ADS_IMAGES?.[0]}}
+                    />
+                  </View>
+                  <View style={styles.Animatable_Para}>
+                    {item.UID === user?.USER_ID ? (
+                      <Text style={styles.username}>{'Your Ad'}</Text>
+                    ) : (
+                      <Text style={styles.username}>{item.NAME}</Text>
+                    )}
+                    <Text numberOfLines={2} style={styles.title}>
+                      {item.TITLE}
+                    </Text>
+                    <Text style={styles.price}>{item.PRICE}</Text>
+                    <View style={styles.Icon_view}>
+                    {item.UID === user?.USER_ID ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              width: '100%',
                             }}>
+                            <Text
+                              style={[
+                                styles.Versand,
+                                {color: 'black', fontWeight: 'bold'},
+                              ]}>
+                              Owned Ad
+                            </Text>
+                            <FontAwesome
+                              style={[styles.staro, {color: 'gray'}]}
+                              name="user-circle-o"
+                              size={20}
+                            />
+                          </View>
+                        ) : (
+                          <Text style={styles.Versand}>Versand moglich</Text>
+                        )}
+
+                      {item.UID === user?.USER_ID ? (
+                        <Text style={{color: 'white'}}>Ayan</Text>
+                      ) : (
+                        <Pressable onPress={() => StaredHandler(item)}>
+                          {filterStaredData === true ? (
                             <AntDesign
-                              style={{color: '#b3b3b3'}}
+                              style={[styles.staro, {color: 'gold'}]}
+                              name="star"
+                              size={18}
+                            />
+                          ) : (
+                            <AntDesign
+                              style={styles.staro}
                               name="staro"
                               size={18}
                             />
-                          </Pressable>
-                        </View>
-                      </View>
-                    </View>
-                  </Animatable.View>
-                </TouchableOpacity>
-                {/* </TouchableOpacity> */}
-              </View>
-            );
-          })
-        )
-      ) : loading ? (
-        <Loader />
-      ) : (
-        data.map((item, ind) => {
-          return (
-            <View
-              key={ind}
-              style={{
-                marginHorizontal: 1,
-                backgroundColor: 'white',
-                borderRadius: 2,
-                marginTop: 10,
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Categories_detail', {
-                    IMAGE: item.ADS_IMAGES,
-                    PRICE: item.PRICE,
-                    DISCRIPTION: item.DISCRIPTION,
-                    CITY: item.CITY,
-                    CATEGORY: item.CATEGORY,
-                    TITLE: item.TITLE,
-                    UID: item.UID,
-                  })
-                }>
-                <Text>Filter</Text>
-                <Animatable.View style={{alignItems: 'center'}}>
-                  <View style={{flexDirection: 'row', width: '100%'}}>
-                    <View
-                      style={{
-                        width: '40%',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                      }}>
-                      <Image
-                        style={{height: 100, width: '100%', borderRadius: 2}}
-                        source={{uri: item.ADS_IMAGES?.[0]}}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: 10,
-                        padding: 5,
-                        width: '60%',
-                        lineHeihgt: 80,
-                      }}>
-                      <Text style={{color: '#b3b3b3', fontSize: 10}}>
-                        {item.NAME}
-                      </Text>
-                      <Text
-                        numberOfLines={2}
-                        style={{color: '#494949', fontSize: 12}}>
-                        {item.TITLE}
-                      </Text>
-                      <Text style={{color: 'green', fontSize: 12}}>
-                        {item.PRICE}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}>
-                        <Text style={{color: '#b3b3b3', fontSize: 12}}>
-                          Versand moglich
-                        </Text>
-
-                        <Pressable
-                          onPress={() => {
-                            firestore()
-                              .collection(`Stared Data ${user.USER_ID}`)
-                              .doc(item.DISCRIPTION)
-                              .set({
-                                IMAGE: item.ADS_IMAGES,
-                                PRICE: item.PRICE,
-                                DISCRIPTION: item.DISCRIPTION,
-                                CITY: item.CITY,
-                                CATEGORY: item.CATEGORY,
-                                UID: item.UID,
-                                TITLE: item.TITLE,
-                              });
-                          }}>
-                          <AntDesign
-                            style={{color: '#b3b3b3'}}
-                            name="staro"
-                            size={18}
-                          />
+                          )}
                         </Pressable>
-                      </View>
+                      )}
                     </View>
                   </View>
-                </Animatable.View>
-              </TouchableOpacity>
-            </View>
-          );
-        })
-      )}
-    </View>
+                </View>
+              </Animatable.View>
+            </TouchableOpacity>
+          </View>
+        );
+      })}
+
+    </ScrollView>
   );
 }
 
@@ -866,5 +793,96 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  ScrollView: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    paddingHorizontal: Sizes.thirteen,
+  },
+  Arrow_left: {
+    color: Colors.white,
+    fontSize: Sizes.twenty,
+    marginTop: Sizes.ten,
+  },
+  Main_ads_veiw: {
+    marginVertical: Sizes.twenty,
+  },
+  Ads_name: {
+    color: Colors.black,
+    fontSize: Sizes.twenty,
+  },
+  Ads_name_para: {
+    color: Colors.ads_para,
+    fontSize: Sizes.fouteen,
+    marginTop: Sizes.five,
+  },
+  View_data_length: {
+    flexDirection: 'row',
+    height: 500,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  View_data_length_Not_avalaible: {
+    fontSize: Sizes.fifteen,
+  },
+  View_data_length_icon: {
+    color: Colors.red,
+    paddingHorizontal: Sizes.ten,
+  },
+  main_view_map: {
+    marginHorizontal: 1,
+    backgroundColor: Colors.white,
+    borderRadius: Sizes.two,
+    marginTop: Sizes.ten,
+  },
+  Animatable: {
+    alignItems: 'center',
+  },
+  Animatable_child: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  Animatable_child_to_child: {
+    width: '40%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  Animatable_image: {
+    height: Sizes.hundred,
+    width: '100%',
+    borderRadius: Sizes.two,
+  },
+  Animatable_Para: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingHorizontal: Sizes.ten,
+    padding: Sizes.five,
+    width: '60%',
+    lineHeihgt: 80,
+  },
+  username: {
+    color: Colors.card_username,
+    fontSize: Sizes.ten,
+  },
+  title: {
+    color: Colors.card_title,
+    fontSize: Sizes.twelve,
+  },
+  price: {
+    color: Colors.green,
+    fontSize: Sizes.twelve,
+  },
+  Icon_view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  Versand: {
+    color: Colors.card_username,
+    fontSize: Sizes.twelve,
+  },
+  staro: {
+    color: Colors.card_username,
   },
 });

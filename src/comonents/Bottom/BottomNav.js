@@ -73,17 +73,30 @@ export default function BottomNav() {
           ),
         }}
       />
-      <Tab.Screen
+      {messageCounting === 0 ?
+        <Tab.Screen
         name="Inbox"
         component={Inbox}
         options={{
-          tabBarBadge: messageCounting,
           tabBarLabel: <Entypo name="dot-single" size={15} />,
           tabBarIcon: ({color}) => (
             <Fontisto name="email" color={color} size={23} />
           ),
         }}
       />
+      :
+      <Tab.Screen
+      name="Inbox"
+      component={Inbox}
+      options={{
+        tabBarBadge: messageCounting,
+        tabBarLabel: <Entypo name="dot-single" size={15} />,
+        tabBarIcon: ({color}) => (
+          <Fontisto name="email" color={color} size={23} />
+        ),
+      }}
+    />
+    }
       <Tab.Screen
         name="Profile"
         component={Profile}
