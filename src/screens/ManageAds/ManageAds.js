@@ -42,16 +42,17 @@ export default function manageAds({navigation}) {
   }, []);
 
   const StaredHandler = (uid, data) => {
-    const filterStared = data?.filter(function (item) {
-      return item !== user?.USER_ID;
-    });
-    setLoading(true);
+    console.log(data);
+    // const filterStared = data?.filter(function (item) {
+    //   return item !== user?.USER_ID;
+    // });
+    // setLoading(true);
 
-    firestore().collection('Category').doc(uid).update({
-      staredUsers: filterStared,
-    });
+    // firestore().collection('Category').doc(uid).update({
+    //   staredUsers: filterStared,
+    // });
 
-    setLoading(false);
+    // setLoading(false);
   };
 
   return loading ? (

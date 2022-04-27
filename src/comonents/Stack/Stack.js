@@ -38,6 +38,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logout from '../../screens/Logout/Logout';
 import StaredChat from '../../screens/Inbox/StaredChat'
 import EditAds from '../../screens/EditAds/EditAds';
+import FilterData from '../../screens/Search/FilterData';
 const Stack = createStackNavigator();
 function MyStack() {
 
@@ -84,6 +85,7 @@ function MyStack() {
             <Stack.Screen name="Electronics" component={Electronics}  />
             <Stack.Screen name="Real_states" component={Real_states} />
             <Stack.Screen name="Send_offer" component={Send_offer} />
+            <Stack.Screen name="FilterData" component={FilterData} />
             <Stack.Screen name="searchbar" component={SearchBar}  />
             <Stack.Screen name="Learning" component={Learning}  />
             <Stack.Screen name="Services" component={Services}  />

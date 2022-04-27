@@ -55,7 +55,6 @@ export default function SearchBar({navigation}) {
   const toggle = () => {
     setshow(!show);
   };
-  console.log('address', address);
   React.useEffect(() => {
     firestore()
       .collection('Category')
@@ -65,17 +64,22 @@ export default function SearchBar({navigation}) {
         setLoading(false);
       });
   }, []);
+  // const are = [12 , 22 , 23 ,24]
+
 
   const UltraFilter = () => {
-    const newData = master.filter(item => {
-      return (
-        parseInt(item.PRICE) <= filterPrice ||
-        item.CITY == city.toUpperCase() ||
-        item.CATEGORY == category.toUpperCase()
-      );
-    });
-    setFilterArray(newData);
+    const filterArrayMaster = master.filter(
+      item =>
+        item.CATEGORY === selectedPropertyType &&
+        parseInt(item.PRICE.slice(1))  <= landArea[0] &&
+        item.CITY === address,
+    );
+    setModalVisible(!modalVisible);
+
+    navigation.navigate('FilterData' , {data : filterArrayMaster})
+    setFilterArray(filterArrayMaster);
   };
+  // console.log("Filter arr ",filterArray)
 
   const searchFilter = text => {
     if (text) {
@@ -95,8 +99,9 @@ export default function SearchBar({navigation}) {
   };
   const SelectedProperty = name => {
     if (selectedPropertyType == name) {
-      // console.log(selectedPropertyType);
-      // setSelectedPropertyType(prev => prev.filter(item => item !== name));
+      setSelectedPropertyType(0);
+
+      //
     } else {
       setSelectedPropertyType(name);
     }
@@ -479,8 +484,8 @@ export default function SearchBar({navigation}) {
             Price
           </Text>
           <View style={{paddingHorizontal: 20}}>
-            <MultiSlider
-              values={[landArea[0], landArea[1]]}
+          <MultiSlider
+              values={[landArea[0]]}
               // sliderLength={280}
               onValuesChange={value => setLandArea(value)}
               // onValuesChangeFinish={value => setLandArea(value)}
@@ -502,11 +507,11 @@ export default function SearchBar({navigation}) {
                 fontFamily: 'Roboto-Regular',
                 fontSize: 14,
               }}>
-              ${landArea[0]} to ${landArea[1]}
+              ${landArea[0]}
             </Text>
           </View>
 
-          <TouchableOpacity onPress={() => 'filter data'}>
+          <TouchableOpacity onPress={() => UltraFilter()}>
             <View
               style={{
                 marginHorizontal: 10,

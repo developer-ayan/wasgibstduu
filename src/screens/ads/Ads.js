@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -45,7 +46,6 @@ export default function Ads({navigation}) {
     'Learning',
     'Phone & tablets',
     'Real States',
-    'Events',
     'Services',
   ];
   const [state, setState] = useState({});
@@ -168,6 +168,13 @@ export default function Ads({navigation}) {
     setCategory('');
     setImage([]);
     navigation.goBack();
+
+    setData({
+      title: '',
+      description: '',
+      price: '',
+      city: '',
+    });
   };
 
   const ImageGallery = () => {
@@ -235,12 +242,18 @@ export default function Ads({navigation}) {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={uploading}
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
+          setUploading(!uploading);
         }}>
-        <View style={styles.centeredView}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(52, 52, 52, 0.8)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -248,15 +261,21 @@ export default function Ads({navigation}) {
               width: '70%',
               backgroundColor: 'white',
               paddingHorizontal: 30,
-              paddingVertical: 30,
-              borderRadius: 10,
+              paddingVertical: 20,
+              borderRadius: 5,
             }}>
+            <ActivityIndicator
+              size="large"
+              color="#525252"
+              style={{marginRight: 10}}
+            />
             <Text style={{color: '#525252', fontWeight: 'bold'}}>
-              {modalText}
+              Configuring Image ...
             </Text>
           </View>
         </View>
       </Modal>
+
       <View style={styles.MainView}>
         {/* padding: 15,
     backgroundColor: '#f7f7f7',
@@ -437,7 +456,7 @@ export default function Ads({navigation}) {
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>CITY</Text>
 
-          <GooglePlacesAutocomplete
+          {/* <GooglePlacesAutocomplete
             placeholder="Search your city"
             minLength={2}
             autoFocus={false}
@@ -464,13 +483,13 @@ export default function Ads({navigation}) {
                 color: '#1faadb',
               },
             }}
-          />
+          /> */}
 
-          {/* <TextInput
+          <TextInput
             onChangeText={(val) => textInputCityChange(val)}
             multiline={true}
             style={styles.Input}
-          /> */}
+          />
         </View>
         {data.isValidCity ? null : (
           <Animatable.View
@@ -489,26 +508,62 @@ export default function Ads({navigation}) {
             </Text>
           </Animatable.View>
         )}
-        <View style={{marginTop: 20}}>
+        <View
+          style={{
+            marginTop: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}>
           <TouchableOpacity onPress={ImageGallery}>
-            <Text style={styles.AdTitle}>UPLOAD IMAGE</Text>
+            <View>
+              <Image
+                style={{
+                  height: 60,
+                  width: 60,
+                  borderRadius: 50,
+                  marginTop: 1,
+                  marginHorizontal: 12,
+                  borderWidth: 1,
+                }}
+                source={{
+                  uri: 'https://www.ubuntupit.com/wp-content/uploads/2020/05/Simple-Gallery-Photo-and-Video-Manager-Editor.png',
+                }}
+              />
+            </View>
           </TouchableOpacity>
+
           <View>
-            <Image
+            {/* <Image
               style={{height: 80, width: 80, borderRadius: 2, marginTop: 1}}
-              source={{uri: uri}}
-            />
+              source={{uri: uri === null ? data.ADS_IMAGES : uri}}
+            /> */}
           </View>
+          {image?.length === 0
+            ? null
+            : image.map((item, ind) => {
+                return (
+                  <View key={ind} style={{marginHorizontal: 6, marginTop: 20}}>
+                    <Image
+                      style={{
+                        height: 60,
+                        width: 60,
+                        borderRadius: 50,
+                        marginTop: 1,
+                        marginHorizontal: 3,
+                        borderWidth: 1,
+                      }}
+                      source={{uri: item}}
+                    />
+                  </View>
+                );
+              })}
         </View>
 
-        {uploading ? (
-          <View>
-            <Text>{transeferred} % Completed</Text>
-          </View>
-        ) : data.isValidUser === true &&
-          data.isValidDescription === true &&
-          data.isValidCity === true &&
-          data.isValidPrice === true ? (
+        {data.isValidUser === true &&
+        data.isValidDescription === true &&
+        data.isValidCity === true &&
+        data.isValidPrice === true ? (
           <TouchableOpacity onPress={CreateAds}>
             <View
               style={{
