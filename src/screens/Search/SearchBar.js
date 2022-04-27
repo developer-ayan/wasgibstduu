@@ -24,6 +24,7 @@ import {useSelector} from 'react-redux';
 // import Slider from './Slider'
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 export default function SearchBar({navigation}) {
   const [data, setData] = React.useState([]);
@@ -49,6 +50,8 @@ export default function SearchBar({navigation}) {
   const [phoneAndTablets, setPhoneAndTablets] = useState([]);
   const [address, setAddress] = useState('');
   const [show, setshow] = React.useState(false);
+  const [landArea, setLandArea] = useState([0, 500]);
+
   const toggle = () => {
     setshow(!show);
   };
@@ -124,6 +127,17 @@ export default function SearchBar({navigation}) {
           setModalVisible(!modalVisible);
         }}>
         <ScrollView style={styles.centeredView}>
+          <Text
+            style={{
+              marginTop: 20,
+              marginBottom: 5,
+              marginHorizontal: 20,
+              fontSize: 20,
+              color: 'black',
+              fontWeight: 'bold',
+            }}>
+            Address or City
+          </Text>
           {/* <Text>Ayan</Text> */}
           <View style={[styles.Address_components]}>
             <ScrollView
@@ -171,6 +185,18 @@ export default function SearchBar({navigation}) {
               />
             </ScrollView>
           </View>
+
+          <Text
+            style={{
+              marginVertical: 20,
+              marginHorizontal: 20,
+              fontSize: 20,
+              color: 'black',
+              fontWeight: 'bold',
+            }}>
+            Category Type
+          </Text>
+
           <View
             style={{
               flexDirection: 'row',
@@ -442,6 +468,87 @@ export default function SearchBar({navigation}) {
               </Text>
             </TouchableOpacity>
           </View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginHorizontal: 20,
+              fontSize: 20,
+              color: 'black',
+              fontWeight: 'bold',
+            }}>
+            Price
+          </Text>
+          <View style={{paddingHorizontal: 20}}>
+            <MultiSlider
+              values={[landArea[0], landArea[1]]}
+              // sliderLength={280}
+              onValuesChange={value => setLandArea(value)}
+              // onValuesChangeFinish={value => setLandArea(value)}
+              min={0}
+              max={10000}
+              // step={10}
+              markerStyle={{
+                backgroundColor: '#FFFF',
+                height: 15,
+                width: 15,
+                borderWidth: 2,
+                borderColor: '#E32C46',
+              }}
+              selectedStyle={{backgroundColor: '#E32C46'}}
+            />
+            <Text
+              style={{
+                color: 'gray',
+                fontFamily: 'Roboto-Regular',
+                fontSize: 14,
+              }}>
+              ${landArea[0]} to ${landArea[1]}
+            </Text>
+          </View>
+
+          <TouchableOpacity onPress={() => 'filter data'}>
+            <View
+              style={{
+                marginHorizontal: 10,
+                marginTop: 50,
+                backgroundColor: '#00aa49',
+                borderRadius: 5,
+              }}>
+              <Text
+                style={{
+                  borderRadius: 5,
+                  padding: 15,
+                  color: 'gray',
+                  fontSize: 15,
+                  color: 'white',
+                  textAlign: 'center',
+                }}>
+                Filter Data
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+            <View
+              style={{
+                marginHorizontal: 10,
+                marginTop: 15,
+                backgroundColor: 'red',
+                borderRadius: 5,
+              }}>
+              <Text
+                style={{
+                  borderRadius: 5,
+                  padding: 15,
+                  color: 'gray',
+                  fontSize: 15,
+                  color: 'white',
+                  textAlign: 'center',
+                }}>
+                Cancel
+              </Text>
+            </View>
+          </TouchableOpacity>
         </ScrollView>
       </Modal>
 
