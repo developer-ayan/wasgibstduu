@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Animatable from 'react-native-animatable';
 import firestore from '@react-native-firebase/firestore';
@@ -86,14 +89,26 @@ export default function SearchBar({navigation}) {
     }
   };
   const SelectedProperty = name => {
-    // console.log('name => ', name);
     if (selectedPropertyType == name) {
-      setSelectedPropertyType(prev => prev.filter(item => item !== name));
+      console.log(selectedPropertyType);
+      // setSelectedPropertyType(prev => prev.filter(item => item !== name));
     } else {
-      // setSelectedPropertyType(prev => prev.concat(name));
       setSelectedPropertyType(name);
     }
   };
+  console.log('property', selectedPropertyType);
+  const countries = [
+    'Fashion',
+    'Auto Mobiles',
+    'Electronics',
+    'Events',
+    'Jobs',
+    'Learning',
+    'Phone & tablets',
+    'Real States',
+    'Services',
+  ];
+
   return (
     <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
       {/* {'MODAL OPEN '} */}
@@ -107,53 +122,276 @@ export default function SearchBar({navigation}) {
           setModalVisible(!modalVisible);
         }}>
         <ScrollView style={styles.centeredView}>
+          <Text>Ayan</Text>
+
           <View
             style={{
-              flexDirection:
-                selectedLanguage === 'arabic' ? 'row-reverse' : 'row',
+              flexDirection: 'row',
               flexWrap: 'wrap',
               marginHorizontal: 10,
             }}
             horizontal={true}>
             <TouchableOpacity
-              onPress={() => setSelectedPropertyType([])}
+              onPress={SelectedProperty.bind(this, 'Fashion')}
               style={[
-                selectedPropertyType != 0
-                  ? styles.Property_type_Buttons
-                  : styles.Property_type_Buttons_Active,
-                {width: '20%'},
-              ]}>
-              <Text
-                style={
-                  selectedPropertyType != 0
-                    ? styles.Property_type_text
-                    : styles.Property_type_text_Active
-                }>
-                ALL
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={SelectedProperty.bind(this, 'home')}
-              style={[
-                selectedPropertyType == 'home'
+                selectedPropertyType == 'Fashion'
                   ? styles.Property_type_Buttons_Active
                   : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
               ]}>
-              {/* <Image
-                source={
-                  selectedPropertyType == 'home'
-                    ? require('../../assets/home.png')
-                    : require('../../assets/home-gray.png')
+              <Ionicons
+                name={
+                  selectedPropertyType === 'Fashion' ? 'shirt' : 'shirt-outline'
                 }
-                style={styles.propertyImage}
-              /> */}
+                size={17}
+                color={selectedPropertyType === 'Fashion' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
               <Text
                 style={
-                  selectedPropertyType == 'home'
+                  selectedPropertyType == 'Fashion'
                     ? styles.Property_type_text_Active
                     : styles.Property_type_text
                 }>
-                HOME
+                Fashion
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Events')}
+              style={[
+                selectedPropertyType == 'Events'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              <MaterialCommunityIcons
+                name="pine-tree-fire"
+                size={17}
+                color={selectedPropertyType === 'Events' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Events'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Events
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Auto Mobiles')}
+              style={[
+                selectedPropertyType == 'Auto Mobiles'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              {selectedPropertyType === 'Auto Mobiles' ? (
+                <AntDesign
+                  name={'car'}
+                  size={18}
+                  color={'white'}
+                  style={{marginRight: 7}}
+                />
+              ) : (
+                <FontAwesome
+                  name={'car'}
+                  size={17}
+                  color={'red'}
+                  style={{marginRight: 7}}
+                />
+              )}
+
+              <Text
+                style={
+                  selectedPropertyType == 'Auto Mobiles'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Auto Mobiles
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Electronics')}
+              style={[
+                selectedPropertyType == 'Electronics'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              <MaterialCommunityIcons
+                name="washing-machine"
+                size={17}
+                color={selectedPropertyType === 'Electronics' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Electronics'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Electronics
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Jobs')}
+              style={[
+                selectedPropertyType == 'Jobs'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              <Ionicons
+                name={
+                  selectedPropertyType === 'Jobs'
+                    ? 'notifications'
+                    : 'notifications-outline'
+                }
+                size={20}
+                color={selectedPropertyType === 'Jobs' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Jobs'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Jobs
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Learning')}
+              style={[
+                selectedPropertyType == 'Learning'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              <Entypo
+                name="open-book"
+                size={17}
+                color={selectedPropertyType === 'Learning' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Learning'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Learning
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Phone & tablets')}
+              style={[
+                selectedPropertyType == 'Phone & tablets'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              <MaterialCommunityIcons
+                name="tablet-cellphone"
+                size={17}
+                color={
+                  selectedPropertyType === 'Phone & tablets' ? 'white' : 'red'
+                }
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Phone & tablets'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Phone & tablets
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Real States')}
+              style={[
+                selectedPropertyType == 'Real States'
+                  ? styles.Property_type_Buttons_Active
+                  : styles.Property_type_Buttons,
+                {paddingHorizontal: 15},
+              ]}>
+              <MaterialCommunityIcons
+                name={
+                  selectedPropertyType == 'Real States'
+                    ? 'home-city'
+                    : 'home-city-outline'
+                }
+                size={17}
+                color={selectedPropertyType === 'Real States' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Real States'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Real States
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={SelectedProperty.bind(this, 'Services')}
+              style={[
+                selectedPropertyType == 'Services'
+                  ? {
+                      borderRadius: 20,
+                      marginTop: 5,
+                      backgroundColor: 'green',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      padding: 10,
+                    }
+                  : {
+                      borderWidth: 1,
+                      borderRadius: 20,
+                      padding: 10,
+                      marginHorizontal: 3,
+                      marginTop: 5,
+                      borderColor: 'red',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    },
+                {paddingHorizontal: 15},
+              ]}>
+              <MaterialCommunityIcons
+                name={
+                  selectedPropertyType == 'Services'
+                    ? 'home-city'
+                    : 'home-city-outline'
+                }
+                size={17}
+                color={selectedPropertyType === 'Services' ? 'white' : 'red'}
+                style={{marginRight: 5}}
+              />
+
+              <Text
+                style={
+                  selectedPropertyType == 'Services'
+                    ? styles.Property_type_text_Active
+                    : styles.Property_type_text
+                }>
+                Services
               </Text>
             </TouchableOpacity>
           </View>
@@ -411,73 +649,10 @@ export default function SearchBar({navigation}) {
                   </View>
                 </Animatable.View>
               </TouchableOpacity>
-              {/* </TouchableOpacity> */}
             </View>
           );
         })
       )}
-
-      {/* {loading ?
-        <Loader />
-        :
-        data.map((item, ind) => {
-
-          return (
-            <View key={ind} style={{ marginHorizontal: 1, backgroundColor: 'white', borderRadius: 2, marginTop: 10 }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Categories_detail',
-                {
-                  IMAGE: item.ADS_IMAGES,
-                  PRICE: item.PRICE,
-                  DISCRIPTION: item.DISCRIPTION,
-                  CITY: item.CITY,
-                  CATEGORY: item.CATEGORY,
-                  TITLE: item.TITLE,
-                  UID: item.UID,
-                }
-              )}>
-                <Animatable.View style={{ alignItems: 'center' }}>
-
-                  <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'center' }}>
-                      <Image
-                        style={{ height: 100, width: '100%', borderRadius: 2 }}
-                        source={{ uri: item.ADS_IMAGES }}
-                      />
-                    </View>
-                    <View style={{ flexDirection: 'column', justifyContent: 'space-between', paddingHorizontal: 10, padding: 5, width: '60%', lineHeihgt: 80 }}>
-                      <Text style={{ color: '#b3b3b3', fontSize: 10 }}>{item.NAME}</Text>
-                      <Text numberOfLines={2} style={{ color: '#494949', fontSize: 12 }}>{item.TITLE}</Text>
-                      <Text style={{ color: 'green', fontSize: 12 }}>{item.PRICE}</Text>
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text style={{ color: '#b3b3b3', fontSize: 12 }}>Versand moglich</Text>
-
-
-                        <Pressable onPress={() => {
-                          firestore()
-                            .collection(`Stared Data ${user.USER_ID}`)
-                            .doc(item.DISCRIPTION)
-                            .set({
-                              IMAGE: item.ADS_IMAGES,
-                              PRICE: item.PRICE,
-                              DISCRIPTION: item.DISCRIPTION,
-                              CITY: item.CITY,
-                              CATEGORY: item.CATEGORY,
-                              UID: item.UID,
-                              TITLE: item.TITLE,
-                            })
-                        }}>
-                          <AntDesign style={{ color: '#b3b3b3' }} name="staro" size={18} />
-                        </Pressable>
-                      </View>
-                    </View>
-                  </View>
-                </Animatable.View>
-              </TouchableOpacity>
-              {/* </TouchableOpacity> */}
-      {/* </View>
-          )
-        })
-      } */}
     </ScrollView>
   );
 }
@@ -487,16 +662,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  Property_type_text_Active: {
-    color: 'pink',
+  Property_type_Buttons_Active: {
+    borderRadius: 20,
+    marginTop: 5,
+    backgroundColor: 'green',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  Property_type_text: {
+  Property_type_text_Active: {
     color: 'white',
   },
-  Property_type_Buttons: {
-    backgroundColor: 'blue',
+  Property_type_text: {
+    color: 'red',
+    fontSize: 12,
   },
   Property_type_Buttons: {
-    backgroundColor: 'pink',
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    marginHorizontal: 3,
+    marginTop: 5,
+    borderColor: 'red',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

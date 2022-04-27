@@ -45,6 +45,7 @@ export default function Ads({navigation}) {
     'Learning',
     'Phone & tablets',
     'Real States',
+    'Events',
     'Services',
   ];
   const [state, setState] = useState({});
@@ -75,7 +76,7 @@ export default function Ads({navigation}) {
     isValidCity: true,
   });
 
-  console.log("title ",data.title)
+  console.log('title ', data.title);
 
   const textInputTitleChange = val => {
     var re = /^$/;
@@ -147,14 +148,13 @@ export default function Ads({navigation}) {
     }
   };
 
-
   const CreateAds = async () => {
     let user = {
       category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
-      title : data.title,
-      discription : data.description,
-      price : data.price,
-      city : data.city,
+      title: data.title,
+      discription: data.description,
+      price: data.price,
+      city: data.city,
       imageUrl: image,
       name: state.NAME,
       UID: state.USER_ID,
@@ -168,7 +168,6 @@ export default function Ads({navigation}) {
     setCategory('');
     setImage([]);
     navigation.goBack();
-
   };
 
   const ImageGallery = () => {
