@@ -153,13 +153,7 @@ export default function Ads({navigation}) {
   console.log('regex ', REGEXP.test(data.title));
 
   const CreateAds = async () => {
-    if (state.EMAIL === 'Info@wasgibstdu.de') {
-      if (state.EMAIL === 'Info@wasgibstdu.de') {
-        //
-      } else if (!REGEXP.test(category)) {
-        Toast.show('Select A Category ', Toast.LONG);
-      }
-    } else if (!REGEXP.test(title)) {
+    if (!REGEXP.test(title)) {
       Toast.show('Title Is Required ...', Toast.LONG);
     } else if (!REGEXP.test(discription)) {
       Toast.show('Description Is Required ...', Toast.LONG);
@@ -168,10 +162,15 @@ export default function Ads({navigation}) {
     } else if (!REGEXP.test(city)) {
       Toast.show('City Is Required ...', Toast.LONG);
     } else if (image.length === 0) {
-      Toast.show('Select A Category ', Toast.LONG);
+      Toast.show('Images Is Required ', Toast.LONG);
     } else {
       let user = {
-        category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
+        category:
+          state.EMAIL === 'Info@wasgibstdu.de'
+            ? 'Premiums'
+            : category == ''
+            ? 'Fashion'
+            : category,
         title: title,
         discription: discription,
         price: price,
@@ -331,7 +330,7 @@ export default function Ads({navigation}) {
               <SelectDropdown
                 data={countries}
                 width="100%"
-                defaultButtonText="select a category"
+                defaultButtonText="Fashion"
                 renderDropdownIcon={() => (
                   <Entypo
                     name="chevron-down"

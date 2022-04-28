@@ -64,7 +64,7 @@ export default function Premium({navigation}) {
                           borderTopRightRadius: 5,
                           borderTopLeftRadius: 5,
                         }}
-                        source={{uri: e.ADS_IMAGES}}
+                        source={{uri: e.ADS_IMAGES[0]}}
                       />
                     </View>
                     <View style={{padding: 3}}>

@@ -235,13 +235,18 @@ export default function Inbox() {
                 </View>
 
                 <View
-                  style={{width: '50%', height: 40, justifyContent: 'center'}}>
+                  style={{
+                    width: '50%',
+                    height: 40,
+                    justifyContent: 'center',
+                  }}>
                   <Text
+                    numberOfLines={1}
                     style={{
                       color:
                         item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black',
                     }}>
-                    {item.title}
+                    Title ad : {item.title}
                   </Text>
                 </View>
                 <View

@@ -15,6 +15,7 @@ import React, {useContext, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {useSelector} from 'react-redux';
@@ -427,17 +428,29 @@ function Profile({navigation}) {
                         <Text>Personal ads</Text>
                     </TouchableOpacity>
                 </LinearGradient> */}
+
         <SwipeButton
+          disabledRailBackgroundColor="#cccc"
           onSwipeSuccess={() => navigation.navigate('Your_Ads')}
-          railBackgroundColor="gold"
-          thumbIconImageSource={
-            'https://www.freeiconspng.com/thumbs/arrow-icon/arrow-icon--myiconfinder-23.png'
-          }
-          title="GO TO YOUR ADS"
-          titleStyles={{fontSize: 16, fontWeight: 'bold'}}
-          disabledThumbIconBorderColor="white"
+          railBackgroundColor={'#f7ba00'}
+          containerStyles={{
+            borderRadius: 30,
+            paddingVertical: 0,
+            marginTop: 50,
+          }}
+          railBorderColor="#f7ba00"
+          titleStyles={{fontFamily: 'Inter-ExtraBold'}}
+          thumbIconBackgroundColor="#FFFFFF"
+          railFillBackgroundColor={'rgba(52, 52, 52, 0.8)'}
+          thumbIconBorderColor="white"
+          railFillBorderColor={'rgba(52, 52, 52, 0.8)'}
+          title="Check Out Own Ads"
+          titleColor="black"
+          titleFontSize={17}
+          thumbIconComponent={() => (
+            <FontAwesome name="arrow-right" color={'black'} size={16} />
+          )}
         />
-        {/* </TouchableOpacity> */}
       </Animated.View>
 
       <BottomSheet

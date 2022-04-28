@@ -67,6 +67,28 @@ export default function Home({navigation}) {
         flex: 1,
         backgroundColor: '#f0f2f5',
       }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          backgroundColor: '#01a949',
+        }}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Ionicons
+            style={{
+              borderTopLeftRadius: 5,
+              borderBottomLeftRadius: 5,
+              paddingHorizontal: 5,
+              color: 'white',
+            }}
+            name="reorder-three"
+            size={40}
+          />
+        </TouchableOpacity>
+
+        <Text style={{color: '#01a949'}}>Ayan</Text>
+      </View>
       <View style={{height: 400, backgroundColor: '#01a949'}}>
         <Pressable onPress={() => navigation.navigate('searchbar')}>
           <View
@@ -74,7 +96,6 @@ export default function Home({navigation}) {
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'center',
-              marginTop: 20,
               height: 80,
             }}>
             <FontAwesome
@@ -115,7 +136,7 @@ export default function Home({navigation}) {
           </View>
         </Pressable>
       </View>
-      <View style={{paddingHorizontal: 15, borderRadius: 10, marginTop: -280}}>
+      <View style={{paddingHorizontal: 15, borderRadius: 10, marginTop: -300}}>
         {/* Category selected */}
         <Category navigation={navigation} />
         {/* Sponsored Ads   */}
@@ -147,7 +168,7 @@ export default function Home({navigation}) {
           {/* <View style = {{width : '10%'}}></View> */}
 
           {data.map((item, index) => {
-             const filterLike = item?.LIKE?.filter(
+            const filterLike = item?.LIKE?.filter(
               item => item === user?.USER_ID,
             );
             return (
@@ -158,7 +179,7 @@ export default function Home({navigation}) {
                   backgroundColor: 'white',
                   marginBottom: 10,
                 }}>
-                   <TouchableOpacity
+                <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('Categories_detail', {
                       IMAGE: item.ADS_IMAGES,
