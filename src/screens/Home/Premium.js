@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,11 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { AuthContext } from '../../context/Auth';
 
 export default function Premium({navigation}) {
   const [data, setData] = React.useState([]);
+  const {user} = useContext(AuthContext)
   React.useEffect(() => {
     firestore()
       .collection('Category')
@@ -33,17 +35,22 @@ export default function Premium({navigation}) {
             flex: 1,
           }}>
           {data.map((e, index) => {
+            const filterLike = e?.LIKE?.filter(item => item === user?.USER_ID);
             return (
               <TouchableOpacity
                 key={index}
                 onPress={() =>
                   navigation.navigate('Categories_detail', {
                     IMAGE: e.ADS_IMAGES,
-                    TITLE: e.TITLE,
                     PRICE: e.PRICE,
                     DISCRIPTION: e.DISCRIPTION,
                     CITY: e.CITY,
                     CATEGORY: e.CATEGORY,
+                    TITLE: e.TITLE,
+                    UID: e.UID,
+                    LIKE: e.LIKE,
+                    USER_LIKE: filterLike[0],
+                    AUTO_ID: e.AUTO_ID,
                   })
                 }>
                 <View>
@@ -70,7 +77,12 @@ export default function Premium({navigation}) {
                     <View style={{padding: 3}}>
                       <Text
                         numberOfLines={2}
-                        style={{color: 'black', fontSize: 10, width: 110 , fontFamily: 'JosefinSans-Regular'}}>
+                        style={{
+                          color: 'black',
+                          fontSize: 10,
+                          width: 110,
+                          fontFamily: 'JosefinSans-Regular',
+                        }}>
                         {e.TITLE}
                       </Text>
                     </View>

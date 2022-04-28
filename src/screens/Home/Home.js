@@ -200,7 +200,7 @@ export default function Home({navigation}) {
                     })
                   }>
                   <Image
-                    style={{width: '100%', height: 80}}
+                    style={{width: '100%', height: 100}}
                     source={{uri: item.ADS_IMAGES?.[0]}}
                   />
                   <View style={{paddingHorizontal: 8}}>
