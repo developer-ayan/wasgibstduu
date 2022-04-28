@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -24,6 +25,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import Toast from 'react-native-simple-toast';
 
 export default function Ads({navigation}) {
   const [uri, setUri] = React.useState(null);
@@ -60,6 +62,7 @@ export default function Ads({navigation}) {
 
   useFocusEffect(
     React.useCallback(() => {
+      textInputDiscriptionChange('');
       getData();
     }, [state.USER_ID]),
   );
@@ -75,8 +78,6 @@ export default function Ads({navigation}) {
     isValidPrice: true,
     isValidCity: true,
   });
-
-  console.log('title ', data.title);
 
   const textInputTitleChange = val => {
     var re = /^$/;
@@ -148,33 +149,54 @@ export default function Ads({navigation}) {
     }
   };
 
-  const CreateAds = async () => {
-    let user = {
-      category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
-      title: data.title,
-      discription: data.description,
-      price: data.price,
-      city: data.city,
-      imageUrl: image,
-      name: state.NAME,
-      UID: state.USER_ID,
-      EMAIL: state?.EMAIL,
-    };
-    dispatch(create_ads(user));
-    setTitle('');
-    setDiscription('');
-    setPrice('');
-    setCity('');
-    setCategory('');
-    setImage([]);
-    navigation.goBack();
+  const REGEXP = /^(?!\s*$).+/;
+  console.log('regex ', REGEXP.test(data.title));
 
-    setData({
-      title: '',
-      description: '',
-      price: '',
-      city: '',
-    });
+  const CreateAds = async () => {
+    if (state.EMAIL === 'Info@wasgibstdu.de') {
+      if (state.EMAIL === 'Info@wasgibstdu.de') {
+        //
+      } else if (!REGEXP.test(category)) {
+        Toast.show('Select A Category ', Toast.LONG);
+      }
+    } else if (!REGEXP.test(title)) {
+      Toast.show('Title Is Required ...', Toast.LONG);
+    } else if (!REGEXP.test(discription)) {
+      Toast.show('Description Is Required ...', Toast.LONG);
+    } else if (!REGEXP.test(price)) {
+      Toast.show('Price Is Required ...', Toast.LONG);
+    } else if (!REGEXP.test(city)) {
+      Toast.show('City Is Required ...', Toast.LONG);
+    } else if (image.length === 0) {
+      Toast.show('Select A Category ', Toast.LONG);
+    } else {
+      let user = {
+        category: state.EMAIL === 'Info@wasgibstdu.de' ? 'Premiums' : category,
+        title: title,
+        discription: discription,
+        price: price,
+        city: city,
+        imageUrl: image,
+        name: state.NAME,
+        UID: state.USER_ID,
+        EMAIL: state?.EMAIL,
+      };
+      dispatch(create_ads(user));
+      setTitle('');
+      setDiscription('');
+      setPrice('');
+      setCity('');
+      setCategory('');
+      setImage([]);
+      navigation.goBack();
+
+      // setData({
+      //   title: '',
+      //   description: '',
+      //   price: '',
+      //   city: '',
+      // });
+    }
   };
 
   const ImageGallery = () => {
@@ -215,7 +237,6 @@ export default function Ads({navigation}) {
           });
 
           setUploading(false);
-          Alert.alert('Your Ad Has Been Upload');
           return url;
         } catch (e) {
           console.log(e);
@@ -227,15 +248,17 @@ export default function Ads({navigation}) {
     });
   };
 
-  React.useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setId(user.uid);
-      } else {
-        Alert('User Is Not Login');
-      }
-    });
-  });
+  useFocusEffect(
+    React.useCallback(() => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          setId(user.uid);
+        } else {
+          Alert('User Is Not Login');
+        }
+      });
+    }),
+  );
 
   return (
     <ScrollView style={{flex: 1}}>
@@ -349,54 +372,22 @@ export default function Ads({navigation}) {
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>AD TITLE</Text>
           <TextInput
-            onChangeText={val => textInputTitleChange(val)}
+            onChangeText={val => setTitle(val)}
+            value={title}
             multiline={true}
             style={styles.Input}
           />
         </View>
-        {data.isValidUser ? null : (
-          <Animatable.View
-            animation="bounceInLeft"
-            duration={1000}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 0,
-              paddingBottom: 10,
-              marginTop: 20,
-            }}>
-            <Text style={{color: 'red', fontSize: 12, paddingHorizontal: 10}}>
-              Required Your Title Field
-            </Text>
-          </Animatable.View>
-        )}
 
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>DISCRIPTION</Text>
           <TextInput
-            onChangeText={val => textInputDiscriptionChange(val)}
+            onChangeText={val => setDiscription(val)}
+            value={discription}
             multiline={true}
             style={styles.Input}
           />
         </View>
-        {data.isValidDescription ? null : (
-          <Animatable.View
-            animation="bounceInLeft"
-            duration={1000}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 0,
-              paddingBottom: 10,
-              marginTop: 20,
-            }}>
-            <Text style={{color: 'red', fontSize: 12, paddingHorizontal: 10}}>
-              Required Your Description Field
-            </Text>
-          </Animatable.View>
-        )}
 
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>PRICE</Text>
@@ -421,7 +412,8 @@ export default function Ads({navigation}) {
               $
             </Text>
             <TextInput
-              onChangeText={text => textInputPriceChange(text)}
+              onChangeText={text => setPrice(text)}
+              value={price}
               keyboardType="number-pad"
               style={{
                 fontFamily: 'Roboto',
@@ -434,24 +426,6 @@ export default function Ads({navigation}) {
             />
           </View>
         </View>
-
-        {data.isValidPrice ? null : (
-          <Animatable.View
-            animation="bounceInLeft"
-            duration={1000}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 0,
-              paddingBottom: 10,
-              marginTop: 20,
-            }}>
-            <Text style={{color: 'red', fontSize: 12, paddingHorizontal: 10}}>
-              Required Your Price Field
-            </Text>
-          </Animatable.View>
-        )}
 
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>CITY</Text>
@@ -486,28 +460,13 @@ export default function Ads({navigation}) {
           /> */}
 
           <TextInput
-            onChangeText={(val) => textInputCityChange(val)}
+            onChangeText={val => setCity(val)}
+            value={city}
             multiline={true}
             style={styles.Input}
           />
         </View>
-        {data.isValidCity ? null : (
-          <Animatable.View
-            animation="bounceInLeft"
-            duration={1000}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 0,
-              paddingBottom: 10,
-              marginTop: 20,
-            }}>
-            <Text style={{color: 'red', fontSize: 12, paddingHorizontal: 10}}>
-              Required Your City Field
-            </Text>
-          </Animatable.View>
-        )}
+
         <View
           style={{
             marginTop: 20,
@@ -521,10 +480,11 @@ export default function Ads({navigation}) {
                 style={{
                   height: 60,
                   width: 60,
-                  borderRadius: 50,
-                  marginTop: 1,
+                  borderRadius: 10,
+                  marginTop: 10,
                   marginHorizontal: 12,
                   borderWidth: 1,
+                  marginBottom: 10,
                 }}
                 source={{
                   uri: 'https://www.ubuntupit.com/wp-content/uploads/2020/05/Simple-Gallery-Photo-and-Video-Manager-Editor.png',
@@ -548,7 +508,7 @@ export default function Ads({navigation}) {
                       style={{
                         height: 60,
                         width: 60,
-                        borderRadius: 50,
+                        borderRadius: 10,
                         marginTop: 1,
                         marginHorizontal: 3,
                         borderWidth: 1,
@@ -560,47 +520,23 @@ export default function Ads({navigation}) {
               })}
         </View>
 
-        {data.isValidUser === true &&
-        data.isValidDescription === true &&
-        data.isValidCity === true &&
-        data.isValidPrice === true ? (
-          <TouchableOpacity onPress={CreateAds}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderRadius: 5,
-                padding: 20,
-                color: '#b3b3b3',
-                backgroundColor: 'gold',
-                paddingVertical: 25,
-                marginVertical: 10,
-              }}>
-              <Text style={{fontSize: 14, color: '#1d1900'}}>Create Ads</Text>
-              <Feather name="arrow-right" size={20} color="#1d1900" />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity disabled>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderRadius: 5,
-                padding: 20,
-                color: '#b3b3b3',
-                backgroundColor: 'gold',
-                paddingVertical: 25,
-                marginVertical: 10,
-                opacity: 0.5,
-              }}>
-              <Text style={{fontSize: 14, color: '#1d1900'}}>Create Ads</Text>
-              <Feather name="arrow-right" size={20} color="#1d1900" />
-            </View>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity onPress={CreateAds}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderRadius: 5,
+              padding: 20,
+              color: '#b3b3b3',
+              backgroundColor: 'gold',
+              paddingVertical: 25,
+              marginVertical: 10,
+            }}>
+            <Text style={{fontSize: 14, color: '#1d1900'}}>Create Ads</Text>
+            <Feather name="arrow-right" size={20} color="#1d1900" />
+          </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

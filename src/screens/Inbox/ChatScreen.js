@@ -13,6 +13,8 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  Modal,
+  Pressable,
 } from 'react-native';
 import {
   get_all_users,
@@ -33,6 +35,7 @@ import {firebase} from '@react-native-firebase/auth';
 import {useFocusEffect} from '@react-navigation/native';
 import {AuthContext} from '../../context/Auth';
 import storage from '@react-native-firebase/storage';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default function ChatScreen({route, navigation}) {
   const {e, title} = route.params;
@@ -46,6 +49,13 @@ export default function ChatScreen({route, navigation}) {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = React.useState(false);
   const [transeferred, setTranseferred] = React.useState(0);
+  const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
+  const images = [
+    {
+      url: urlSelectedImage,
+    },
+  ];
+  const [modalVisible, SetModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -165,7 +175,7 @@ export default function ChatScreen({route, navigation}) {
           // });
 
           setUploading(false);
-          Alert.alert('Your Ad Has Been Upload');
+          alert('Your Ad Has Been Upload');
           return url;
         } catch (e) {
           console.log(e);
@@ -191,6 +201,15 @@ export default function ChatScreen({route, navigation}) {
         flexDirection: 'column',
         justifyContent: 'space-between',
       }}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          SetModalVisible(!modalVisible);
+        }}>
+        <ImageViewer imageUrls={images} />
+      </Modal>
       <View
         style={{
           padding: 10,
@@ -269,15 +288,21 @@ export default function ChatScreen({route, navigation}) {
                   borderTopRightRadius: uid ? 5 : 3,
                 }}>
                 {e.image === null ? null : (
-                  <Image
-                    source={{uri: e.image}}
-                    style={{
-                      height: 150,
-                      width: '100%',
-                      borderRadius: 5,
-                      marginBottom: 5,
-                    }}
-                  />
+                  <Pressable
+                    onPress={() => {
+                      setUrlSelectedImage(e.image);
+                      SetModalVisible(true);
+                    }}>
+                    <Image
+                      source={{uri: e.image}}
+                      style={{
+                        height: 150,
+                        width: '100%',
+                        borderRadius: 5,
+                        marginBottom: 5,
+                      }}
+                    />
+                  </Pressable>
                 )}
 
                 <Text
