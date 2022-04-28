@@ -141,7 +141,12 @@ export default function Home({navigation}) {
         <Category navigation={navigation} />
         {/* Sponsored Ads   */}
         <View style={{marginVertical: 20}}>
-          <Text style={{color: 'black', fontSize: 18, fontFamily: 'Arial'}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 18,
+              fontFamily: 'JosefinSans-ExtraLight',
+            }}>
             SPONSORED ADS
           </Text>
         </View>
