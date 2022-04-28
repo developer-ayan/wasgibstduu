@@ -40,6 +40,7 @@ export default function ChatScreen({route, navigation}) {
   const [message, setMessage] = React.useState('');
   const [data, setData] = React.useState([]);
   const [uri, setUri] = React.useState(null);
+  const [cameraUri, setCameraUri] = React.useState(null);
   const {user} = useContext(AuthContext);
   const scrollViewRef = useRef();
   const [loading, setLoading] = useState(true);
@@ -107,6 +108,7 @@ export default function ChatScreen({route, navigation}) {
         });
       setMessage('');
       setUri(null);
+      setCameraUri(null);
     } else {
       alert('Please type');
     }
@@ -129,6 +131,7 @@ export default function ChatScreen({route, navigation}) {
       height: 500,
       cropping: true,
     }).then(image => {
+      setCameraUri(image.path);
       const ImageHandle = async () => {
         const uploadUri = image.path;
         let fileName = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
@@ -289,77 +292,71 @@ export default function ChatScreen({route, navigation}) {
         })}
       </ScrollView>
 
-      {
-        uploading ? 
-
+      {cameraUri === null ? null : uploading ? (
         <View
-        style={{
-          backgroundColor: '#007bff',
-          padding: 20,
-          marginHorizontal: 5,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        {uploading ? (
-          <ActivityIndicator
-            color={'white'}
-            size={'small'}
-            style={{marginRight: 20}}
-          />
-        ) : null}
+          style={{
+            backgroundColor: '#007bff',
+            padding: 20,
+            marginHorizontal: 5,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          {uploading ? (
+            <ActivityIndicator
+              color={'white'}
+              size={'small'}
+              style={{marginRight: 20}}
+            />
+          ) : null}
 
-  
           <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
             1 selected image
           </Text>
-       
-      </View>
+        </View>
+      ) : (
+        <View
+          style={{
+            backgroundColor: '#007bff',
+            padding: 20,
+            marginHorizontal: 5,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          {uploading ? (
+            <ActivityIndicator
+              color={'white'}
+              size={'small'}
+              style={{marginRight: 20}}
+            />
+          ) : null}
 
-      :
-
-      <View
-      style={{
-        backgroundColor: '#007bff',
-        padding: 20,
-        marginHorizontal: 5,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}>
-      {uploading ? (
-        <ActivityIndicator
-          color={'white'}
-          size={'small'}
-          style={{marginRight: 20}}
-        />
-      ) : null}
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}>
-        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
-          1 selected image
-        </Text>
-        <TouchableOpacity onPress={() => setUri(null)}>
-          <Entypo
-            name="circle-with-cross"
-            size={20}
-            color="white"
-            style={{justifyContent: 'flex-end'}}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
-
-      }
-
-
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
+              1 selected image
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setUri(null), setCameraUri(null);
+              }}>
+              <Entypo
+                name="circle-with-cross"
+                size={20}
+                color="white"
+                style={{justifyContent: 'flex-end'}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       <View
         style={{
