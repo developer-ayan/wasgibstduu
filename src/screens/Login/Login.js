@@ -133,7 +133,6 @@ export default function Login({}) {
     }
   };
 
-
   return (
     <ScrollView
       style={{

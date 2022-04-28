@@ -39,6 +39,7 @@ export default function Auto_Mobiles({navigation}) {
     React.useCallback(() => {
       firestore()
         .collection('Category')
+        .orderBy('TIME_ADS')
         .onSnapshot(documentSnapshot => {
           setData(
             documentSnapshot.docs
@@ -89,7 +90,13 @@ export default function Auto_Mobiles({navigation}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold' , fontFamily: 'JosefinSans-Regular',}}>
+      <Text
+        style={{
+          color: 'black',
+          fontSize: 20,
+          fontWeight: 'bold',
+          fontFamily: 'JosefinSans-Regular',
+        }}>
         Go to create your ads
       </Text>
       <View>

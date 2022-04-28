@@ -208,8 +208,6 @@ export default function StaredChat() {
                           toggle: false,
                         });
 
-                       
-
                         firestore()
                           .collection('Stared Chat')
                           .doc('user stared chats')

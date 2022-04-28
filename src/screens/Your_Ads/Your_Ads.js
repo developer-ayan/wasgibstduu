@@ -37,7 +37,6 @@ export default function manageAds({navigation}) {
             .map(e => e.data())
             .filter(item => item.UID === user?.USER_ID),
         );
-        
       });
   }, []);
   firestore()
@@ -51,9 +50,9 @@ export default function manageAds({navigation}) {
       });
     });
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+  setTimeout(() => {
+    setLoading(false);
+  }, 500);
 
   return loading ? (
     <ActivityIndicator
@@ -62,8 +61,6 @@ export default function manageAds({navigation}) {
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
     />
   ) : data.length === 0 ? (
-    
-    
     <View
       style={{
         flex: 1,
@@ -71,7 +68,12 @@ export default function manageAds({navigation}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{color: 'black', fontSize: 20, fontFamily: 'JosefinSans-Regular'}}>
+      <Text
+        style={{
+          color: 'black',
+          fontSize: 20,
+          fontFamily: 'JosefinSans-Regular',
+        }}>
         Go to create your ads
       </Text>
       <View>
@@ -125,7 +127,7 @@ export default function manageAds({navigation}) {
               // fontWeight: 'bold',
               fontSize: 12,
               textAlign: 'center',
-              fontFamily: 'JosefinSans-Bold'
+              fontFamily: 'JosefinSans-Bold',
             }}>
             My Ads
           </Text>
@@ -134,8 +136,21 @@ export default function manageAds({navigation}) {
 
       <View style={{marginTop: 20}}>
         <View>
-          <Text style={{color: 'black', fontSize: 20 , fontFamily: 'JosefinSans-Regular'}}>My Ads</Text>
-          <Text style={{color: '#7d7d7d', fontSize: 14, marginTop: 5 , fontFamily: 'JosefinSans-Regular'}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 20,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
+            My Ads
+          </Text>
+          <Text
+            style={{
+              color: '#7d7d7d',
+              fontSize: 14,
+              marginTop: 5,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             Manage your free and premium advertisement
           </Text>
         </View>
@@ -161,14 +176,21 @@ export default function manageAds({navigation}) {
                 </View>
 
                 <View style={{paddingHorizontal: 10}}>
-                  <Text style={{color: 'black', fontSize: 16 , fontFamily: 'JosefinSans-Regular'}}>{e.TITLE}</Text>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 16,
+                      fontFamily: 'JosefinSans-Regular',
+                    }}>
+                    {e.TITLE}
+                  </Text>
                   <Text
                     style={{
                       color: '#7d7d7d',
                       fontSize: 14,
                       marginTop: 2,
                       opacity: 0.5,
-                      fontFamily: 'JosefinSans-Regular'
+                      fontFamily: 'JosefinSans-Regular',
                     }}>
                     {e.CATEGORY}
                   </Text>
@@ -181,7 +203,14 @@ export default function manageAds({navigation}) {
                     justifyContent: 'space-between',
                     paddingHorizontal: 10,
                   }}>
-                  <Text style={{fontSize: 25, color: 'black' , fontFamily: 'JosefinSans-Regular'}}>{e.PRICE}</Text>
+                  <Text
+                    style={{
+                      fontSize: 25,
+                      color: 'black',
+                      fontFamily: 'JosefinSans-Regular',
+                    }}>
+                    {e.PRICE}
+                  </Text>
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('EditAds', {data: e})}>
