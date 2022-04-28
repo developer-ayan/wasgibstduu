@@ -62,6 +62,7 @@ export default function SearchBar({navigation}) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
+      .orderBy('TIME_ADS')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
         setMaster(documentSnapshot.docs.map(e => e.data()));
@@ -697,11 +698,7 @@ export default function SearchBar({navigation}) {
                             justifyContent: 'space-between',
                             width: '100%',
                           }}>
-                          <Text
-                            style={[
-                              styles.Versand,
-                              {color: 'black'},
-                            ]}>
+                          <Text style={[styles.Versand, {color: 'black'}]}>
                             Own Ad
                           </Text>
                           <FontAwesome

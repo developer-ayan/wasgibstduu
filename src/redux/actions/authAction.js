@@ -37,8 +37,6 @@ const sign_in = user => {
       auth()
         .signInWithEmailAndPassword(user.email, user.password)
         .then(res => {
-          console.log(' in redux ', res.user.uid);
-          alert('User Is SignIn');
           let Mydata = res;
           firestore()
             .collection('Users')

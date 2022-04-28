@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,16 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { AuthContext } from '../../context/Auth';
+import {AuthContext} from '../../context/Auth';
 
 export default function Premium({navigation}) {
   const [data, setData] = React.useState([]);
-  const {user} = useContext(AuthContext)
+  const {user} = useContext(AuthContext);
   React.useEffect(() => {
     firestore()
       .collection('Category')
+      .orderBy('TIME_ADS')
+
       .onSnapshot(documentSnapshot => {
         setData(
           documentSnapshot.docs

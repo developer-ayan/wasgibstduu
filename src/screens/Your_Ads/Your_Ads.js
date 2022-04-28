@@ -29,6 +29,8 @@ export default function manageAds({navigation}) {
   React.useEffect(() => {
     firestore()
       .collection('Category')
+      .orderBy('TIME_ADS')
+
       .onSnapshot(documentSnapshot => {
         setData(
           documentSnapshot.docs

@@ -40,6 +40,7 @@ export default function Events({navigation}) {
   React.useCallback(() => {
     firestore()
       .collection('Category')
+      .orderBy('TIME_ADS')
       .onSnapshot(documentSnapshot => {
         setData(
           documentSnapshot.docs

@@ -85,7 +85,7 @@ export default function ChatScreen({route, navigation}) {
         name: user?.NAME,
         uid: user?.USER_ID,
         image: uri,
-        date: new Date().toUTCString(),
+        date: firebase.firestore.Timestamp.fromDate(new Date()),
       });
 
       firestore()
@@ -95,6 +95,7 @@ export default function ChatScreen({route, navigation}) {
           title: title,
           message: message,
           uid: merge,
+          date: firebase.firestore.Timestamp.fromDate(new Date()),
           user1: {
             uid: user.USER_ID,
             status: 'seen',

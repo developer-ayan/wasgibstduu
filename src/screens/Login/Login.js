@@ -24,7 +24,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Login({}) {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [error, setError] = React.useState();
+  const [modalSuccess, setModalSuccess] = React.useState('');
+  const [modalFail, setModalFail] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   const dispatch = useDispatch();
 
@@ -105,29 +107,32 @@ export default function Login({}) {
       };
       dispatch(sign_in(user))
         .then(async uid => {
-          console.log('uid ', uid);
           AsyncStorage.setItem('uid', JSON.stringify(uid), err => {
             if (err) {
               console.log('an error');
             }
-            setModalVisible(true)
-            // setTimeout(() => {
-            // setModalVisible(false)
-              
-            // }, 1000);
+            setModalSuccess('successfull_login');
+            setModalVisible(true);
+            setTimeout(() => {
+              setModalVisible(false);
+              setModalSuccess('');
+            }, 1000);
             console.log('success');
           }).catch(err => {
             console.log('error is: ' + err);
           });
         })
 
-        .catch(error => console.log('error => ', error));
+        .catch(error => {
+          setModalFail(true);
+          setError(error);
+          setModalVisible(true);
+        });
       // navigation.navigate(`BottomNav`)
       // })
     }
   };
 
-  console.log('error => ', error);
 
   return (
     <ScrollView
@@ -139,56 +144,82 @@ export default function Login({}) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-                paddingHorizontal: 10,
-                paddingVertical: 10,
-              }}>
-              <Text></Text>
-              <TouchableOpacity>
-                <Entypo
-                  name="circle-with-cross"
-                  size={30}
-                  style={{padding: 5, color: 'black'}}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                width: '100%',
-              }}>
-              <AntDesign
-                name="checkcircleo"
-                size={150}
-                style={{padding: 10, color: 'green'}}
-              />
-            </View>
-
-            <View style={{textAlign: 'center', width: '100%'}}>
-              <Text
+          {modalSuccess === 'successfull_login' ? (
+            <View style={[styles.modalView, {backgroundColor: '#19b697'}]}>
+              <View
                 style={{
-                  color: 'gray',
-                  padding: 20,
-                  // fontWeight: 'bold',
-                  fontSize: 17,
-                  fontFamily: 'JosefinSans-Bold',
-                  textAlign : 'center'
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  width: '100%',
+                  paddingTop: 40,
                 }}>
-                {'Login Successfully'}
-              </Text>
+                <AntDesign
+                  name="checkcircleo"
+                  size={100}
+                  style={{padding: 10, color: 'white'}}
+                />
+              </View>
+
+              <View
+                style={{
+                  textAlign: 'center',
+                  width: '100%',
+                  backgroundColor: 'white',
+                  marginTop: 30,
+                }}>
+                <Text
+                  style={{
+                    color: 'gray',
+                    padding: 20,
+                    // fontWeight: 'bold',
+                    fontSize: 17,
+                    fontFamily: 'JosefinSans-Bold',
+                    textAlign: 'center',
+                  }}>
+                  {'Login Successfully'}
+                </Text>
+              </View>
             </View>
-          </View>
+          ) : (
+            <View style={[styles.modalView, {backgroundColor: 'red'}]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  width: '100%',
+                  paddingTop: 40,
+                }}>
+                <AntDesign
+                  name="closecircleo"
+                  size={100}
+                  style={{padding: 10, color: 'white'}}
+                />
+              </View>
+
+              <View
+                style={{
+                  textAlign: 'center',
+                  width: '100%',
+                  backgroundColor: 'white',
+                  marginTop: 30,
+                }}>
+                <Text
+                  style={{
+                    color: 'gray',
+                    padding: 20,
+                    // fontWeight: 'bold',
+                    fontSize: 17,
+                    fontFamily: 'JosefinSans-Bold',
+                    textAlign: 'center',
+                  }}>
+                  {error}
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       </Modal>
       <View
@@ -477,10 +508,8 @@ const styles = StyleSheet.create({
   modalView: {
     width: 250,
     marginHorizontal: 50,
-    borderColor: 'red',
-    borderWidth: 1,
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -490,6 +519,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    backgroundColor: '#19b697',
   },
   button: {
     borderRadius: 10,

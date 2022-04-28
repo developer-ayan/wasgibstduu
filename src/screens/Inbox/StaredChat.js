@@ -1,5 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, Image , ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import Entypo from 'react-native-vector-icons/Entypo';
@@ -20,30 +28,34 @@ export default function StaredChat() {
   const [allResultsVisible, setAllResultsVisible] = React.useState(false);
   const [messages, setMessages] = React.useState([]);
   const {user} = useContext(AuthContext);
-  const [loading , setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     firestore()
       .collection('Stared Chat')
       .doc('user stared chats')
       .collection(user?.USER_ID)
-
-      .onSnapshot(document =>
-        setMessages(document.docs.map(item => item.data().item)),
-        setLoading(false)
+      .onSnapshot(
+        document => setMessages(document.docs.map(item => item.data().item)),
+        setLoading(false),
       );
   }, [user?.USER_ID]);
 
-  return loading ?
-  <ActivityIndicator
+  console.log(messages);
+
+  return loading ? (
+    <ActivityIndicator
       color={'black'}
       size={'large'}
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} /> : 
-      messages?.length === 0 ?
-          <View style ={{flex : 1 , alignItems : 'center' , justifyContent: 'center',}}>
-              <Text style = {{color : 'black' , fontSize : 20 , fontWeight : 'bold'}}>No Have Stared Chats</Text>
-          </View> :
-  (
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+    />
+  ) : messages?.length === 0 ? (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        No Have Stared Chats
+      </Text>
+    </View>
+  ) : (
     <ScrollView
       style={{
         flex: 1,
@@ -98,10 +110,31 @@ export default function StaredChat() {
         </View>
       </View>
 
-      {messages?.length === 0 ? (
-        <Text>No have msg</Text>
-      ) : (
-        messages?.map((item, index) => {
+      <View style={{flexDirection: 'column-reverse'}}>
+        {messages?.map((item, index) => {
+          let filter1 = item.user.filter(
+            item => item.user.USER_ID !== user.USER_ID,
+          );
+
+          const miliseconds = item.date.seconds;
+
+          const date = new Date(miliseconds * 1000);
+
+          const monthNames = [
+            'Jav',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ];
+
           return (
             <View
               style={{
@@ -111,82 +144,142 @@ export default function StaredChat() {
                 borderRadius: 5,
               }}
               key={index}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  borderRadius: 10,
-                }}>
-                {/* <View style={{width: '16%', alignItems: 'center'}}>
-                  <Image
-                    source={{uri: item.user.PROFILE}}
-                    style={{
-                      backgroundColor: 'red',
-                      height: 40,
-                      width: 40,
-                      borderRadius: 50,
-                    }}
-                  />
-                </View> */}
-                <View style={{ width: '16%', alignItems: 'center' }}>
-                                            <Image source={{ uri: item.user1.uid == user?.USER_ID ? item.user2.profile : item.user1.profile }} style={{ backgroundColor: 'red', height: 40, width: 40, borderRadius: 50 }} />
-                                        </View>
-
-                <View
-                  style={{width: '50%', height: 40, justifyContent: 'center'}}>
-                  <Text style={{color: '#b1b1b1'}}>{item.title}</Text>
-                </View>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('chatscreen', {
+                    e: filter1[0].user,
+                    title: item.title,
+                  })
+                }>
                 <View
                   style={{
-                    width: '30%',
                     flexDirection: 'row',
-                    height: 40,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    paddingRight: 10,
+                    justifyContent: 'space-between',
+                    borderRadius: 10,
                   }}>
-                  <AntDesign name="star" size={20} color="gold" />
-                </View>
-              </View>
+                  <View style={{width: '16%', alignItems: 'center'}}>
+                    <Image
+                      source={{
+                        uri:
+                          item.user1.uid == user?.USER_ID
+                            ? item.user2.profile
+                            : item.user1.profile,
+                      }}
+                      style={{
+                        backgroundColor: 'red',
+                        height: 40,
+                        width: 40,
+                        borderRadius: 50,
+                      }}
+                    />
+                  </View>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{width: '15%', alignItems: 'center'}}></View>
-
-                <View style={{width: '50%', justifyContent: 'center'}}>
-                  <View style={{marginHorizontal: 4}}>
-                    <Text numberOfLines={1} style={{color: '#b1b1b1'}}>
-                      {item.message}
-                    </Text>
+                  <View
+                    style={{
+                      width: '50%',
+                      height: 40,
+                      justifyContent: 'center',
+                    }}>
                     <Text
                       numberOfLines={1}
                       style={{
-                        color: '#b1b1b1',
-                        fontSize: 12,
-                        paddingBottom: 5,
+                        color:
+                          item.user1.uid === user?.USER_ID
+                            ? '#b1b1b1'
+                            : 'black',
+                        fontFamily: 'JosefinSans-Regular',
                       }}>
-                      May. 7th. 2021. at 12:44
+                      Title ad : {item.title}
                     </Text>
                   </View>
+                  <View
+                    style={{
+                      width: '30%',
+                      flexDirection: 'row',
+                      height: 40,
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      paddingRight: 10,
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        firestore().collection('Inbox').doc(item.uid).update({
+                          toggle: false,
+                        });
+
+                       
+
+                        firestore()
+                          .collection('Stared Chat')
+                          .doc('user stared chats')
+                          .collection(user?.USER_ID)
+                          .doc(item.uid)
+                          .delete();
+                      }}>
+                      <AntDesign name="star" size={20} color="gold" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
+
                 <View
                   style={{
-                    width: '30%',
                     flexDirection: 'row',
-                    height: 40,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}></View>
-              </View>
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{width: '15%', alignItems: 'center'}}></View>
+
+                  <View style={{width: '50%', justifyContent: 'center'}}>
+                    <View style={{marginHorizontal: 4}}>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          color:
+                            item.user1.uid === user?.USER_ID
+                              ? '#b1b1b1'
+                              : 'black',
+                          fontFamily: 'JosefinSans-Regular',
+                        }}>
+                        {item.message}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          color:
+                            item.user1.uid === user?.USER_ID
+                              ? '#b1b1b1'
+                              : 'black',
+                          fontSize: 12,
+                          paddingBottom: 5,
+                          fontFamily: 'JosefinSans-Regular',
+                        }}>
+                        {monthNames[date.getMonth()] +
+                          '. ' +
+                          date.getDate() +
+                          '. ' +
+                          date.getFullYear() +
+                          '. at ' +
+                          date.getHours() +
+                          ':' +
+                          date.getMinutes()}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: '30%',
+                      flexDirection: 'row',
+                      height: 40,
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                    }}></View>
+                </View>
+              </Pressable>
             </View>
           );
-        })
-      )}
+        })}
+      </View>
     </ScrollView>
   );
 }

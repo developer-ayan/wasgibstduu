@@ -47,6 +47,7 @@ export default function Home({navigation}) {
     ChatInbox();
     firestore()
       .collection('Category')
+      .orderBy('TIME_ADS')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
         setTimeout(() => {

@@ -19,6 +19,7 @@ import firestore from '@react-native-firebase/firestore';
 // import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../../context/Auth';
+import { firebase } from '@react-native-firebase/auth';
 
 export default function Inbox() {
   const navigation = useNavigation();
@@ -34,6 +35,7 @@ export default function Inbox() {
     setLoading(true);
     firestore()
       .collection('Inbox')
+      .orderBy('date')
       .onSnapshot(documentSnapshop => {
         setMessages(
           documentSnapshop.docs
@@ -110,6 +112,8 @@ export default function Inbox() {
         .set({
           item: data,
           toggle: true,
+          date: firebase.firestore.Timestamp.fromDate(new Date()),
+          // dat
         });
 
       setTimeout(() => {
@@ -196,106 +200,77 @@ export default function Inbox() {
         </TouchableOpacity>
       </View>
 
-      {messages?.map((item, index) => {
-        let filter1 = item.user.filter(
-          item => item.user.USER_ID !== user.USER_ID,
-        );
+      <View style={{flexDirection: 'column-reverse'}}>
+        {messages?.map((item, index) => {
+          let filter1 = item.user.filter(
+            item => item.user.USER_ID !== user.USER_ID,
+          );
 
-        return (
-          <View
-            style={{
-              backgroundColor: '#f7f7f7',
-              marginTop: 30,
-              paddingVertical: 10,
-              borderRadius: 5,
-            }}
-            key={index}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate('chatscreen', {
-                  e: filter1[0].user,
-                  title: item.title,
-                })
-              }>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  borderRadius: 10,
-                }}>
-                <View style={{width: '16%', alignItems: 'center'}}>
-                  <Image
-                    source={{
-                      uri:
-                        item.user1.uid == user?.USER_ID
-                          ? item.user2.profile
-                          : item.user1.profile,
-                    }}
-                    style={{
-                      backgroundColor: 'red',
-                      height: 40,
-                      width: 40,
-                      borderRadius: 50,
-                    }}
-                  />
-                </View>
+          const miliseconds = item.date.seconds;
 
+          const date = new Date(miliseconds * 1000);
+
+          const monthNames = [
+            'Jav',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ];
+
+          return (
+            <View
+              style={{
+                backgroundColor: '#f7f7f7',
+                marginTop: 30,
+                paddingVertical: 10,
+                borderRadius: 5,
+              }}
+              key={index}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('chatscreen', {
+                    e: filter1[0].user,
+                    title: item.title,
+                  })
+                }>
                 <View
                   style={{
-                    width: '50%',
-                    height: 40,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      color:
-                        item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black',
-                      fontFamily: 'JosefinSans-Regular',
-                    }}>
-                    Title ad : {item.title}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    width: '30%',
                     flexDirection: 'row',
-                    height: 40,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    paddingRight: 10,
+                    justifyContent: 'space-between',
+                    borderRadius: 10,
                   }}>
-                  <TouchableOpacity onPress={() => combineFunction(item.uid)}>
-                    <AntDesign
-                      name="delete"
-                      size={20}
-                      color="#b1b1b1"
-                      style={{paddingVertical: 2, marginRight: 5}}
+                  <View style={{width: '16%', alignItems: 'center'}}>
+                    <Image
+                      source={{
+                        uri:
+                          item.user1.uid == user?.USER_ID
+                            ? item.user2.profile
+                            : item.user1.profile,
+                      }}
+                      style={{
+                        backgroundColor: 'red',
+                        height: 40,
+                        width: 40,
+                        borderRadius: 50,
+                      }}
                     />
-                  </TouchableOpacity>
+                  </View>
 
-                  <TouchableOpacity
-                    onPress={() => Stared(item.uid, item, item.toggle)}>
-                    {item.toggle === true ? (
-                      <AntDesign name="star" size={20} color="gold" />
-                    ) : (
-                      <AntDesign name="staro" size={20} color="#b1b1b1" />
-                    )}
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{width: '15%', alignItems: 'center'}}></View>
-
-                <View style={{width: '50%', justifyContent: 'center'}}>
-                  <View style={{marginHorizontal: 4}}>
+                  <View
+                    style={{
+                      width: '50%',
+                      height: 40,
+                      justifyContent: 'center',
+                    }}>
                     <Text
                       numberOfLines={1}
                       style={{
@@ -303,38 +278,98 @@ export default function Inbox() {
                           item.user1.uid === user?.USER_ID
                             ? '#b1b1b1'
                             : 'black',
-                            fontFamily: 'JosefinSans-Regular',
-                      }}>
-                      {item.message}
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        color:
-                          item.user1.uid === user?.USER_ID
-                            ? '#b1b1b1'
-                            : 'black',
-                        fontSize: 12,
-                        paddingBottom: 5,
                         fontFamily: 'JosefinSans-Regular',
                       }}>
-                      May. 7th. 2021. at 12:44
+                      Title ad : {item.title}
                     </Text>
                   </View>
+                  <View
+                    style={{
+                      width: '30%',
+                      flexDirection: 'row',
+                      height: 40,
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      paddingRight: 10,
+                    }}>
+                    <TouchableOpacity onPress={() => combineFunction(item.uid)}>
+                      <AntDesign
+                        name="delete"
+                        size={20}
+                        color="#b1b1b1"
+                        style={{paddingVertical: 2, marginRight: 5}}
+                      />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => Stared(item.uid, item, item.toggle)}>
+                      {item.toggle === true ? (
+                        <AntDesign name="star" size={20} color="gold" />
+                      ) : (
+                        <AntDesign name="staro" size={20} color="#b1b1b1" />
+                      )}
+                    </TouchableOpacity>
+                  </View>
                 </View>
+
                 <View
                   style={{
-                    width: '30%',
                     flexDirection: 'row',
-                    height: 40,
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}></View>
-              </View>
-            </Pressable>
-          </View>
-        );
-      })}
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{width: '15%', alignItems: 'center'}}></View>
+
+                  <View style={{width: '50%', justifyContent: 'center'}}>
+                    <View style={{marginHorizontal: 4}}>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          color:
+                            item.user1.uid === user?.USER_ID
+                              ? '#b1b1b1'
+                              : 'black',
+                          fontFamily: 'JosefinSans-Regular',
+                        }}>
+                        {item.message}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          color:
+                            item.user1.uid === user?.USER_ID
+                              ? '#b1b1b1'
+                              : 'black',
+                          fontSize: 12,
+                          paddingBottom: 5,
+                          fontFamily: 'JosefinSans-Regular',
+                        }}>
+                        {monthNames[date.getMonth()] +
+                          '. ' +
+                          date.getDate() +
+                          '. ' +
+                          date.getFullYear() +
+                          '. at ' +
+                          date.getHours() +
+                          ':' +
+                          date.getMinutes()}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: '30%',
+                      flexDirection: 'row',
+                      height: 40,
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                    }}></View>
+                </View>
+              </Pressable>
+            </View>
+          );
+        })}
+      </View>
     </ScrollView>
   );
 }

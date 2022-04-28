@@ -40,6 +40,7 @@ export default function Phone_and_Elec({navigation}) {
   React.useCallback(() => {
     firestore()
       .collection('Category')
+      .orderBy('TIME_ADS')
       .onSnapshot(documentSnapshot => {
         setData(
           documentSnapshot.docs
