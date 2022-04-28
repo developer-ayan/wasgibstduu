@@ -45,7 +45,7 @@ function Drawer() {
         drawerInactiveTintColor: 'black',
         drawerLabelStyle: {
           marginLeft: -10,
-          fontFamily: 'Roboto-Medium',
+          fontFamily: 'JosefinSans-Regular',
           fontSize: 15,
         },
       }}>
@@ -55,15 +55,6 @@ function Drawer() {
         options={{
           drawerIcon: ({color}) => (
             <Octicons name="home" color={color} size={25} />
-          ),
-        }}
-      />
-      <drawer.Screen
-        name="Login"
-        component={Login}
-        options={{
-          drawerIcon: ({color}) => (
-            <AntDesign name="login" color={color} size={25} />
           ),
         }}
       />

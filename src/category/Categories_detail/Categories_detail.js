@@ -35,6 +35,8 @@ export default function Categories_detail({route, navigation}) {
   const [user, setUser] = useState({});
   const [like, setLike] = React.useState(0);
 
+  console.log(LIKE)
+
   const [e, setE] = useState({});
   // console.log()
 
@@ -57,6 +59,7 @@ export default function Categories_detail({route, navigation}) {
 
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
 
+  console.log("USER_LIKE ",USER_LIKE)
 
   const toggle = () => {
     setshow(!show);
@@ -146,6 +149,7 @@ export default function Categories_detail({route, navigation}) {
               fontSize: 20,
               paddingVertical: 5,
               width: 260,
+              fontFamily: 'JosefinSans-Bold',
             }}>
             {TITLE}
           </Text>
@@ -160,6 +164,7 @@ export default function Categories_detail({route, navigation}) {
                 fontSize: 13,
                 paddingVertical: 5,
                 marginLeft: 5,
+                fontFamily: 'JosefinSans-Regular',
               }}>
               {CITY}
             </Text>
@@ -188,7 +193,12 @@ export default function Categories_detail({route, navigation}) {
           width: '100%',
         }}>
         <View style={{borderWidth: 1, borderColor: 'white', width: '40%'}}>
-          <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 20,
+              fontFamily: 'JosefinSans-Bold',
+            }}>
             {PRICE}
           </Text>
         </View>
@@ -210,7 +220,14 @@ export default function Categories_detail({route, navigation}) {
             onPress={() => {
               Linking.openURL(`tel:${e.PHONE}`);
             }}>
-            <Text style={{color: 'black', fontSize: 18}}>Call Seller</Text>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              Call Seller
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -224,12 +241,24 @@ export default function Categories_detail({route, navigation}) {
           marginTop: 15,
         }}>
         <View>
-          <Text style={{color: '#CECECE', fontSize: 13, paddingVertical: 5}}>
+          <Text
+            style={{
+              color: '#CECECE',
+              fontSize: 13,
+              paddingVertical: 5,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             Posted By
           </Text>
         </View>
         <View>
-          <Text style={{color: 'black', fontSize: 13, paddingVertical: 5}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 13,
+              paddingVertical: 5,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             Customer
           </Text>
         </View>
@@ -242,7 +271,13 @@ export default function Categories_detail({route, navigation}) {
           paddingHorizontal: 12,
         }}>
         <View>
-          <Text style={{color: '#CECECE', fontSize: 13, paddingVertical: 5}}>
+          <Text
+            style={{
+              color: '#CECECE',
+              fontSize: 13,
+              paddingVertical: 5,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             {CATEGORY}
           </Text>
         </View>
@@ -254,6 +289,8 @@ export default function Categories_detail({route, navigation}) {
               paddingVertical: 5,
               width: 200,
               textAlign: 'right',
+
+              fontFamily: 'JosefinSans-Regular',
             }}>
             {TITLE}
           </Text>
@@ -270,14 +307,20 @@ export default function Categories_detail({route, navigation}) {
             style={{
               color: 'black',
               fontSize: 20,
-              fontWeight: 'bold',
               paddingVertical: 5,
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Overview
           </Text>
         </View>
         <View>
-          <Text style={{color: '#CECECE', fontSize: 13, paddingVertical: 5}}>
+          <Text
+            style={{
+              color: '#CECECE',
+              fontSize: 13,
+              paddingVertical: 5,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             {DISCRIPTION}
           </Text>
         </View>
@@ -293,8 +336,8 @@ export default function Categories_detail({route, navigation}) {
             style={{
               color: 'black',
               fontSize: 20,
-              fontWeight: 'bold',
               paddingVertical: 5,
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Photo Gallery
           </Text>
@@ -323,6 +366,7 @@ export default function Categories_detail({route, navigation}) {
                 TITLE,
                 UID,
                 NAME: e.NAME,
+                LIKE : LIKE,
               })
             }>
             <View
@@ -335,7 +379,14 @@ export default function Categories_detail({route, navigation}) {
                 marginBottom: 0,
                 borderRadius: 5,
               }}>
-              <Text style={{fontSize: 16, color: 'black'}}>Send Offer</Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: 'black',
+                  fontFamily: 'JosefinSans-Bold',
+                }}>
+                Send Offer
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -356,7 +407,14 @@ export default function Categories_detail({route, navigation}) {
                 margin: 10,
                 borderRadius: 5,
               }}>
-              <Text style={{fontSize: 16, color: 'black'}}>Send Message</Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: 'black',
+                  fontFamily: 'JosefinSans-Bold',
+                }}>
+                Send Message
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

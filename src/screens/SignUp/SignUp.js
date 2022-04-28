@@ -474,7 +474,7 @@ export default function SignUp({navigation}) {
           ) : (
             <TouchableOpacity disabled={true}>
               <View style={styles.sign_up_disable}>
-                <Text style={{fontSize: 14, color: '#1d1900'}}>Sign Up!</Text>
+                <Text style={{fontSize: 14, color: '#1d1900' ,  fontFamily: 'JosefinSans-Regular',}}>Sign Up!</Text>
                 <Feather name="arrow-right" size={20} color="#1d1900" />
               </View>
             </TouchableOpacity>
@@ -487,11 +487,12 @@ export default function SignUp({navigation}) {
             opacity: 0.4,
             textAlign: 'center',
             marginTop: 40,
+            fontFamily: 'JosefinSans-Regular',
           }}>
           Do you have an account ?
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={{fontSize: 14, textAlign: 'center', marginTop: 20}}>
+          <Text style={{fontSize: 14, textAlign: 'center', marginTop: 20 , paddingBottom : 20,   fontFamily: 'JosefinSans-Regular',}}>
             Login
           </Text>
         </TouchableOpacity>
@@ -512,27 +513,32 @@ const styles = StyleSheet.create({
   Sign_up_title: {
     color: 'white',
     fontSize: 24,
+    fontFamily: 'JosefinSans-Regular',
   },
   Sign_up_second_line: {
     color: 'white',
     fontSize: 14,
     marginTop: 15,
     opacity: 0.8,
+    fontFamily: 'JosefinSans-Regular',
   },
   Animatable_first: {
     marginTop: -110,
     marginHorizontal: 10,
     backgroundColor: 'white',
     borderRadius: 10,
+    fontFamily: 'JosefinSans-Regular',
   },
   Input_view: {
     borderBottomWidth: 1,
     borderBottomColor: '#FBFBFB',
+    fontFamily: 'JosefinSans-Regular',
   },
   Input_view_child: {
     flexDirection: 'row',
     alignItem: 'center',
     justifyContent: 'space-between',
+    fontFamily: 'JosefinSans-Regular',
   },
   Input_view_child_input: {
     padding: 15,
@@ -540,6 +546,7 @@ const styles = StyleSheet.create({
     color: '#b3b3b3',
     fontSize: 14,
     opacity: 0.4,
+    fontFamily: 'JosefinSans-Regular',
   },
   Input_view_child_input_icon: {
     padding: 19,
@@ -559,11 +566,13 @@ const styles = StyleSheet.create({
     color: '#b3b3b3',
     fontSize: 14,
     opacity: 0.4,
+    fontFamily: 'JosefinSans-Regular',
   },
   validation: {
     color: 'red',
     fontSize: 12,
     paddingHorizontal: 5,
+    fontFamily: 'JosefinSans-Regular',
   },
   Animatable_View_icon: {
     flexDirection: 'row',
@@ -582,6 +591,7 @@ const styles = StyleSheet.create({
     color: '#b3b3b3',
     backgroundColor: 'gold',
     paddingVertical: 25,
+    fontFamily: 'JosefinSans-Regular',
   },
   sign_up_disable: {
     flexDirection: 'row',
@@ -594,5 +604,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'gold',
     paddingVertical: 25,
     opacity: 0.3,
+    fontFamily: 'JosefinSans-Regular',
   },
 });

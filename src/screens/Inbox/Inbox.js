@@ -130,7 +130,12 @@ export default function Inbox() {
     />
   ) : messages?.length === 0 ? (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+      <Text
+        style={{
+          color: 'black',
+          fontSize: 20,
+          fontFamily: 'JosefinSans-Regular',
+        }}>
         Empty Inbox
       </Text>
     </View>
@@ -160,9 +165,10 @@ export default function Inbox() {
           <Text
             style={{
               color: 'white',
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
               fontSize: 12,
               textAlign: 'center',
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Inbox
           </Text>
@@ -179,9 +185,10 @@ export default function Inbox() {
             <Text
               style={{
                 color: '#7d7d7d',
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 fontSize: 12,
                 textAlign: 'center',
+                fontFamily: 'JosefinSans-Bold',
               }}>
               Started
             </Text>
@@ -245,6 +252,7 @@ export default function Inbox() {
                     style={{
                       color:
                         item.user1.uid === user?.USER_ID ? '#b1b1b1' : 'black',
+                      fontFamily: 'JosefinSans-Regular',
                     }}>
                     Title ad : {item.title}
                   </Text>
@@ -295,6 +303,7 @@ export default function Inbox() {
                           item.user1.uid === user?.USER_ID
                             ? '#b1b1b1'
                             : 'black',
+                            fontFamily: 'JosefinSans-Regular',
                       }}>
                       {item.message}
                     </Text>
@@ -307,6 +316,7 @@ export default function Inbox() {
                             : 'black',
                         fontSize: 12,
                         paddingBottom: 5,
+                        fontFamily: 'JosefinSans-Regular',
                       }}>
                       May. 7th. 2021. at 12:44
                     </Text>

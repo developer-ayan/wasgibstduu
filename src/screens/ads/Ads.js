@@ -291,7 +291,7 @@ export default function Ads({navigation}) {
               color="#525252"
               style={{marginRight: 10}}
             />
-            <Text style={{color: '#525252', fontWeight: 'bold'}}>
+            <Text style={{color: '#525252', fontFamily: 'JosefinSans-Regular',}}>
               Configuring Image ...
             </Text>
           </View>
@@ -343,8 +343,8 @@ export default function Ads({navigation}) {
                 buttonTextStyle={{
                   textAlign: 'left',
                   color: '#ababab',
-                  fontWeight: 'bold',
                   fontSize: 15,
+                  fontFamily: 'JosefinSans-Bold',
                 }}
                 dropdownStyle={{backgroundColor: 'white', height: 200}}
                 rowTextStyle={{
@@ -352,6 +352,7 @@ export default function Ads({navigation}) {
                   fontSize: 15,
                   padding: 10,
                   textAlign: 'left',
+                  fontFamily: 'JosefinSans-Regular',
                 }}
                 buttonStyle={{backgroundColor: '#f7f7f7', width: '100%'}}
                 rowStyle={{backgroundColor: 'white'}}
@@ -403,10 +404,11 @@ export default function Ads({navigation}) {
                 paddingVertical: 17,
                 paddingLeft: 17,
                 paddingRight: 3,
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 opacity: 0.7,
                 color: '#ababab',
                 fontSize: 15,
+                fontFamily: 'JosefinSans-Regular',
               }}>
               $
             </Text>
@@ -417,10 +419,11 @@ export default function Ads({navigation}) {
               style={{
                 fontFamily: 'Roboto',
                 width: '86%',
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 opacity: 0.7,
                 color: '#ababab',
                 fontSize: 15,
+                fontFamily: 'JosefinSans-Regular',
               }}
             />
           </View>
@@ -532,7 +535,7 @@ export default function Ads({navigation}) {
               paddingVertical: 25,
               marginVertical: 10,
             }}>
-            <Text style={{fontSize: 14, color: '#1d1900'}}>Create Ads</Text>
+            <Text style={{fontSize: 14, color: '#1d1900' , fontFamily: 'JosefinSans-Regular',}}>Create Ads</Text>
             <Feather name="arrow-right" size={20} color="#1d1900" />
           </View>
         </TouchableOpacity>
@@ -557,35 +560,39 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: 'black',
     fontSize: 25,
+    fontFamily: 'JosefinSans-Bold',
   },
   Advertisments: {
     marginTop: 5,
     color: '#b1b1b1',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'JosefinSans-Bold',
   },
   Categories: {
     marginTop: 30,
+    fontFamily: 'JosefinSans-Bold',
   },
   CategoriesHeading: {
     color: '#8B8B8B',
     marginBottom: 5,
     fontSize: 13,
     opacity: 0.7,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'JosefinSans-Bold',
   },
   Input: {
     padding: 15,
     backgroundColor: '#f7f7f7',
-    fontWeight: 'bold',
+    fontFamily: 'JosefinSans-Regular',
     opacity: 0.7,
     color: '#ababab',
     fontSize: 15,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
   AdTitle: {
     color: '#8B8B8B',
     marginBottom: 5,
-    fontWeight: 'bold',
+    fontFamily: 'JosefinSans-Bold',
     fontSize: 13,
     opacity: 0.7,
   },

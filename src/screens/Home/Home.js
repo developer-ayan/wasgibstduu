@@ -117,7 +117,7 @@ export default function Home({navigation}) {
                 paddingLeft: 10,
                 lineHeight: 50,
                 color: '#b1b1b1',
-                fontWeight: 'bold',
+                fontFamily: 'JosefinSans-Regular',
               }}>
               Type your search here
             </Text>
@@ -145,7 +145,7 @@ export default function Home({navigation}) {
             style={{
               color: 'black',
               fontSize: 18,
-              fontFamily: 'JosefinSans-ExtraLight',
+              fontFamily: 'JosefinSans-Regular',
             }}>
             SPONSORED ADS
           </Text>
@@ -156,7 +156,7 @@ export default function Home({navigation}) {
         {/* All Ads  */}
         <Text
           style={{
-            fontFamily: 'Arial',
+            fontFamily: 'JosefinSans-Regular',
             color: 'black',
             fontSize: 20,
             marginTop: 20,
@@ -209,19 +209,26 @@ export default function Home({navigation}) {
                         paddingVertical: 5,
                         color: '#d3d3d3',
                         fontSize: 8,
+                        fontFamily: 'JosefinSans-Regular',
                       }}>
                       {item.CATEGORY} - {item.CITY}
                     </Text>
                     <Text
                       numberOfLines={2}
-                      style={{color: 'black', fontWeight: '500', fontSize: 12}}>
+                      style={{
+                        color: 'black',
+                        fontSize: 12,
+                        fontFamily: 'JosefinSans-Regular',
+                      }}>
                       {item.TITLE}
                     </Text>
                     <Text
                       style={{
                         color: 'green',
-                        fontWeight: '700',
+                        // fontWeight: '700',
                         paddingVertical: 5,
+                        fontSize: 14,
+                        fontFamily: 'JosefinSans-Regular',
                       }}>
                       {item.PRICE}
                     </Text>

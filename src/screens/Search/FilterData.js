@@ -72,7 +72,7 @@ export default function FilterData({navigation, route}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+      <Text style={{color: 'black', fontSize: 20, fontFamily: 'JosefinSans-Bold'}}>
         Go to create your ads
       </Text>
       <View>
@@ -100,7 +100,7 @@ export default function FilterData({navigation, route}) {
         </TouchableOpacity>
 
         <View style={styles.Main_ads_veiw}>
-          <Text style={styles.Ads_name}>{'Your Filter Data'}</Text>
+          <Text style={styles.Ads_name}>{'Your Filter Item'}</Text>
           <Text style={styles.Ads_name_para}>
             {Categories_detail.fashion_second_para}
           </Text>
@@ -185,11 +185,13 @@ const styles = StyleSheet.create({
   Ads_name: {
     color: Colors.black,
     fontSize: Sizes.twenty,
+    fontFamily: 'JosefinSans-Regular',
   },
   Ads_name_para: {
     color: Colors.ads_para,
     fontSize: Sizes.fouteen,
     marginTop: Sizes.five,
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length: {
     flexDirection: 'row',
@@ -197,9 +199,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length_Not_avalaible: {
     fontSize: Sizes.fifteen,
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length_icon: {
     color: Colors.red,
@@ -235,18 +239,22 @@ const styles = StyleSheet.create({
     padding: Sizes.five,
     width: '60%',
     lineHeihgt: 80,
+    fontFamily: 'JosefinSans-Regular',
   },
   username: {
     color: Colors.card_username,
     fontSize: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   title: {
     color: Colors.card_title,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   price: {
     color: Colors.green,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   Icon_view: {
     flexDirection: 'row',
@@ -256,6 +264,7 @@ const styles = StyleSheet.create({
   Versand: {
     color: Colors.card_username,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   staro: {
     color: Colors.card_username,

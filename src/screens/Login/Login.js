@@ -12,6 +12,7 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {sign_in} from '../../redux/actions/authAction';
 import * as Animatable from 'react-native-animatable';
@@ -42,14 +43,14 @@ export default function Login({}) {
       setData({
         ...data,
         email: val,
-        check_textInputChange: true,
+        // check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setData({
         ...data,
         username: val,
-        check_textInputChange: false,
+        // check_textInputChange: false,
         isValidUser: false,
       });
     }
@@ -96,7 +97,7 @@ export default function Login({}) {
 
   const login = async () => {
     if (data.email === '' && data.password === '') {
-      alert('Please Fill Your Input');
+      // alert('Please Fill Your Input');
     } else {
       let user = {
         email: data.email,
@@ -109,6 +110,11 @@ export default function Login({}) {
             if (err) {
               console.log('an error');
             }
+            setModalVisible(true)
+            // setTimeout(() => {
+            // setModalVisible(false)
+              
+            // }, 1000);
             console.log('success');
           }).catch(err => {
             console.log('error is: ' + err);
@@ -151,7 +157,7 @@ export default function Login({}) {
                 <Entypo
                   name="circle-with-cross"
                   size={30}
-                  style={{padding: 5, color: 'red'}}
+                  style={{padding: 5, color: 'black'}}
                 />
               </TouchableOpacity>
             </View>
@@ -162,10 +168,10 @@ export default function Login({}) {
                 justifyContent: 'center',
                 width: '100%',
               }}>
-              <Entypo
-                name="circle-with-cross"
+              <AntDesign
+                name="checkcircleo"
                 size={150}
-                style={{padding: 10, color: 'red'}}
+                style={{padding: 10, color: 'green'}}
               />
             </View>
 
@@ -174,10 +180,12 @@ export default function Login({}) {
                 style={{
                   color: 'gray',
                   padding: 20,
-                  fontWeight: 'bold',
-                  fontSize: 25,
+                  // fontWeight: 'bold',
+                  fontSize: 17,
+                  fontFamily: 'JosefinSans-Bold',
+                  textAlign : 'center'
                 }}>
-                {error}
+                {'Login Successfully'}
               </Text>
             </View>
           </View>
@@ -195,16 +203,29 @@ export default function Login({}) {
         {/* icon back */}
 
         <View>
-          <TouchableOpacity onPress={navigation.goBack}>
+          <TouchableOpacity>
             <Text style={{color: 'white', fontSize: 20, marginTop: 10}}>
-              <Feather name="arrow-left" size={25} color="white" />
+              <Feather name="arrow-left" size={25} color="#00aa49" />
             </Text>
           </TouchableOpacity>
         </View>
         <View style={{marginTop: 40}}>
-          <Text style={{color: 'white', fontSize: 24}}>Login</Text>
           <Text
-            style={{color: 'white', fontSize: 14, marginTop: 15, opacity: 0.8}}>
+            style={{
+              color: 'white',
+              fontSize: 24,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
+            Login
+          </Text>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 14,
+              marginTop: 15,
+              opacity: 0.8,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             Enter your email below to reset your Password.
           </Text>
         </View>
@@ -237,13 +258,14 @@ export default function Login({}) {
               <TextInput
                 placeholder="Email Address"
                 onChangeText={val => textInputChange(val)}
-                onEndEditing={e => handleValidUser(e.nativeEvent.text)}
+                // onEndEditing={e => handleValidUser(e.nativeEvent.text)}
                 style={{
                   padding: 20,
                   width: '82%',
-                  color: '#b3b3b3',
+                  color: 'black',
                   fontSize: 14,
                   opacity: 0.4,
+                  fontFamily: 'JosefinSans-Regular',
                 }}
               />
               {data.isValidUser ? (
@@ -277,7 +299,12 @@ export default function Login({}) {
                   paddingBottom: 10,
                 }}>
                 <Text
-                  style={{color: 'red', fontSize: 12, paddingHorizontal: 10}}>
+                  style={{
+                    color: 'red',
+                    fontSize: 12,
+                    paddingHorizontal: 10,
+                    fontFamily: 'JosefinSans-Regular',
+                  }}>
                   incorrect your email please correct your email
                 </Text>
               </Animatable.View>
@@ -309,9 +336,10 @@ export default function Login({}) {
                 style={{
                   padding: 20,
                   width: '82%',
-                  color: '#b3b3b3',
+                  color: 'black',
                   fontSize: 14,
                   opacity: 0.4,
+                  fontFamily: 'JosefinSans-Regular',
                 }}
               />
               {data.isValidPassword ? (
@@ -344,7 +372,12 @@ export default function Login({}) {
                   paddingBottom: 10,
                 }}>
                 <Text
-                  style={{color: 'red', fontSize: 12, paddingHorizontal: 10}}>
+                  style={{
+                    color: 'red',
+                    fontSize: 12,
+                    paddingHorizontal: 10,
+                    fontFamily: 'JosefinSans-Regular',
+                  }}>
                   minimum 6 characters your password
                 </Text>
               </Animatable.View>
@@ -368,7 +401,14 @@ export default function Login({}) {
                   backgroundColor: 'gold',
                   paddingVertical: 25,
                 }}>
-                <Text style={{fontSize: 14, color: '#1d1900'}}>Login</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: '#1d1900',
+                    fontFamily: 'JosefinSans-Regular',
+                  }}>
+                  Login
+                </Text>
                 <Feather name="arrow-right" size={20} color="#1d1900" />
               </View>
             </TouchableOpacity>
@@ -387,7 +427,14 @@ export default function Login({}) {
                   paddingVertical: 25,
                   opacity: 0.3,
                 }}>
-                <Text style={{fontSize: 14, color: '#1d1900'}}>Login</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: '#1d1900',
+                    fontFamily: 'JosefinSans-Regular',
+                  }}>
+                  Login
+                </Text>
                 <Feather name="arrow-right" size={20} color="#1d1900" />
               </View>
             </TouchableOpacity>
@@ -399,11 +446,18 @@ export default function Login({}) {
             opacity: 0.4,
             textAlign: 'center',
             marginTop: 40,
+            fontFamily: 'JosefinSans-Regular',
           }}>
           You don't Have Account go to Sign Up
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-          <Text style={{fontSize: 14, textAlign: 'center', marginTop: 20}}>
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: 'center',
+              marginTop: 20,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
             Sign Up
           </Text>
         </TouchableOpacity>

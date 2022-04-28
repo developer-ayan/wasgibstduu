@@ -33,9 +33,12 @@ export default function Send_offer({navigation, route}) {
     profile,
     NAME,
     e,
+    LIKE
+
   } = route.params;
   const [price, setPrice] = React.useState('');
   const [discription, setDiscription] = React.useState('');
+
 
   const REGEXP = /^$/;
 
@@ -82,18 +85,7 @@ export default function Send_offer({navigation, route}) {
         paddingHorizontal: 20,
       }}>
       <View style={styles.main_view_map}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Categories_detail', {
-              IMAGE: ADS_IMAGES,
-              PRICE: PRICE,
-              DISCRIPTION: DISCRIPTION,
-              CITY: CITY,
-              CATEGORY: CATEGORY,
-              TITLE: TITLE,
-              UID: UID,
-            })
-          }>
+
           <Animatable.View style={styles.Animatable}>
             <View style={styles.Animatable_child}>
               <View style={styles.Animatable_child_to_child}>
@@ -103,19 +95,19 @@ export default function Send_offer({navigation, route}) {
                 />
               </View>
               <View style={styles.Animatable_Para}>
-                <Text style={styles.username}>{'ayan ahmed'}</Text>
+                <Text style={styles.username}>{NAME}</Text>
                 <Text numberOfLines={2} style={styles.title}>
                   {TITLE}
                 </Text>
                 <Text style={styles.price}>{PRICE}</Text>
                 <View style={styles.Icon_view}>
-                  <Text style={styles.Versand}>Versand moglich</Text>
+                  <Text style={styles.Versand}>Likes {LIKE.length}</Text>
                   <AntDesign style={styles.staro} name="staro" size={18} />
                 </View>
               </View>
             </View>
           </Animatable.View>
-        </TouchableOpacity>
+      
       </View>
       {/* <View style={{ marginTop: 20 }}> */}
       <View style={{width: '100%'}}>
@@ -134,6 +126,7 @@ export default function Send_offer({navigation, route}) {
             borderWidth: 1,
             borderColor: '#F0F0F0',
             width: '100%',
+            fontFamily: 'JosefinSans-Regular',
           }}
         />
 
@@ -153,6 +146,7 @@ export default function Send_offer({navigation, route}) {
               borderWidth: 1,
               borderColor: '#F0F0F0',
               width: '100%',
+              fontFamily: 'JosefinSans-Regular',
             }}
           />
         </View>
@@ -172,7 +166,7 @@ export default function Send_offer({navigation, route}) {
           borderColor: '#F0F0F0',
           width: '100%',
         }}>
-        <Text style={{textAlign: 'center', color: 'white'}}>Send Offer</Text>
+        <Text style={{textAlign: 'center', color: 'white' , fontFamily: 'JosefinSans-Regular',}}>Send Offer</Text>
       </TouchableOpacity>
 
       {/* </View> */}
@@ -250,14 +244,17 @@ const styles = StyleSheet.create({
   username: {
     color: Colors.card_username,
     fontSize: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   title: {
     color: Colors.card_title,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   price: {
     color: Colors.green,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   Icon_view: {
     flexDirection: 'row',
@@ -267,8 +264,9 @@ const styles = StyleSheet.create({
   Versand: {
     color: Colors.card_username,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   staro: {
-    color: Colors.card_username,
+    color: 'white',
   },
 });

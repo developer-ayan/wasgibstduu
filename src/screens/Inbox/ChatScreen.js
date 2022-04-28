@@ -222,7 +222,12 @@ export default function ChatScreen({route, navigation}) {
             <Feather name="arrow-left" size={30} color="#343434" />
           </Text>
         </TouchableOpacity>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: 'black',
+            fontFamily: 'JosefinSans-Bold',
+          }}>
           {e.NAME}
         </Text>
 
@@ -308,6 +313,8 @@ export default function ChatScreen({route, navigation}) {
                 <Text
                   style={{
                     color: uid ? 'white' : 'black',
+
+                    fontFamily: 'JosefinSans-Regular',
                   }}>
                   {e.msg}
                 </Text>
@@ -336,7 +343,7 @@ export default function ChatScreen({route, navigation}) {
             />
           ) : null}
 
-          <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
+          <Text style={{color: 'white', fontSize: 15 , fontFamily: 'JosefinSans-Regular',}}>
             1 selected image
           </Text>
         </View>
@@ -365,7 +372,7 @@ export default function ChatScreen({route, navigation}) {
               justifyContent: 'space-between',
               width: '100%',
             }}>
-            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
+            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15 , fontFamily: 'JosefinSans-Regular',}}>
               1 selected image
             </Text>
             <TouchableOpacity
@@ -401,6 +408,7 @@ export default function ChatScreen({route, navigation}) {
           <TextInput
             onChangeText={text => setMessage(text)}
             value={message}
+            style ={{fontFamily: 'JosefinSans-Regular',}}
             placeholder="Type a message"
           />
         </View>

@@ -38,11 +38,11 @@ function CustomDrawer(props) {
                         }
                         {data?.NAME ?
                             (
-                                <Text style={{ color: 'black', fontSize: 16, fontFamily: 'Roboto-Medium', marginLeft: 20 }}>{data?.NAME}</Text>
+                                <Text style={{ color: 'black', fontSize: 16, fontFamily: 'JosefinSans-Regular', marginLeft: 20 }}>{data?.NAME}</Text>
                             )
                             :
                             (
-                                <Text style={{ color: 'black', fontSize: 16, fontFamily: 'Roboto-Medium', marginLeft: 20 }}>Hakan</Text>
+                                <Text style={{ color: 'black', fontSize: 16, fontFamily: 'JosefinSans-Regular', marginLeft: 20 }}>Hakan</Text>
                             )
 
                         }

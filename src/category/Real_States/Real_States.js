@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: Sizes.twenty,
     marginTop: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   Main_ads_veiw: {
     marginVertical: Sizes.twenty,
@@ -260,11 +261,13 @@ const styles = StyleSheet.create({
   Ads_name: {
     color: Colors.black,
     fontSize: Sizes.twenty,
+    fontFamily: 'JosefinSans-Regular',
   },
   Ads_name_para: {
     color: Colors.ads_para,
     fontSize: Sizes.fouteen,
     marginTop: Sizes.five,
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length: {
     flexDirection: 'row',
@@ -272,9 +275,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length_Not_avalaible: {
     fontSize: Sizes.fifteen,
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length_icon: {
     color: Colors.red,
@@ -310,18 +315,22 @@ const styles = StyleSheet.create({
     padding: Sizes.five,
     width: '60%',
     lineHeihgt: 80,
+    fontFamily: 'JosefinSans-Regular',
   },
   username: {
     color: Colors.card_username,
     fontSize: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   title: {
     color: Colors.card_title,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   price: {
     color: Colors.green,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   Icon_view: {
     flexDirection: 'row',
@@ -331,6 +340,7 @@ const styles = StyleSheet.create({
   Versand: {
     color: Colors.card_username,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   staro: {
     color: Colors.card_username,

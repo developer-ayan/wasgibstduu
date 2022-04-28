@@ -70,7 +70,7 @@ export default function Premium({navigation}) {
                     <View style={{padding: 3}}>
                       <Text
                         numberOfLines={2}
-                        style={{color: 'black', fontSize: 10, width: 110}}>
+                        style={{color: 'black', fontSize: 10, width: 110 , fontFamily: 'JosefinSans-Regular'}}>
                         {e.TITLE}
                       </Text>
                     </View>
@@ -81,6 +81,7 @@ export default function Premium({navigation}) {
                           fontSize: 12,
                           width: 110,
                           height: 18,
+                          fontFamily: 'JosefinSans-Regular',
                         }}>
                         {e.PRICE}
                       </Text>

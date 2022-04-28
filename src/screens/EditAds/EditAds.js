@@ -149,7 +149,6 @@ export default function EditAds({navigation, route}) {
     });
   });
 
-
   return (
     <ScrollView style={{flex: 1}}>
       <Modal
@@ -160,7 +159,13 @@ export default function EditAds({navigation, route}) {
           Alert.alert('Modal has been closed.');
           setUploading(!uploading);
         }}>
-        <View style={ {flex : 1 ,  backgroundColor: 'rgba(52, 52, 52, 0.8)', justifyContent : 'center' , alignItems: 'center',}}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(52, 52, 52, 0.8)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -176,7 +181,7 @@ export default function EditAds({navigation, route}) {
               color="#525252"
               style={{marginRight: 10}}
             />
-            <Text style={{color: '#525252', fontWeight: 'bold'}}>
+            <Text style={{color: '#525252', fontFamily: 'JosefinSans-Regular'}}>
               Configuring Image ...
             </Text>
           </View>
@@ -221,8 +226,10 @@ export default function EditAds({navigation, route}) {
                 buttonTextStyle={{
                   textAlign: 'left',
                   color: '#ababab',
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
                   fontSize: 15,
+
+                  fontFamily: 'JosefinSans-Bold',
                 }}
                 dropdownStyle={{backgroundColor: 'white', height: 200}}
                 rowTextStyle={{
@@ -230,6 +237,7 @@ export default function EditAds({navigation, route}) {
                   fontSize: 15,
                   padding: 10,
                   textAlign: 'left',
+                  fontFamily: 'JosefinSans-Regular',
                 }}
                 buttonStyle={{backgroundColor: '#f7f7f7', width: '100%'}}
                 rowStyle={{backgroundColor: 'white'}}
@@ -280,7 +288,7 @@ export default function EditAds({navigation, route}) {
                 paddingVertical: 17,
                 paddingLeft: 17,
                 paddingRight: 3,
-                fontWeight: 'bold',
+                fontFamily: 'JosefinSans-Regular',
                 opacity: 0.7,
                 color: '#ababab',
                 fontSize: 15,
@@ -289,12 +297,12 @@ export default function EditAds({navigation, route}) {
             </Text>
             <TextInput
               onChangeText={text => setPrice(text)}
-            defaultValue={data.PRICE}
+              defaultValue={data.PRICE}
               keyboardType="number-pad"
               style={{
-                fontFamily: 'Roboto',
+                fontFamily: 'JosefinSans-Regular',
                 width: '86%',
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 opacity: 0.7,
                 color: '#ababab',
                 fontSize: 15,
@@ -325,7 +333,7 @@ export default function EditAds({navigation, route}) {
                 style={{
                   height: 60,
                   width: 60,
-                  borderRadius: 50,
+                  borderRadius: 10,
                   marginTop: 1,
                   marginHorizontal: 12,
                   borderWidth: 1,
@@ -337,12 +345,7 @@ export default function EditAds({navigation, route}) {
             </View>
           </TouchableOpacity>
 
-          <View>
-            {/* <Image
-              style={{height: 80, width: 80, borderRadius: 2, marginTop: 1}}
-              source={{uri: uri === null ? data.ADS_IMAGES : uri}}
-            /> */}
-          </View>
+          <View></View>
           {image?.length === 0
             ? data.ADS_IMAGES.map((item, ind) => {
                 console.log(item);
@@ -352,7 +355,7 @@ export default function EditAds({navigation, route}) {
                       style={{
                         height: 60,
                         width: 60,
-                        borderRadius: 50,
+                        borderRadius: 10,
                         marginTop: 1,
                         marginHorizontal: 3,
                         borderWidth: 1,
@@ -369,7 +372,7 @@ export default function EditAds({navigation, route}) {
                       style={{
                         height: 60,
                         width: 60,
-                        borderRadius: 50,
+                        borderRadius: 10,
                         marginTop: 1,
                         marginHorizontal: 3,
                         borderWidth: 1,
@@ -399,7 +402,14 @@ export default function EditAds({navigation, route}) {
                 paddingVertical: 25,
                 marginVertical: 10,
               }}>
-              <Text style={{fontSize: 14, color: '#1d1900'}}>Create Ads</Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: '#1d1900',
+                  fontFamily: 'JosefinSans-Regular',
+                }}>
+                Create Ads
+              </Text>
               <Feather name="arrow-right" size={20} color="#1d1900" />
             </View>
           </TouchableOpacity>
@@ -425,11 +435,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: 'black',
     fontSize: 25,
+    fontFamily: 'JosefinSans-Regular',
   },
   Advertisments: {
     marginTop: 5,
     color: '#b1b1b1',
-    fontWeight: 'bold',
+    fontFamily: 'JosefinSans-Bold',
   },
   Categories: {
     marginTop: 30,
@@ -439,22 +450,24 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 13,
     opacity: 0.7,
-    fontWeight: 'bold',
+    fontFamily: 'JosefinSans-Bold',
   },
   Input: {
     padding: 15,
     backgroundColor: '#f7f7f7',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     opacity: 0.7,
     color: '#ababab',
     fontSize: 15,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
+    fontFamily: 'JosefinSans-Regular',
   },
   AdTitle: {
     color: '#8B8B8B',
     marginBottom: 5,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 13,
     opacity: 0.7,
+    fontFamily: 'JosefinSans-Bold',
   },
 });

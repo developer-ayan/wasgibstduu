@@ -63,7 +63,8 @@ function Get_offer() {
                 <TextInput style={{
                   padding: 5,
                   color: '#b1b1b1',
-                  width: ' 95%'
+                  width: ' 95%',
+                  fontFamily: 'JosefinSans-Regular',
                 }}
                   // onSubmitEditing={searchFilter}
                   placeholder='search your bids' />
@@ -86,21 +87,21 @@ function Get_offer() {
 
                   data.map((e, v) => {
                     return (
-                      <TouchableOpacity key={v} onPress={() => navigation.navigate('chatscreen', {
+                      <TouchableOpacity activeOpacity={0.5} key={v} onPress={() => navigation.navigate('chatscreen', {
                         e: e.user,
                         title: e.TITLE,
 
                       })}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderColor: '#F8F8F8', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'white' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderColor: '#F8F8F8', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'white' , marginHorizontal : 5 , borderRadius : 5 , marginTop : 2}}>
                           <View>
-                            <Text style={{ fontSize: 15, color: 'black', paddingVertical: 2 }}>{e.TITLE}</Text>
+                            <Text style={{ fontSize: 15, color: 'black', paddingVertical: 2 , fontFamily: 'JosefinSans-Regular',}}>{e.TITLE}</Text>
                             <View style={{ flexDirection: "row", alignItems: 'center' }}>
                               <Ionicons style={{ color: 'skyblue' }} name="time-outline" size={18} />
-                              <Text style={{ fontSize: 12, color: 'black', paddingVertical: 2, marginLeft: 5 }}>12 march 2020</Text>
+                              <Text style={{ fontSize: 12, color: 'black', paddingVertical: 2, marginLeft: 5 , fontFamily: 'JosefinSans-Regular',}}>12 march 2020</Text>
                             </View>
                           </View>
                           <View>
-                            <Text style={{ fontSize: 15, color: 'black', paddingVertical: 2 }}>$ {e.OFFERPRICE}</Text>
+                            <Text style={{ fontFamily: 'JosefinSans-Regular', fontSize: 15, color: 'black', paddingVertical: 2 }}>$ {e.OFFERPRICE}</Text>
                           </View>
                         </View>
                       </TouchableOpacity>

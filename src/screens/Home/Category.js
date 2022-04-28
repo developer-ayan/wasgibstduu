@@ -29,7 +29,13 @@ export default function Category({navigation}) {
               name="car"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 10,
+                fontSize: 13,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
               Auto Mobiles
             </Text>
           </View>
@@ -49,7 +55,13 @@ export default function Category({navigation}) {
               name="tablet-cellphone"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text
+              style={{
+                textAlign: 'center',
+                marginTop: 10,
+                fontSize: 13,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
               Phone & tablets
             </Text>
           </View>
@@ -92,7 +104,7 @@ export default function Category({navigation}) {
               name="home-city-outline"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13 ,fontFamily: 'JosefinSans-Regular'}}>
               Real States
             </Text>
           </View>
@@ -111,7 +123,7 @@ export default function Category({navigation}) {
               name="shirt"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13 ,fontFamily: 'JosefinSans-Regular'}}>
               Fashion
             </Text>
           </View>
@@ -130,7 +142,7 @@ export default function Category({navigation}) {
               name="notifications"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13 , fontFamily: 'JosefinSans-Regular'}}>
               Jobs
             </Text>
           </View>
@@ -156,7 +168,7 @@ export default function Category({navigation}) {
               name="handshake-o"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13 , fontFamily: 'JosefinSans-Regular'}}>
               Services
             </Text>
           </View>
@@ -174,7 +186,7 @@ export default function Category({navigation}) {
               name="open-book"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13 , fontFamily: 'JosefinSans-Regular'}}>
               Learning
             </Text>
           </View>
@@ -192,7 +204,7 @@ export default function Category({navigation}) {
               name="pine-tree-fire"
               style={{color: '#b1b1b1', fontSize: 40, textAlign: 'center'}}
             />
-            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13}}>
+            <Text style={{textAlign: 'center', marginTop: 10, fontSize: 13 , fontFamily: 'JosefinSans-Regular'}}>
               Events
             </Text>
           </View>

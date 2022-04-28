@@ -10,7 +10,7 @@ import {
   Alert,
   Pressable,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +27,7 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {AuthContext} from '../../context/Auth';
-import { Colors, Sizes } from '../../comonents/Constant/Constant';
+import {Colors, Sizes} from '../../comonents/Constant/Constant';
 
 export default function SearchBar({navigation}) {
   const [data, setData] = React.useState([]);
@@ -130,7 +130,6 @@ export default function SearchBar({navigation}) {
 
     arr = arr.filter(item => !forDeletion.includes(item));
 
-
     if (filterStaredData === true) {
       firestore()
         .collection('Category')
@@ -138,13 +137,12 @@ export default function SearchBar({navigation}) {
         .update({
           staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
         });
-      
     } else if (filterStaredData === false) {
       firestore()
         .collection(`Category`)
         .doc(item.AUTO_ID)
         .update({
-          staredUsers: [...arr , user?.USER_ID],
+          staredUsers: [...arr, user?.USER_ID],
         });
     }
   };
@@ -154,7 +152,8 @@ export default function SearchBar({navigation}) {
       color={'black'}
       size={'small'}
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-    /> ) : (
+    />
+  ) : (
     <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
       {/* {'MODAL OPEN '} */}
 
@@ -174,7 +173,7 @@ export default function SearchBar({navigation}) {
               marginHorizontal: 20,
               fontSize: 20,
               color: 'black',
-              fontWeight: 'bold',
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Address or City
           </Text>
@@ -232,7 +231,7 @@ export default function SearchBar({navigation}) {
               marginHorizontal: 20,
               fontSize: 20,
               color: 'black',
-              fontWeight: 'bold',
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Category Type
           </Text>
@@ -514,7 +513,7 @@ export default function SearchBar({navigation}) {
               marginHorizontal: 20,
               fontSize: 20,
               color: 'black',
-              fontWeight: 'bold',
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Price
           </Text>
@@ -539,7 +538,8 @@ export default function SearchBar({navigation}) {
             <Text
               style={{
                 color: 'gray',
-                fontFamily: 'Roboto-Regular',
+                fontFamily: 'JosefinSans-Bold',
+
                 fontSize: 14,
               }}>
               ${landArea[0]}
@@ -562,8 +562,9 @@ export default function SearchBar({navigation}) {
                   fontSize: 15,
                   color: 'white',
                   textAlign: 'center',
+                  fontFamily: 'JosefinSans-Bold',
                 }}>
-                Filter Data
+                Filter Ads
               </Text>
             </View>
           </TouchableOpacity>
@@ -584,6 +585,7 @@ export default function SearchBar({navigation}) {
                   fontSize: 15,
                   color: 'white',
                   textAlign: 'center',
+                  fontFamily: 'JosefinSans-Bold',
                 }}>
                 Cancel
               </Text>
@@ -622,7 +624,8 @@ export default function SearchBar({navigation}) {
               padding: 10,
               height: 50,
               color: '#b1b1b1',
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
+              fontFamily: 'JosefinSans-Bold',
             }}
             // onSubmitEditing={searchFilter}
             value={search}
@@ -686,30 +689,30 @@ export default function SearchBar({navigation}) {
                     </Text>
                     <Text style={styles.price}>{item.PRICE}</Text>
                     <View style={styles.Icon_view}>
-                    {item.UID === user?.USER_ID ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              width: '100%',
-                            }}>
-                            <Text
-                              style={[
-                                styles.Versand,
-                                {color: 'black', fontWeight: 'bold'},
-                              ]}>
-                              Owned Ad
-                            </Text>
-                            <FontAwesome
-                              style={[styles.staro, {color: 'gray'}]}
-                              name="user-circle-o"
-                              size={20}
-                            />
-                          </View>
-                        ) : (
-                          <Text style={styles.Versand}>Versand moglich</Text>
-                        )}
+                      {item.UID === user?.USER_ID ? (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                          }}>
+                          <Text
+                            style={[
+                              styles.Versand,
+                              {color: 'black'},
+                            ]}>
+                            Own Ad
+                          </Text>
+                          <FontAwesome
+                            style={[styles.staro, {color: 'gray'}]}
+                            name="user-circle-o"
+                            size={20}
+                          />
+                        </View>
+                      ) : (
+                        <Text style={styles.Versand}>Versand moglich</Text>
+                      )}
 
                       {item.UID === user?.USER_ID ? (
                         <Text style={{color: 'white'}}>Ayan</Text>
@@ -738,7 +741,6 @@ export default function SearchBar({navigation}) {
           </View>
         );
       })}
-
     </ScrollView>
   );
 }
@@ -767,10 +769,12 @@ const styles = StyleSheet.create({
   },
   Property_type_text_Active: {
     color: 'white',
+    fontFamily: 'JosefinSans-Regular',
   },
   Property_type_text: {
     color: 'red',
     fontSize: 12,
+    fontFamily: 'JosefinSans-Regular',
   },
   Address_components: {
     // marginLeft: 5,
@@ -783,6 +787,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignSelf: 'center',
     marginTop: 15,
+    fontFamily: 'JosefinSans-Regular',
   },
   Property_type_Buttons: {
     borderWidth: 1,
@@ -793,6 +798,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
+    fontFamily: 'JosefinSans-Regular',
   },
   ScrollView: {
     flex: 1,
@@ -803,6 +809,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: Sizes.twenty,
     marginTop: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   Main_ads_veiw: {
     marginVertical: Sizes.twenty,
@@ -810,11 +817,13 @@ const styles = StyleSheet.create({
   Ads_name: {
     color: Colors.black,
     fontSize: Sizes.twenty,
+    fontFamily: 'JosefinSans-Regular',
   },
   Ads_name_para: {
     color: Colors.ads_para,
     fontSize: Sizes.fouteen,
     marginTop: Sizes.five,
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length: {
     flexDirection: 'row',
@@ -822,9 +831,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length_Not_avalaible: {
     fontSize: Sizes.fifteen,
+    fontFamily: 'JosefinSans-Regular',
   },
   View_data_length_icon: {
     color: Colors.red,
@@ -842,11 +853,13 @@ const styles = StyleSheet.create({
   Animatable_child: {
     flexDirection: 'row',
     width: '100%',
+    fontFamily: 'JosefinSans-Regular',
   },
   Animatable_child_to_child: {
     width: '40%',
     flexDirection: 'row',
     justifyContent: 'center',
+    fontFamily: 'JosefinSans-Regular',
   },
   Animatable_image: {
     height: Sizes.hundred,
@@ -858,20 +871,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Sizes.ten,
     padding: Sizes.five,
+    fontFamily: 'JosefinSans-Regular',
     width: '60%',
     lineHeihgt: 80,
   },
   username: {
     color: Colors.card_username,
     fontSize: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   title: {
     color: Colors.card_title,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   price: {
     color: Colors.green,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   Icon_view: {
     flexDirection: 'row',
@@ -881,8 +898,10 @@ const styles = StyleSheet.create({
   Versand: {
     color: Colors.card_username,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   staro: {
     color: Colors.card_username,
+    fontFamily: 'JosefinSans-Regular',
   },
 });

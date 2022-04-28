@@ -242,7 +242,7 @@ function Profile({navigation}) {
                 color="#525252"
                 style={{marginRight: 10}}
               />
-              <Text style={{color: '#525252', fontWeight: 'bold'}}>
+              <Text style={{color: '#525252', fontFamily: 'JosefinSans-Regular',}}>
                 Please wait...
               </Text>
             </View>
@@ -285,7 +285,7 @@ function Profile({navigation}) {
                 <Feather name="arrow-left" size={25} color="white" />
               </Text>
             </TouchableOpacity>
-            <Text style={{color: 'white', fontSize: 16}}>My Profile</Text>
+            <Text style={{color: 'white', fontSize: 16 , fontFamily: 'JosefinSans-Regular',}}>My Profile</Text>
             <Octicons name="verified" size={20} color="white" />
           </View>
 
@@ -340,6 +340,7 @@ function Profile({navigation}) {
                   fontSize: 15,
                   color: 'white',
                   paddingTop: 10,
+                  fontFamily: 'JosefinSans-Regular'
                 }}>
                 {user?.NAME}
               </Text>
@@ -366,10 +367,10 @@ function Profile({navigation}) {
               borderRadius: 10,
               marginTop: 20,
             }}>
-            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 50}}>
+            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 50 , fontFamily: 'JosefinSans-Regular'}}>
               Username
             </Text>
-            <Text style={{fontSize: 10, color: '#b3b3b3'}}>{data?.NAME}</Text>
+            <Text style={{fontSize: 10, color: '#b3b3b3' , fontFamily: 'JosefinSans-Regular'}}>{data?.NAME}</Text>
           </View>
           <View
             style={{
@@ -383,10 +384,10 @@ function Profile({navigation}) {
               borderRadius: 10,
               marginTop: 10,
             }}>
-            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 70}}>
+            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 70 , fontFamily: 'JosefinSans-Regular'}}>
               Phone
             </Text>
-            <Text style={{fontSize: 10, color: '#b3b3b3'}}>{data?.PHONE}</Text>
+            <Text style={{fontSize: 10, color: '#b3b3b3' , fontFamily: 'JosefinSans-Regular'}}>{data?.PHONE}</Text>
           </View>
           <View
             style={{
@@ -400,10 +401,10 @@ function Profile({navigation}) {
               borderRadius: 10,
               marginTop: 10,
             }}>
-            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 30}}>
+            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 30 , fontFamily: 'JosefinSans-Regular'}}>
               Email Address
             </Text>
-            <Text style={{fontSize: 10, color: '#b3b3b3'}}>{data?.EMAIL}</Text>
+            <Text style={{fontSize: 10, color: '#b3b3b3' , fontFamily: 'JosefinSans-Regular'}}>{data?.EMAIL}</Text>
           </View>
         </View>
 
@@ -439,7 +440,7 @@ function Profile({navigation}) {
             marginTop: 50,
           }}
           railBorderColor="#f7ba00"
-          titleStyles={{fontFamily: 'Inter-ExtraBold'}}
+          titleStyles={{fontFamily: 'JosefinSans-Regular'}}
           thumbIconBackgroundColor="#FFFFFF"
           railFillBackgroundColor={'rgba(52, 52, 52, 0.8)'}
           thumbIconBorderColor="white"
@@ -515,12 +516,14 @@ const styles = StyleSheet.create({
   panelTitle: {
     fontSize: 27,
     height: 35,
+    fontFamily: 'JosefinSans-Regular',
   },
   panelSubtitle: {
     fontSize: 14,
     color: 'gray',
     height: 30,
     marginBottom: 10,
+    fontFamily: 'JosefinSans-Regular',
   },
   panelButton: {
     padding: 13,
@@ -531,8 +534,9 @@ const styles = StyleSheet.create({
   },
   panelButtonTitle: {
     fontSize: 17,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'white',
+    fontFamily: 'JosefinSans-Bold',
   },
   action: {
     flexDirection: 'row',
@@ -600,6 +604,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontFamily: 'JosefinSans-Regular',
   },
   signUpButton: {
     margin: 1,

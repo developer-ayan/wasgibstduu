@@ -88,7 +88,7 @@ export default function manageAds({navigation}) {
             backgroundColor: '#FAFAFA',
             borderRadius: 10,
           }}>
-          <Text style={{fontSize: 20, color: 'black'}}>Your Stared Ads</Text>
+          <Text style={{fontSize: 20, color: 'black' , fontFamily: 'JosefinSans-Regular',}}>Your Stared Ads</Text>
           <AntDesign style={{color: '#f7b217'}} name="star" size={30} />
         </View>
       </View>
@@ -104,7 +104,7 @@ export default function manageAds({navigation}) {
               alignItems: 'center',
             }}>
             <View>
-              <Text style={{color: 'black', fontSize: 20, marginTop: 220}}>
+              <Text style={{color: 'black', fontSize: 20, marginTop: 220 , fontFamily: 'JosefinSans-Regular',}}>
                 No Have Your Stared Ads
               </Text>
               {/* <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Go To See Ads And get in stared Store</Text> */}
@@ -237,14 +237,17 @@ const styles = StyleSheet.create({
   username: {
     color: Colors.card_username,
     fontSize: Sizes.ten,
+    fontFamily: 'JosefinSans-Regular',
   },
   title: {
     color: Colors.card_title,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   price: {
     color: Colors.green,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   Icon_view: {
     flexDirection: 'row',
@@ -254,8 +257,10 @@ const styles = StyleSheet.create({
   Versand: {
     color: Colors.card_username,
     fontSize: Sizes.twelve,
+    fontFamily: 'JosefinSans-Regular',
   },
   staro: {
     color: 'gold',
+    fontFamily: 'JosefinSans-Bold',
   },
 });
