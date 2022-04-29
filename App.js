@@ -34,7 +34,9 @@ export default function App() {
     }, 2000);
   }, []);
 
-  setUser(save)
+  setUser(save === null ? uid : save)
+  console.log("redux ",save)
+  // console.log("async ",save === null ? uid : save)
   return loading ? (
     <ActivityIndicator
       color={'black'}

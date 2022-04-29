@@ -106,18 +106,17 @@ export default function Login({}) {
         password: data.password,
       };
       dispatch(sign_in(user))
-        .then(async uid => {
-          AsyncStorage.setItem('uid', JSON.stringify(uid), err => {
-            if (err) {
-              console.log('an error');
-            }
+        .then(async uid => {  
             setModalSuccess('successfull_login');
-            setModalVisible(true);
-            setTimeout(() => {
-              setModalVisible(false);
-              setModalSuccess('');
-            }, 1000);
-            console.log('success');
+            // setModalVisible(true);
+            // setTimeout(() => {
+            //   setModalVisible(false);
+            //   setModalSuccess('');
+            // }, 1000);
+            AsyncStorage.setItem('uid', JSON.stringify(uid), err => {
+              if (err) {
+                console.log('an error');
+              }
           }).catch(err => {
             console.log('error is: ' + err);
           });
@@ -125,8 +124,13 @@ export default function Login({}) {
 
         .catch(error => {
           setModalFail(true);
+
           setError(error);
           setModalVisible(true);
+          setTimeout(() => {
+            setModalVisible(false);
+            setError('');
+          }, 1000);
         });
       // navigation.navigate(`BottomNav`)
       // })
