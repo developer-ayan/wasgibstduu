@@ -68,7 +68,7 @@ export default function EditAds({navigation, route}) {
     firestore()
       .collection(`Category`)
       .doc(data.AUTO_ID)
-      .set({
+      .update({
         CATEGORY: category === '' ? data.CATEGORY : category,
         TITLE: title === '' ? data.TITLE : title,
         DISCRIPTION: discription === '' ? data.DISCRIPTION : discription,

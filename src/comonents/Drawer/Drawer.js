@@ -87,7 +87,7 @@ function Drawer() {
         }}
       />
       <drawer.Screen
-        name={`Bids`}
+        name={`Bids ${data.length === 0 ? '' : `(${data.length})`}`}
         component={Get_offer}
         options={{
           drawerIcon: ({color}) => (

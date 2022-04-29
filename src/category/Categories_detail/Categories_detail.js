@@ -42,17 +42,16 @@ export default function Categories_detail({route, navigation}) {
     try {
       const result = await Share.share({
         message: 'Download App Wasgibstdu From Google play store',
-        title: 'red',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          alert('google')
+          alert('google');
           // shared with activity type of result.activityType
         } else {
           // shared
         }
       } else if (result.action === Share.dismissedAction) {
-        alert('11')
+        alert('11');
 
         // dismissed
       }
@@ -128,7 +127,6 @@ export default function Categories_detail({route, navigation}) {
   ];
   const [modalVisible, SetModalVisible] = React.useState(false);
 
-  console.log(IMAGE[0]);
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
@@ -224,13 +222,13 @@ export default function Categories_detail({route, navigation}) {
               <AntDesign name="sharealt" size={25} style={{color: 'red'}} />
             </Text>
           </TouchableOpacity>
-          <Text>
+          {/* <Text>
             <AntDesign
               name="exclamationcircleo"
               size={25}
               style={{color: 'red'}}
             />
-          </Text>
+          </Text> */}
         </View>
       </View>
       <View
