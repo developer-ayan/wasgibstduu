@@ -141,6 +141,7 @@ export default function Fashion({navigation}) {
               item => item === user?.USER_ID,
             );
             const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+            console.log(item?.LIKE)
 
             return (
               <View key={ind} style={styles.main_view_map}>
@@ -202,7 +203,7 @@ export default function Fashion({navigation}) {
                           ) : (
                             <Text style={styles.Versand}>
                               Versand moglich{' '}
-                              {item.LIKE.length === 0 ? '' : LIKE.length}
+                              {/* {item.LIKE.length === 0 ? '' : LIKE.length} */}
                             </Text>
                           )}
 

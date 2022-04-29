@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Modal,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
@@ -38,19 +39,28 @@ function Get_offer() {
       .collection('Bids')
       .doc('Your all bids here !')
       .collection(user?.USER_ID)
+      .orderBy('date')
       .onSnapshot(documentSnapshot => {
         setData(documentSnapshot.docs.map(e => e.data()));
+        setBidsData(
+          documentSnapshot.docs
+            .map(e => e.data())
+            ?.filter(item => item.seen === true),
+        );
+        setUnseen(
+          documentSnapshot.docs
+            .map(e => e.data())
+            ?.filter(item => item.seen === false),
+        );
         setBids(documentSnapshot.docs.length);
         setMaster(documentSnapshot.docs.map(e => e.data()));
-        setBidsData(data.filter(item => item.seen === true));
-        setUnseen(data.filter(item => item.seen === false));
 
         setTimeout(() => {
           setLoading(false);
         }, 100);
       });
 
-    console.log('unseen ', unseen);
+    // console.log('unseen ', unseen);
 
     firestore()
       .collection('Bids')
@@ -80,10 +90,10 @@ function Get_offer() {
         const textData = text.toUpperCase();
         return ItemData.indexOf(textData) > -1;
       });
-      setData(newData);
+      setBidsData(newData);
       setSearch(text);
     } else {
-      setData(master);
+      setBidsData(unseen);
       setSearch(text);
     }
   };
@@ -103,116 +113,118 @@ function Get_offer() {
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
     />
   ) : (
-    <View
-      style={{
-        flex: 1,
-        alignItems: data.length === 0 ? 'center' : 'stretch',
-        justifyContent: data.length === 0 ? 'center' : 'flex-start',
-      }}>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
+    <ScrollView>
+      <View
+        style={{
+          flex: 1,
+          alignItems: data.length === 0 ? 'center' : 'stretch',
+          justifyContent: data.length === 0 ? 'center' : 'flex-start',
         }}>
-        <View style={styles.centeredView}>
-          <View style={[styles.modalView, {backgroundColor: 'white'}]}>
-            <Text
-              style={{fontFamily: 'JosefinSans-Regular', paddingVertical: 10}}>
-              Are you intrested for this offer?
-            </Text>
-
-            <Text
-              style={{
-                fontFamily: 'JosefinSans-Regular',
-                paddingVertical: 10,
-                textAlign: 'right',
-              }}>
-              {'Cover Letter. ' + user.NAME + ' : ' + discription}
-            </Text>
-
-            <View
-              style={{
-                textAlign: 'center',
-                width: '100%',
-                backgroundColor: 'white',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                paddingVertical: 20,
-              }}>
-              <TouchableOpacity
-                onPress={Chatting}
-                activeOpacity={0.9}
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={[styles.modalView, {backgroundColor: 'white'}]}>
+              <Text
                 style={{
-                  backgroundColor: 'green',
-                  paddingHorizontal: 15,
+                  fontFamily: 'JosefinSans-Regular',
                   paddingVertical: 10,
-                  borderRadius: 5,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 17,
-                    color: 'white',
-                    fontFamily: 'JosefinSans-Bold',
-                  }}>
-                  Let's Chat
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  firestore()
-                    .collection('Bids')
-                    .doc('Your all bids here !')
-                    .collection(user?.USER_ID)
-                    .doc(autoId)
-                    .delete()
-                }
-                activeOpacity={0.9}
+                Are you intrested for this offer?
+              </Text>
+
+              <Text
                 style={{
-                  backgroundColor: 'red',
+                  fontFamily: 'JosefinSans-Regular',
+                  paddingVertical: 10,
+                  textAlign: 'right',
+                }}>
+                {'Cover Letter. ' + user.NAME + ' : ' + discription}
+              </Text>
+
+              <View
+                style={{
+                  textAlign: 'center',
+                  width: '100%',
+                  backgroundColor: 'white',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  paddingVertical: 20,
+                }}>
+                <TouchableOpacity
+                  onPress={Chatting}
+                  activeOpacity={0.9}
+                  style={{
+                    backgroundColor: 'green',
+                    paddingHorizontal: 15,
+                    paddingVertical: 10,
+                    borderRadius: 5,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      color: 'white',
+                      fontFamily: 'JosefinSans-Bold',
+                    }}>
+                    Let's Chat
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    firestore()
+                      .collection('Bids')
+                      .doc('Your all bids here !')
+                      .collection(user?.USER_ID)
+                      .doc(autoId)
+                      .delete()
+                  }
+                  activeOpacity={0.9}
+                  style={{
+                    backgroundColor: 'red',
+                    paddingHorizontal: 25,
+                    paddingVertical: 10,
+                    borderRadius: 5,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      color: 'white',
+                      fontFamily: 'JosefinSans-Bold',
+                    }}>
+                    Remove
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => setModalVisible(false)}
+                style={{
+                  backgroundColor: '#b3b3b3',
                   paddingHorizontal: 25,
                   paddingVertical: 10,
-                  borderRadius: 5,
+                  marginTop: 10,
+                  width: '100%',
                 }}>
                 <Text
                   style={{
                     fontSize: 17,
                     color: 'white',
                     fontFamily: 'JosefinSans-Bold',
+                    textAlign: 'center',
                   }}>
-                  Remove
+                  Ignore
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => setModalVisible(false)}
-              style={{
-                backgroundColor: '#b3b3b3',
-                paddingHorizontal: 25,
-                paddingVertical: 10,
-                marginTop: 10,
-                width: '100%',
-              }}>
-              <Text
-                style={{
-                  fontSize: 17,
-                  color: 'white',
-                  fontFamily: 'JosefinSans-Bold',
-                  textAlign: 'center',
-                }}>
-                Ignore
-              </Text>
-            </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
-      {data.length === 0 ? (
-        <Text style={{fontFamily: 'JosefinSans-Regular'}}>No Have Bids</Text>
-      ) : (
+        </Modal>
+
         <View>
-          <View style={{paddingVertical: 20}}>
+          {/* <View style={{paddingVertical: 20}}>
             <View
               style={{
                 alignItems: 'center',
@@ -246,108 +258,252 @@ function Get_offer() {
                 placeholder="search your bids"
               />
             </View>
-          </View>
+          </View> */}
 
-          {BidsData.map((e, v) => {
-            const miliseconds = e.date.seconds;
-
-            const date = new Date(miliseconds * 1000);
-            var monthNames = [
-              'January',
-              'February',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December',
-            ];
-            return (
-              <TouchableOpacity
-                activeOpacity={0.5}
-                key={v}
-                onPress={() => {
-                  setUserDetail(e.user), setTitle(e.TITLE);
-                  setAutoId(e.AUTO_ID);
-                  setDiscription(e.OFFERDISCRIPTION);
-                  setModalVisible(true);
-                  firestore()
-                    .collection('Bids')
-                    .doc('Your all bids here !')
-                    .collection(user?.USER_ID)
-                    .doc(e.AUTO_ID)
-                    .update({
-                      seen: true,
-                    });
+          {unseen.length === 0 ? null : (
+            <View
+              style={{
+                marginHorizontal: 5,
+                padding: 5,
+                borderBottomWidth: 1,
+                borderColor: 'lightgray',
+                paddingBottom: 20,
+              }}>
+              <Text
+                style={{
+                  padding: 5,
+                  color: '#b1b1b1',
+                  width: ' 95%',
+                  fontFamily: 'JosefinSans-Bold',
+                  padding: 0,
+                  paddingVertical: 10,
                 }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderBottomWidth: 1,
-                    borderColor: '#F8F8F8',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 20,
-                    paddingVertical: 5,
-                    backgroundColor: 'white',
-                    marginHorizontal: 5,
-                    borderRadius: 5,
-                    marginTop: 2,
-                  }}>
-                  <View>
-                    <Text
+                Check this new Offers
+              </Text>
+
+              {unseen?.map((e, v) => {
+                const miliseconds = e.date.seconds;
+
+                const date = new Date(miliseconds * 1000);
+                var monthNames = [
+                  'January',
+                  'February',
+                  'March',
+                  'April',
+                  'May',
+                  'June',
+                  'July',
+                  'August',
+                  'September',
+                  'October',
+                  'November',
+                  'December',
+                ];
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    key={v}
+                    onPress={() => {
+                      setUserDetail(e.user), setTitle(e.TITLE);
+                      setAutoId(e.AUTO_ID);
+                      setDiscription(e.OFFERDISCRIPTION);
+                      setModalVisible(true);
+                      firestore()
+                        .collection('Bids')
+                        .doc('Your all bids here !')
+                        .collection(user?.USER_ID)
+                        .doc(e.AUTO_ID)
+                        .update({
+                          seen: true,
+                        });
+                    }}>
+                    <View
                       style={{
-                        fontSize: 15,
-                        color: 'black',
-                        paddingVertical: 2,
-                        fontFamily: 'JosefinSans-Regular',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderBottomWidth: 1,
+                        borderColor: '#F8F8F8',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        backgroundColor: 'white',
+                        // marginHorizontal: 5,
+                        borderRadius: 5,
+                        marginTop: 2,
                       }}>
-                      {e.TITLE}
-                    </Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <Ionicons
-                        style={{color: 'skyblue'}}
-                        name="time-outline"
-                        size={18}
-                      />
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: 'black',
-                          paddingVertical: 2,
-                          marginLeft: 5,
-                          fontFamily: 'JosefinSans-Regular',
-                        }}>
-                        {date.getDate() +
-                          '. ' +
-                          monthNames[date.getMonth()] +
-                          '. ' +
-                          date.getFullYear()}
-                      </Text>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: 'black',
+                            paddingVertical: 2,
+                            fontFamily: 'JosefinSans-Regular',
+                          }}>
+                          {e.TITLE}
+                        </Text>
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Ionicons
+                            style={{color: 'skyblue'}}
+                            name="time-outline"
+                            size={18}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: 'black',
+                              paddingVertical: 2,
+                              marginLeft: 5,
+                              fontFamily: 'JosefinSans-Regular',
+                            }}>
+                            {date.getDate() +
+                              '. ' +
+                              monthNames[date.getMonth()] +
+                              '. ' +
+                              date.getFullYear()}
+                          </Text>
+                        </View>
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            fontSize: 15,
+                            color: 'black',
+                            paddingVertical: 2,
+                          }}>
+                          $ {e.OFFERPRICE}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                  <View>
-                    <Text
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
+
+          {BidsData.length === 0 ? null : (
+            <View
+              style={{
+                marginHorizontal: 5,
+                padding: 5,
+                paddingBottom: 20,
+              }}>
+              <Text
+                style={{
+                  padding: 5,
+                  color: '#b1b1b1',
+                  width: ' 95%',
+                  fontFamily: 'JosefinSans-Bold',
+                  padding: 0,
+                  paddingVertical: 10,
+                }}>
+                Recenlty Offers
+              </Text>
+
+              {BidsData?.map((e, v) => {
+                const miliseconds = e.date.seconds;
+
+                const date = new Date(miliseconds * 1000);
+                var monthNames = [
+                  'January',
+                  'February',
+                  'March',
+                  'April',
+                  'May',
+                  'June',
+                  'July',
+                  'August',
+                  'September',
+                  'October',
+                  'November',
+                  'December',
+                ];
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    key={v}
+                    onPress={() => {
+                      setUserDetail(e.user), setTitle(e.TITLE);
+                      setAutoId(e.AUTO_ID);
+                      setDiscription(e.OFFERDISCRIPTION);
+                      setModalVisible(true);
+                      firestore()
+                        .collection('Bids')
+                        .doc('Your all bids here !')
+                        .collection(user?.USER_ID)
+                        .doc(e.AUTO_ID)
+                        .update({
+                          seen: true,
+                        });
+                    }}>
+                    <View
                       style={{
-                        fontFamily: 'JosefinSans-Regular',
-                        fontSize: 15,
-                        color: 'black',
-                        paddingVertical: 2,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderBottomWidth: 1,
+                        borderColor: '#F8F8F8',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        backgroundColor: 'white',
+                        // marginHorizontal: 5,
+                        borderRadius: 5,
+                        marginTop: 2,
                       }}>
-                      $ {e.OFFERPRICE}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: 'black',
+                            paddingVertical: 2,
+                            fontFamily: 'JosefinSans-Regular',
+                          }}>
+                          {e.TITLE}
+                        </Text>
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Ionicons
+                            style={{color: 'skyblue'}}
+                            name="time-outline"
+                            size={18}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: 'black',
+                              paddingVertical: 2,
+                              marginLeft: 5,
+                              fontFamily: 'JosefinSans-Regular',
+                            }}>
+                            {date.getDate() +
+                              '. ' +
+                              monthNames[date.getMonth()] +
+                              '. ' +
+                              date.getFullYear()}
+                          </Text>
+                        </View>
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            fontFamily: 'JosefinSans-Regular',
+                            fontSize: 15,
+                            color: 'black',
+                            paddingVertical: 2,
+                          }}>
+                          $ {e.OFFERPRICE}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
         </View>
-      )}
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 

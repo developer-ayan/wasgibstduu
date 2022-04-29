@@ -17,10 +17,14 @@ import Category from './Category';
 import {AuthContext} from '../../context/Auth';
 
 export default function Home({navigation}) {
+  const [unseen, setUnseen] = React.useState([]);
+
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [messages, setMessages] = React.useState([]);
-  const {user, setMessageCounting, bidslength ,setBidsLength } = useContext(AuthContext);
+
+  const {user, setMessageCounting, bidslength, setBidsLength} =
+    useContext(AuthContext);
 
   const ChatInbox = () => {
     firestore()
@@ -35,8 +39,10 @@ export default function Home({navigation}) {
                 item.user2.uid === user?.USER_ID
               );
             }),
+          setLoading(false),
         );
-        setLoading(false);
+
+      
       });
   };
   const filter1 = messages?.filter(item => item.user1.uid !== user.USER_ID);
@@ -55,11 +61,22 @@ export default function Home({navigation}) {
         }, 200);
       });
 
-        firestore()
+      firestore()
           .collection('Bids')
           .doc('Your all bids here !')
           .collection(user?.USER_ID)
-          .onSnapshot(e => setBidsLength(e.docs.map(c => c.data())));
+          .orderBy('date')
+          .onSnapshot(documentSnapshot => {
+            setUnseen(
+              documentSnapshot.docs
+                .map(e => e.data())
+                ?.filter(item => item.seen === false),
+            );
+
+            setTimeout(() => {
+              setLoading(false);
+            }, 100);
+          });
   }, []);
 
   return loading ? (
@@ -95,6 +112,8 @@ export default function Home({navigation}) {
             size={40}
           />
 
+          {unseen.length === 0 ? null :
+          
           <View
             style={{
               backgroundColor: 'red',
@@ -113,9 +132,11 @@ export default function Home({navigation}) {
                 color: 'white',
                 fontFamily: 'JosefinSans-Bold',
               }}>
-              {bidslength.length}
+              {unseen.length}
             </Text>
           </View>
+          }
+
         </TouchableOpacity>
 
         <Text style={{color: '#01a949'}}>Ayan</Text>

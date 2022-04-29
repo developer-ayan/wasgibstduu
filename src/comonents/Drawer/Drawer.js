@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import manageAds from '../../screens/ManageAds/ManageAds';
 import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsManage';
@@ -26,15 +26,26 @@ const drawer = createDrawerNavigator();
 function Drawer() {
   const [data, setData] = React.useState([]);
   const {user, setBidsLength} = useContext(AuthContext);
+  const [unseen, setUnseen] = useState([])
 
   React.useEffect(() => {
+   
     firestore()
-      .collection('Bids')
-      .doc('Your all bids here !')
-      .collection(user?.USER_ID)
-      .onSnapshot(e => setData(e.docs.map(c => c.data())));
-      setBidsLength(data.length);
+    .collection('Bids')
+    .doc('Your all bids here !')
+    .collection(user?.USER_ID)
+    .orderBy('date')
+    .onSnapshot(documentSnapshot => {
+      setUnseen(
+        documentSnapshot.docs
+          .map(e => e.data())
+          ?.filter(item => item.seen === false),
+      );
+
+    });
   }, []);
+
+
 
 
   return (
@@ -88,7 +99,7 @@ function Drawer() {
         }}
       />
       <drawer.Screen
-        name={`Bids ${data.length === 0 ? '' : `(${data.length})`}`}
+        name={`Bids ${unseen.length === 0 ? '' : `(${unseen.length})`}`}
         component={Get_offer}
         options={{
           drawerIcon: ({color}) => (
