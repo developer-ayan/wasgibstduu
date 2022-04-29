@@ -178,30 +178,33 @@ export default function Fashion({navigation}) {
                         </Text>
                         <Text style={styles.price}>{item.PRICE}</Text>
                         <View style={styles.Icon_view}>
-                        {item.UID === user?.USER_ID ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              width: '100%',
-                            }}>
-                            <Text
-                              style={[
-                                styles.Versand,
-                                {color: 'black', fontWeight: 'bold'},
-                              ]}>
-                              Owned Ad
+                          {item.UID === user?.USER_ID ? (
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                              }}>
+                              <Text
+                                style={[
+                                  styles.Versand,
+                                  {color: 'black', fontWeight: 'bold'},
+                                ]}>
+                                Owned Ad
+                              </Text>
+                              <FontAwesome
+                                style={[styles.staro, {color: 'gray'}]}
+                                name="user-circle-o"
+                                size={20}
+                              />
+                            </View>
+                          ) : (
+                            <Text style={styles.Versand}>
+                              Versand moglich{' '}
+                              {item.LIKE.length === 0 ? '' : LIKE.length}
                             </Text>
-                            <FontAwesome
-                              style={[styles.staro, {color: 'gray'}]}
-                              name="user-circle-o"
-                              size={20}
-                            />
-                          </View>
-                        ) : (
-                          <Text style={styles.Versand}>Versand moglich</Text>
-                        )}
+                          )}
 
                           {item.UID === user?.USER_ID ? (
                             <Text style={{color: 'white'}}>Ayan</Text>

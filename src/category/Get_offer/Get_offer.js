@@ -118,8 +118,12 @@ function Get_offer() {
             </Text>
 
             <Text
-              style={{fontFamily: 'JosefinSans-Regular', paddingVertical: 10 , textAlign : 'right'}}>
-              {'Cover Letter. ' + user.NAME + ' : ' + discription }
+              style={{
+                fontFamily: 'JosefinSans-Regular',
+                paddingVertical: 10,
+                textAlign: 'right',
+              }}>
+              {'Cover Letter. ' + user.NAME + ' : ' + discription}
             </Text>
 
             <View
@@ -239,7 +243,7 @@ function Get_offer() {
           </View>
 
           {data.map((e, v) => {
-            console.log(e)
+            console.log(e);
             const miliseconds = e.date.seconds;
 
             const date = new Date(miliseconds * 1000);
@@ -264,7 +268,7 @@ function Get_offer() {
                 onPress={() => {
                   setUserDetail(e.user), setTitle(e.TITLE);
                   setAutoId(e.AUTO_ID);
-                  setDiscription(e.OFFERDISCRIPTION)
+                  setDiscription(e.OFFERDISCRIPTION);
                   setModalVisible(true);
                 }}>
                 <View
