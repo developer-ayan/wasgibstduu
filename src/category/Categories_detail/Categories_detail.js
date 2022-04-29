@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { AuthContext } from '../../context/Auth';
 
 export default function Categories_detail({route, navigation}) {
   const {
@@ -35,8 +36,10 @@ export default function Categories_detail({route, navigation}) {
     AUTO_ID,
     USER_LIKE,
   } = route.params;
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const [like, setLike] = React.useState(0);
+  const [submited , setSubmited] = useState([]) 
+  const {user} = useContext(AuthContext)
 
   const onShare = async () => {
     try {
@@ -63,26 +66,49 @@ export default function Categories_detail({route, navigation}) {
   const [e, setE] = useState({});
   // console.log()
 
-  const getData = async () => {
-    const value = await AsyncStorage.getItem('uid');
-    setUser(JSON?.parse(value));
-  };
+  // const getData = async () => {
+  //   const value = await AsyncStorage.getItem('uid');
+  //   setUser(JSON?.parse(value));
+  // };
 
   useFocusEffect(
     React.useCallback(() => {
-      getData();
+      // getData();
       firestore()
         .collection('Users')
         .doc(UID)
         .onSnapshot(documentSnapshot => {
           setE(documentSnapshot.data());
         });
+
+      
+
+      
     }, []),
   );
 
+  useEffect(() => {
+    firestore()
+    .collection('Bids')
+    .doc('Your all bids here !')
+    .collection(user?.USER_ID)
+    .orderBy('date')
+    .onSnapshot(documentSnapshot => {
+      setSubmited(
+        documentSnapshot.docs
+          .map(e => e.data())
+          ?.filter(item => item.AUTO_ID === TITLE + user?.USER_ID + DISCRIPTION),
+      );
+    });
+  },[])
+
+
+
+  console.log("submited ",submited)
+
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
 
-  console.log('USER_LIKE ', USER_LIKE);
+  // console.log('USER_LIKE ', USER_LIKE);
 
   const toggle = () => {
     setshow(!show);
@@ -126,7 +152,6 @@ export default function Categories_detail({route, navigation}) {
     },
   ];
   const [modalVisible, SetModalVisible] = React.useState(false);
-
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
