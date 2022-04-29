@@ -95,15 +95,6 @@ function Drawer() {
           ),
         }}
       />
-      <drawer.Screen
-        name={`Logout`}
-        component={Logout}
-        options={{
-          drawerIcon: ({color}) => (
-            <AntDesign name="login" color={color} size={25} />
-          ),
-        }}
-      />
     </drawer.Navigator>
   );
 }

@@ -39,6 +39,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default function ChatScreen({route, navigation}) {
   const {e, title} = route.params;
+  console.log(e);
   const chat_user_profile = e.PROFILE;
   const [message, setMessage] = React.useState('');
   const [data, setData] = React.useState([]);
@@ -50,6 +51,7 @@ export default function ChatScreen({route, navigation}) {
   const [uploading, setUploading] = React.useState(false);
   const [transeferred, setTranseferred] = React.useState(0);
   const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
+  const [image, setImage] = React.useState([]);
   const images = [
     {
       url: urlSelectedImage,
@@ -75,18 +77,20 @@ export default function ChatScreen({route, navigation}) {
 
   const REGEXP = /^(?!\s*$).+/;
 
-  console.log(!REGEXP.test(message));
-
   const send_message = () => {
     if (REGEXP.test(message)) {
       const merge = merge_uid(user?.USER_ID, e?.USER_ID);
-      firestore().collection('chatting').doc(merge).collection(`${merge}`).add({
-        msg: message,
-        name: user?.NAME,
-        uid: user?.USER_ID,
-        image: uri,
-        date: firebase.firestore.Timestamp.fromDate(new Date()),
-      });
+      firestore()
+        .collection('chatting')
+        .doc(merge)
+        .collection(`${merge}`)
+        .add({
+          msg: message,
+          name: user?.NAME,
+          uid: user?.USER_ID,
+          image: image,
+          date: firebase.firestore.Timestamp.fromDate(new Date()),
+        });
 
       firestore()
         .collection('Inbox')
@@ -120,6 +124,7 @@ export default function ChatScreen({route, navigation}) {
       setMessage('');
       setUri(null);
       setCameraUri(null);
+      setImage([]);
     } else {
       alert('Please type');
     }
@@ -171,9 +176,9 @@ export default function ChatScreen({route, navigation}) {
           const url = await storageRef.getDownloadURL();
           setUri(url);
 
-          // setImage(previuos => {
-          //   return [...previuos, url];
-          // });
+          setImage(previuos => {
+            return [...previuos, url];
+          });
 
           setUploading(false);
           alert('Your Ad Has Been Upload');
@@ -187,7 +192,6 @@ export default function ChatScreen({route, navigation}) {
       ImageHandle();
     });
   };
-
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -293,23 +297,54 @@ export default function ChatScreen({route, navigation}) {
                   borderTopLeftRadius: uid ? 5 : 3,
                   borderTopRightRadius: uid ? 5 : 3,
                 }}>
-                {e.image === null ? null : (
-                  <Pressable
-                    onPress={() => {
-                      setUrlSelectedImage(e.image);
-                      SetModalVisible(true);
-                    }}>
-                    <Image
-                      source={{uri: e.image}}
-                      style={{
-                        height: 150,
-                        width: '100%',
-                        borderRadius: 5,
-                        marginBottom: 5,
-                      }}
-                    />
-                  </Pressable>
-                )}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                  }}>
+                  {e.image.length === 0
+                    ? null
+                    : e?.image?.map((item, index) => {
+                        return e.image.length === 1 ? (
+                          <Pressable
+                          style = {{width : '100%'}}
+                            onPress={() => {
+                              setUrlSelectedImage(item);
+                              SetModalVisible(true);
+                            }}>
+                          <Image
+                            source={{uri: item}}
+                            style={{
+                              height: 150,
+                              width: '100%',
+                              borderRadius: 5,
+                              marginBottom: 5,
+                            }}
+                          />
+                          </Pressable>
+
+                        ) : (
+                          <Pressable
+                          style = {{width : '50%'}}
+                            onPress={() => {
+                              setUrlSelectedImage(item);
+                              SetModalVisible(true);
+                            }}>
+                            <Image
+                              source={{uri: item}}
+                              style={{
+                                height: 70,
+                                // width: '100%',
+                                borderRadius: 5,
+                                marginBottom: 5,
+                                marginRight: 5,
+                              }}
+                            />
+                          </Pressable>
+                        );
+                      })}
+                </View>
 
                 <Text
                   style={{
@@ -344,15 +379,21 @@ export default function ChatScreen({route, navigation}) {
             />
           ) : null}
 
-          <Text style={{color: 'white', fontSize: 15 , fontFamily: 'JosefinSans-Regular',}}>
-            1 selected image
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 15,
+              fontFamily: 'JosefinSans-Regular',
+            }}>
+            {image.length + 1} selected image
           </Text>
         </View>
       ) : (
         <View
           style={{
             backgroundColor: '#007bff',
-            padding: 20,
+            paddingHorizontal: 20,
+            paddingVertical: 10,
             marginHorizontal: 5,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
@@ -371,14 +412,39 @@ export default function ChatScreen({route, navigation}) {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
+              alignItems: 'center',
               width: '100%',
             }}>
-            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15 , fontFamily: 'JosefinSans-Regular',}}>
-              1 selected image
-            </Text>
+            {/* <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15 , fontFamily: 'JosefinSans-Regular',}}>
+              {image.length} selected image
+            </Text> */}
+
+            <View
+              style={{flexDirection: 'row', flexWrap: 'wrap', width: '90%'}}>
+              {image.map((item, index) => {
+                const ar = [1, 23, 312];
+
+                return (
+                  <TouchableOpacity
+                    onPress={() => image.filter(item => item !== index + 1)}>
+                    <Image
+                      key={index}
+                      source={{uri: item}}
+                      style={{
+                        height: 50,
+                        width: 50,
+                        borderRadius: 10,
+                        marginRight: 10,
+                        marginTop: 3,
+                      }}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
             <TouchableOpacity
               onPress={() => {
-                setUri(null), setCameraUri(null);
+                setUri(null), setCameraUri(null), setImage([]);
               }}>
               <Entypo
                 name="circle-with-cross"
@@ -409,7 +475,7 @@ export default function ChatScreen({route, navigation}) {
           <TextInput
             onChangeText={text => setMessage(text)}
             value={message}
-            style ={{fontFamily: 'JosefinSans-Regular',}}
+            style={{fontFamily: 'JosefinSans-Regular'}}
             placeholder="Type a message"
           />
         </View>

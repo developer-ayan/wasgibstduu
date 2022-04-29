@@ -17,17 +17,19 @@ import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {AuthContext} from '../../context/Auth';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import RNRestart from 'react-native-restart';
 
 function CustomDrawer(props) {
   const navigation = useNavigation();
 
   const [data, setData] = React.useState({});
-  const {user , setUser} = useContext(AuthContext);
+  const {user, setUser} = useContext(AuthContext);
   const removeData = async () => {
-     AsyncStorage.removeItem('uid');
-    setUser(null)
-  };
+    await AsyncStorage.removeItem('uid');
+    setUser(null);
 
+    RNRestart.Restart();
+  };
 
   React.useEffect(() => {
     firestore()
@@ -42,10 +44,11 @@ function CustomDrawer(props) {
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
         <ImageBackground
-          source={{
-            uri: 'https://media.istockphoto.com/photos/the-gray-and-silver-are-light-black-with-white-the-gradient-is-the-picture-id1322292759?b=1&k=20&m=1322292759&s=170667a&w=0&h=FtcK2R11RjeMUkMUWu5kxFmYR8pY-G8OLs99PnWIJpE=',
-          }}
-          style={{paddingVertical: 30, paddingHorizontal: 10}}>
+        
+          // source={{
+          //   uri: 'https://media.istockphoto.com/photos/the-gray-and-silver-are-light-black-with-white-the-gradient-is-the-picture-id1322292759?b=1&k=20&m=1322292759&s=170667a&w=0&h=FtcK2R11RjeMUkMUWu5kxFmYR8pY-G8OLs99PnWIJpE=',
+          // }}
+          style={{paddingVertical: 50, paddingHorizontal: 10}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {data?.PROFILE === '' ? (
               <Image

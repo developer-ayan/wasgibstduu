@@ -7,7 +7,9 @@ import {
   ScrollView,
   Switch,
   Pressable,
+  Modal,
   Linking,
+  Share,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import {SliderBox} from 'react-native-image-slider-box';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default function Categories_detail({route, navigation}) {
   const {
@@ -35,7 +38,28 @@ export default function Categories_detail({route, navigation}) {
   const [user, setUser] = useState({});
   const [like, setLike] = React.useState(0);
 
-  console.log(LIKE)
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: 'Download App Wasgibstdu From Google play store',
+        title: 'red',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          alert('google')
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        alert('11')
+
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const [e, setE] = useState({});
   // console.log()
@@ -59,7 +83,7 @@ export default function Categories_detail({route, navigation}) {
 
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
 
-  console.log("USER_LIKE ",USER_LIKE)
+  console.log('USER_LIKE ', USER_LIKE);
 
   const toggle = () => {
     setshow(!show);
@@ -95,6 +119,16 @@ export default function Categories_detail({route, navigation}) {
   const decrement = () => {
     setLike(like - 1);
   };
+  const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
+
+  const images = [
+    {
+      url: urlSelectedImage,
+    },
+  ];
+  const [modalVisible, SetModalVisible] = React.useState(false);
+
+  console.log(IMAGE[0]);
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
@@ -120,6 +154,15 @@ export default function Categories_detail({route, navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          SetModalVisible(!modalVisible);
+        }}>
+        <ImageViewer imageUrls={images} />
+      </Modal>
 
       <View>
         <SliderBox
@@ -129,8 +172,12 @@ export default function Categories_detail({route, navigation}) {
           dotColor={'white'}
           inactiveDotColor={'gray'}
           images={IMAGE}
-          onCurrentImagePressed={index =>
-            console.warn(`image ${index + 1} pressed`)
+          onCurrentImagePressed={
+            index => {
+              setUrlSelectedImage(IMAGE[index]);
+              SetModalVisible(true);
+            }
+            // console.warn(`image ${index + 1} pressed`)
           }
         />
       </View>
@@ -172,9 +219,11 @@ export default function Categories_detail({route, navigation}) {
         </View>
 
         <View style={{flexDirection: 'row'}}>
-          <Text style={{marginRight: 20}}>
-            <AntDesign name="sharealt" size={25} style={{color: 'red'}} />
-          </Text>
+          <TouchableOpacity onPress={onShare}>
+            <Text style={{marginRight: 20}}>
+              <AntDesign name="sharealt" size={25} style={{color: 'red'}} />
+            </Text>
+          </TouchableOpacity>
           <Text>
             <AntDesign
               name="exclamationcircleo"
@@ -259,43 +308,47 @@ export default function Categories_detail({route, navigation}) {
               paddingVertical: 5,
               fontFamily: 'JosefinSans-Regular',
             }}>
-            Customer
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: 12,
-        }}>
-        <View>
-          <Text
-            style={{
-              color: '#CECECE',
-              fontSize: 13,
-              paddingVertical: 5,
-              fontFamily: 'JosefinSans-Regular',
-            }}>
-            {CATEGORY}
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: 13,
-              paddingVertical: 5,
-              width: 200,
-              textAlign: 'right',
+            {e?.EMAIL === 'Info@wasgibstdu.de' ? 'Premium' : 'Customer'}
 
-              fontFamily: 'JosefinSans-Regular',
-            }}>
-            {TITLE}
+            {/* Customer */}
           </Text>
         </View>
       </View>
+      {e?.EMAIL === 'Info@wasgibstdu.de' ? null : (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 12,
+          }}>
+          <View>
+            <Text
+              style={{
+                color: '#CECECE',
+                fontSize: 13,
+                paddingVertical: 5,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              {CATEGORY}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 13,
+                paddingVertical: 5,
+                width: 200,
+                textAlign: 'right',
+
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              {TITLE}
+            </Text>
+          </View>
+        </View>
+      )}
 
       <View
         style={{
@@ -343,10 +396,17 @@ export default function Categories_detail({route, navigation}) {
           </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Image
-            style={{width: 300, height: 300, borderRadius: 5, marginTop: 20}}
-            source={{uri: IMAGE[0]}}
-          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              setUrlSelectedImage(IMAGE[0]);
+              SetModalVisible(true);
+            }}>
+            <Image
+              style={{width: 300, height: 300, borderRadius: 5, marginTop: 20}}
+              source={{uri: IMAGE[0]}}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -366,7 +426,7 @@ export default function Categories_detail({route, navigation}) {
                 TITLE,
                 UID,
                 NAME: e.NAME,
-                LIKE : LIKE,
+                LIKE: LIKE,
               })
             }>
             <View

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Image,
@@ -15,11 +15,13 @@ import * as Animatable from 'react-native-animatable';
 import firestore from '@react-native-firebase/firestore';
 import Loader from '../../comonents/Loader/Loader';
 import {useSelector} from 'react-redux';
+import {AuthContext} from '../../context/Auth';
 import {
   Categories_detail,
   Colors,
   Sizes,
 } from '../../comonents/Constant/Constant';
+import { firebase } from '@react-native-firebase/auth';
 
 export default function Send_offer({navigation, route}) {
   const {
@@ -33,12 +35,11 @@ export default function Send_offer({navigation, route}) {
     profile,
     NAME,
     e,
-    LIKE
-
+    LIKE,
   } = route.params;
   const [price, setPrice] = React.useState('');
   const [discription, setDiscription] = React.useState('');
-
+  const {user} = useContext(AuthContext);
 
   const REGEXP = /^$/;
 
@@ -50,25 +51,25 @@ export default function Send_offer({navigation, route}) {
         .collection('Bids')
         .doc('Your all bids here !')
         .collection(UID)
-        .doc(TITLE + UID + DISCRIPTION)
+        .doc(TITLE + user?.USER_ID + DISCRIPTION)
         .set({
           IMAGE: IMAGE,
           PRICE: PRICE,
           TITLE: TITLE,
           DISCRIPTION: DISCRIPTION,
-          UID: UID,
+          UID: user?.USER_ID,
           CITY: CITY,
           CATEGORY: CATEGORY,
           OFFERPRICE: price,
           OFFERDISCRIPTION: discription,
           PROFILE: 'profile',
           NAME: NAME,
-          user: e,
+          user: user,
+          date: firebase.firestore.Timestamp.fromDate(new Date()),
         })
-        .then(e =>
-           alert('Success Send Offer') ,
-           navigation.navigate('BottomNav')
-
+        .then(
+          e => alert('Success Send Offer'),
+          navigation.navigate('BottomNav'),
         )
         .catch(err => alert('error'));
   }
@@ -85,29 +86,24 @@ export default function Send_offer({navigation, route}) {
         paddingHorizontal: 20,
       }}>
       <View style={styles.main_view_map}>
-
-          <Animatable.View style={styles.Animatable}>
-            <View style={styles.Animatable_child}>
-              <View style={styles.Animatable_child_to_child}>
-                <Image
-                  style={styles.Animatable_image}
-                  source={{uri: IMAGE[0]}}
-                />
-              </View>
-              <View style={styles.Animatable_Para}>
-                <Text style={styles.username}>{NAME}</Text>
-                <Text numberOfLines={2} style={styles.title}>
-                  {TITLE}
-                </Text>
-                <Text style={styles.price}>{PRICE}</Text>
-                <View style={styles.Icon_view}>
-                  <Text style={styles.Versand}>Likes {LIKE.length}</Text>
-                  <AntDesign style={styles.staro} name="staro" size={18} />
-                </View>
+        <Animatable.View style={styles.Animatable}>
+          <View style={styles.Animatable_child}>
+            <View style={styles.Animatable_child_to_child}>
+              <Image style={styles.Animatable_image} source={{uri: IMAGE[0]}} />
+            </View>
+            <View style={styles.Animatable_Para}>
+              <Text style={styles.username}>{NAME}</Text>
+              <Text numberOfLines={2} style={styles.title}>
+                {TITLE}
+              </Text>
+              <Text style={styles.price}>{PRICE}</Text>
+              <View style={styles.Icon_view}>
+                <Text style={styles.Versand}>Likes {LIKE.length}</Text>
+                <AntDesign style={styles.staro} name="staro" size={18} />
               </View>
             </View>
-          </Animatable.View>
-      
+          </View>
+        </Animatable.View>
       </View>
       {/* <View style={{ marginTop: 20 }}> */}
       <View style={{width: '100%'}}>
@@ -166,7 +162,14 @@ export default function Send_offer({navigation, route}) {
           borderColor: '#F0F0F0',
           width: '100%',
         }}>
-        <Text style={{textAlign: 'center', color: 'white' , fontFamily: 'JosefinSans-Regular',}}>Send Offer</Text>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            fontFamily: 'JosefinSans-Regular',
+          }}>
+          Send Offer
+        </Text>
       </TouchableOpacity>
 
       {/* </View> */}

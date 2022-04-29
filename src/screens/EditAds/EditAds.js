@@ -127,7 +127,6 @@ export default function EditAds({navigation, route}) {
           });
 
           setUploading(false);
-          Alert.alert('Your Ad Has Been Upload');
           return url;
         } catch (e) {
           console.log(e);
@@ -384,36 +383,30 @@ export default function EditAds({navigation, route}) {
               })}
         </View>
 
-        {uploading ? (
-          <View>
-            <Text>{transeferred} % Completed</Text>
-          </View>
-        ) : (
-          <TouchableOpacity onPress={CreateAds}>
-            <View
+        <TouchableOpacity onPress={CreateAds}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderRadius: 5,
+              padding: 20,
+              color: '#b3b3b3',
+              backgroundColor: 'gold',
+              paddingVertical: 25,
+              marginVertical: 10,
+            }}>
+            <Text
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderRadius: 5,
-                padding: 20,
-                color: '#b3b3b3',
-                backgroundColor: 'gold',
-                paddingVertical: 25,
-                marginVertical: 10,
+                fontSize: 14,
+                color: '#1d1900',
+                fontFamily: 'JosefinSans-Regular',
               }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: '#1d1900',
-                  fontFamily: 'JosefinSans-Regular',
-                }}>
-                Create Ads
-              </Text>
-              <Feather name="arrow-right" size={20} color="#1d1900" />
-            </View>
-          </TouchableOpacity>
-        )}
+              Create Ads
+            </Text>
+            <Feather name="arrow-right" size={20} color="#1d1900" />
+          </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
