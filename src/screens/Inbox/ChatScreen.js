@@ -308,25 +308,24 @@ export default function ChatScreen({route, navigation}) {
                     : e?.image?.map((item, index) => {
                         return e.image.length === 1 ? (
                           <Pressable
-                          style = {{width : '100%'}}
+                            style={{width: '100%'}}
                             onPress={() => {
                               setUrlSelectedImage(item);
                               SetModalVisible(true);
                             }}>
-                          <Image
-                            source={{uri: item}}
-                            style={{
-                              height: 150,
-                              width: '100%',
-                              borderRadius: 5,
-                              marginBottom: 5,
-                            }}
-                          />
+                            <Image
+                              source={{uri: item}}
+                              style={{
+                                height: 150,
+                                width: '100%',
+                                borderRadius: 5,
+                                marginBottom: 5,
+                              }}
+                            />
                           </Pressable>
-
                         ) : (
                           <Pressable
-                          style = {{width : '50%'}}
+                            style={{width: '50%'}}
                             onPress={() => {
                               setUrlSelectedImage(item);
                               SetModalVisible(true);

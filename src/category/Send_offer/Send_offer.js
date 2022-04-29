@@ -66,6 +66,7 @@ export default function Send_offer({navigation, route}) {
           NAME: NAME,
           user: user,
           date: firebase.firestore.Timestamp.fromDate(new Date()),
+          seen : false
         })
         .then(
           e => alert('Success Send Offer'),

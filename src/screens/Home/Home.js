@@ -20,7 +20,7 @@ export default function Home({navigation}) {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [messages, setMessages] = React.useState([]);
-  const {user, setMessageCounting} = useContext(AuthContext);
+  const {user, setMessageCounting, bidslength ,setBidsLength } = useContext(AuthContext);
 
   const ChatInbox = () => {
     firestore()
@@ -54,6 +54,12 @@ export default function Home({navigation}) {
           setLoading(false);
         }, 200);
       });
+
+        firestore()
+          .collection('Bids')
+          .doc('Your all bids here !')
+          .collection(user?.USER_ID)
+          .onSnapshot(e => setBidsLength(e.docs.map(c => c.data())));
   }, []);
 
   return loading ? (
@@ -75,7 +81,9 @@ export default function Home({navigation}) {
           alignItems: 'center',
           backgroundColor: '#01a949',
         }}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity
+          style={{flexDirection: 'row'}}
+          onPress={() => navigation.openDrawer()}>
           <Ionicons
             style={{
               borderTopLeftRadius: 5,
@@ -86,6 +94,28 @@ export default function Home({navigation}) {
             name="reorder-three"
             size={40}
           />
+
+          <View
+            style={{
+              backgroundColor: 'red',
+              height: 20,
+              width: 20,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 50,
+              marginLeft: -21,
+              marginTop: 3,
+            }}>
+            <Text
+              style={{
+                fontSize: 13,
+                color: 'white',
+                fontFamily: 'JosefinSans-Bold',
+              }}>
+              {bidslength.length}
+            </Text>
+          </View>
         </TouchableOpacity>
 
         <Text style={{color: '#01a949'}}>Ayan</Text>

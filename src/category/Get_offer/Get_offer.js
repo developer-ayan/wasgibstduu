@@ -20,6 +20,8 @@ import {AuthContext} from '../../context/Auth';
 function Get_offer() {
   const [data, setData] = React.useState([]);
   const [master, setMaster] = React.useState([]);
+  const [unseen, setUnseen] = React.useState([]);
+  const [BidsData, setBidsData] = React.useState([]);
   const [modal, setmodal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const navigation = useNavigation();
@@ -40,11 +42,15 @@ function Get_offer() {
         setData(documentSnapshot.docs.map(e => e.data()));
         setBids(documentSnapshot.docs.length);
         setMaster(documentSnapshot.docs.map(e => e.data()));
+        setBidsData(data.filter(item => item.seen === true));
+        setUnseen(data.filter(item => item.seen === false));
 
         setTimeout(() => {
           setLoading(false);
         }, 100);
       });
+
+    console.log('unseen ', unseen);
 
     firestore()
       .collection('Bids')
@@ -242,8 +248,7 @@ function Get_offer() {
             </View>
           </View>
 
-          {data.map((e, v) => {
-            console.log(e);
+          {BidsData.map((e, v) => {
             const miliseconds = e.date.seconds;
 
             const date = new Date(miliseconds * 1000);
@@ -270,6 +275,14 @@ function Get_offer() {
                   setAutoId(e.AUTO_ID);
                   setDiscription(e.OFFERDISCRIPTION);
                   setModalVisible(true);
+                  firestore()
+                    .collection('Bids')
+                    .doc('Your all bids here !')
+                    .collection(user?.USER_ID)
+                    .doc(e.AUTO_ID)
+                    .update({
+                      seen: true,
+                    });
                 }}>
                 <View
                   style={{
