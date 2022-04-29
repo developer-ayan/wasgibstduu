@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 
 export default function Logout() {
   const removeData = async () => {
-    await AsyncStorage.removeItem('uid');
+     AsyncStorage.removeItem('uid');
   };
   React.useEffect(() => {
     removeData();

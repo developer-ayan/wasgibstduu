@@ -61,6 +61,7 @@ function Drawer() {
       <drawer.Screen
         name="Ads"
         component={Ads}
+        
         options={{
           drawerIcon: ({color}) => (
             <SimpleLineIcons name="camera" color={color} size={25} />

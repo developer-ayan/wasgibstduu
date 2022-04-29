@@ -28,7 +28,6 @@ function CustomDrawer(props) {
     setUser(null)
   };
 
-  console.log("user ",user)
 
   React.useEffect(() => {
     firestore()
