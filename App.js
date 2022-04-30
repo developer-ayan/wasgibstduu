@@ -36,7 +36,6 @@ export default function App() {
 
   // setUser(save === null ? uid : save)
 
-  console.log(" app .js state ",user)
   
   // console.log("async ",save === null ? uid : save)
   return loading ? (
