@@ -59,13 +59,13 @@ export default function Ads({navigation}) {
   const [modalVisibleImage, setModalVisibleImage] = React.useState(false);
   const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
 
-  const [modalText, setModalText] = React.useState('');
   const images = [
     {
       url: urlSelectedImage,
     },
   ];
-
+  
+  const [modalText, setModalText] = React.useState('');
   const getData = async () => {
     const value = await AsyncStorage.getItem('uid');
     setState(JSON?.parse(value));
@@ -161,7 +161,6 @@ export default function Ads({navigation}) {
   };
 
   const REGEXP = /^(?!\s*$).+/;
-  console.log('regex ', REGEXP.test(data.title));
 
   const CreateAds = async () => {
     if (!REGEXP.test(title)) {

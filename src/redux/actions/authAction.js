@@ -36,14 +36,19 @@ const sign_in = user => {
     return new Promise((resolve, reject) => {
       auth()
         .signInWithEmailAndPassword(user.email, user.password)
-        .then(res => {
+        .then(async res => {
           let Mydata = res;
+        
           firestore()
             .collection('Users')
             .doc(res.user.uid)
-            .onSnapshot(documentSnapshot => {
+            .onSnapshot(async documentSnapshot => {
               dispatch({type: 'GETUSER', user: documentSnapshot.data()});
-              resolve((user = documentSnapshot.data()));
+              resolve( (user = documentSnapshot.data()));
+              // console.log("data ",documentSnapshot.data())
+              await  AsyncStorage.setItem('uid' , JSON.stringify(documentSnapshot.data()) , err => {
+                alert('success async storage')
+              }) 
             });
         })
         .catch(error => {

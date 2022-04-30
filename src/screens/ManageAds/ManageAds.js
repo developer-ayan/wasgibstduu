@@ -42,7 +42,6 @@ export default function manageAds({navigation}) {
   }, []);
 
   const StaredHandler = (uid, data) => {
-    console.log(data);
     const filterStared = data?.filter(function (item) {
       return item !== user?.USER_ID;
     });

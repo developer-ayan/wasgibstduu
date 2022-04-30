@@ -314,7 +314,6 @@ const UserFilter = () => {
   const addCommunityAmenity = name => {
     if (community.includes(name)) {
       setCommunity(prev => prev.filter(item => item !== name));
-      // console.log(setCommunity(prev => prev.filter(item => item !== name)));
     } else {
       setCommunity(prev => prev.concat(name));
     }

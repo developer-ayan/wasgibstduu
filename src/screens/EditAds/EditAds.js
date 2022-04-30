@@ -379,7 +379,6 @@ export default function EditAds({navigation, route}) {
           <View></View>
           {image?.length === 0
             ? data.ADS_IMAGES.map((item, ind) => {
-                console.log(item);
                 return (
                   <View style={{marginHorizontal: 6, marginTop: 20}}>
                     <TouchableOpacity

@@ -11,7 +11,8 @@ export default function App() {
   const {setUser , user} = useContext(AuthContext);
   const [save, setSave] = React.useState({});
   const uid = useSelector(state => state.user);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
 
   // const get_data = async () => {
   //   setLoading(true);
@@ -27,7 +28,27 @@ export default function App() {
   //   setLoading(false);
   // };
 
+  const get_data = async () => {
+
+
+
+
+    // try {
+      const value = await AsyncStorage.getItem('uid');
+      // setSave(JSON.parse(value))
+
+      if (value !== 'null' || value !== null) {
+        setUser(JSON.parse(value));
+      }
+    // } catch (error) {
+    //   // Error retrieving data
+    // }
+    setLoading(false)
+  };
+  
+
   React.useEffect(() => {
+    get_data()
     // get_data()
     setTimeout(() => {
       SplashScreen.hide()
@@ -37,7 +58,6 @@ export default function App() {
   // setUser(save === null ? uid : save)
 
   
-  // console.log("async ",save === null ? uid : save)
   return loading ? (
     <ActivityIndicator
       color={'black'}

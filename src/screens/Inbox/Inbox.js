@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -21,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../../context/Auth';
 import {firebase} from '@react-native-firebase/auth';
 import {Colors} from '../../comonents/Constant/Constant';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default function Inbox() {
   const navigation = useNavigation();
@@ -128,8 +130,6 @@ export default function Inbox() {
   };
 
   const StaredHandler = item => {
-    // console.log('item ', item);
-
     const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
     let forDeletion = [user?.USER_ID];
 
@@ -154,6 +154,16 @@ export default function Inbox() {
     }
   };
 
+  const [modalVisibleImage, setModalVisibleImage] = React.useState(false);
+
+  const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
+
+  const images = [
+    {
+      url: urlSelectedImage,
+    },
+  ];
+
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -171,7 +181,9 @@ export default function Inbox() {
         Empty Inbox
       </Text>
     </View>
-  ) : (
+  ) :  (
+
+   
     <ScrollView
       style={{
         flex: 1,
@@ -179,6 +191,16 @@ export default function Inbox() {
         paddingLeft: 13,
         paddingRight: 13,
       }}>
+         
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisibleImage}
+      onRequestClose={() => {
+        setModalVisibleImage(!modalVisibleImage);
+      }}>
+      <ImageViewer imageUrls={images} />
+    </Modal> 
       <View>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={{marginTop: 10}}>
@@ -279,7 +301,14 @@ export default function Inbox() {
                     justifyContent: 'space-between',
                     borderRadius: 10,
                   }}>
-                  <View style={{width: '16%', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setUrlSelectedImage(user?.USER_ID
+                        ? item.user2.profile
+                        : item.user1.profile);
+                      setModalVisibleImage(true);
+                    }}
+                    style={{width: '16%', alignItems: 'center'}}>
                     <Image
                       source={{
                         uri:
@@ -294,7 +323,7 @@ export default function Inbox() {
                         borderRadius: 50,
                       }}
                     />
-                  </View>
+                  </TouchableOpacity>
 
                   <View
                     style={{

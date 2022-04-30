@@ -34,27 +34,10 @@ export const AuthProvider = props => {
   //     // Error retrieving data
   //   }
   // };
-  const get_data = async () => {
 
-    console.log('ayan')
-
-    // try {
-      const value = await AsyncStorage.getItem('uid');
-      // console.log("Async strogare"  ,JSON.parse(value));
-      // setSave(JSON.parse(value))
-
-      if (value !== 'null' || value !== null) {
-        setUser(JSON.parse(value));
-      }
-    // } catch (error) {
-    //   // Error retrieving data
-    // }
-  };
-  useEffect(() => {
-    
-
-    get_data();
-  }, [get_data]);
+  // useEffect(() => {
+  //   get_data();
+  // }, []);
 
   return (
     <AuthContext.Provider

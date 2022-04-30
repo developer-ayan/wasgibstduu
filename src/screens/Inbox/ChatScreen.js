@@ -39,7 +39,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default function ChatScreen({route, navigation}) {
   const {e, title} = route.params;
-  console.log(e);
   const chat_user_profile = e.PROFILE;
   const [message, setMessage] = React.useState('');
   const [data, setData] = React.useState([]);

@@ -1,5 +1,5 @@
 const Categories_detail = {
-    fashion_second_para : 'Manage your free and premium advertisment',
+    fashion_second_para : 'Enjoy To view Advertisement',
     fashion : 'Fashion Ads',
     auto_mobiles : 'Auto mobiles Ads',
     events : 'Events Ads',
