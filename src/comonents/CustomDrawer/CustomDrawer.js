@@ -26,9 +26,9 @@ function CustomDrawer(props) {
   const {user, setUser} = useContext(AuthContext);
   const removeData = async () => {
     await AsyncStorage.removeItem('uid');
-    setUser(null);
+    // setUser({})
+    // setUser(null)
 
-    RNRestart.Restart();
   };
 
   React.useEffect(() => {
@@ -38,7 +38,7 @@ function CustomDrawer(props) {
       .onSnapshot(e => {
         setData(e.data());
       });
-  }, [user?.USER_ID]);
+  }, [user?.USER_ID , removeData]);
 
   return (
     <View style={{flex: 1}}>

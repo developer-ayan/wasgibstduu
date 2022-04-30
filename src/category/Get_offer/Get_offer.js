@@ -60,7 +60,6 @@ function Get_offer() {
         }, 100);
       });
 
-    // console.log('unseen ', unseen);
 
     firestore()
       .collection('Bids')

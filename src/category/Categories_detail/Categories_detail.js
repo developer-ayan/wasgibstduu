@@ -42,7 +42,6 @@ export default function Categories_detail({route, navigation}) {
   const [submited, setSubmited] = useState([]);
   const {user} = useContext(AuthContext);
 
-  console.log('ZIPCODE ', LIKE);
 
   const onShare = async () => {
     try {
@@ -103,11 +102,9 @@ export default function Categories_detail({route, navigation}) {
       });
   }, []);
 
-  console.log('submited ', submited);
 
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
 
-  // console.log('USER_LIKE ', USER_LIKE);
 
   const toggle = () => {
     setshow(!show);

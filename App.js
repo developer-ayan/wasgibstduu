@@ -11,31 +11,33 @@ export default function App() {
   const {setUser , user} = useContext(AuthContext);
   const [save, setSave] = React.useState({});
   const uid = useSelector(state => state.user);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const get_data = async () => {
-    setLoading(true);
+  // const get_data = async () => {
+  //   setLoading(true);
 
-    try {
-      const value = await AsyncStorage.getItem('uid');
-      if (value !== 'null') {
-        setSave(JSON.parse(value));
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-    setLoading(false);
-  };
+  //   try {
+  //     const value = await AsyncStorage.getItem('uid');
+  //     if (value !== 'null') {
+  //       setSave(JSON.parse(value));
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  //   setLoading(false);
+  // };
 
   React.useEffect(() => {
-    get_data()
+    // get_data()
     setTimeout(() => {
       SplashScreen.hide()
     }, 2000);
   }, []);
 
-  setUser(save === null ? uid : save)
-  console.log("redux ",save)
+  // setUser(save === null ? uid : save)
+
+  console.log(" app .js state ",user)
+  
   // console.log("async ",save === null ? uid : save)
   return loading ? (
     <ActivityIndicator

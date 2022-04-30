@@ -43,7 +43,6 @@ const sign_in = user => {
             .doc(res.user.uid)
             .onSnapshot(documentSnapshot => {
               dispatch({type: 'GETUSER', user: documentSnapshot.data()});
-              console.log('In redux ', documentSnapshot.data());
               resolve((user = documentSnapshot.data()));
             });
         })
@@ -63,6 +62,7 @@ const sign_in = user => {
 function create_ads(user) {
   return dispatch => {
     const User_data = user;
+
 
     firestore()
       .collection(`Category`)
@@ -84,25 +84,4 @@ function create_ads(user) {
   };
 }
 
-function all_ads() {
-  const [save, setSave] = React.useState({});
-  return dispatch => {
-    const get_data = async () => {
-      try {
-        const userDetail = await AsyncStorage.getItem('userData');
-        const check = JSON.parse(userDetail);
-
-        check != {} ? setSave(check) : null;
-        dispatch({type: 'DATA', data: check});
-      } catch (e) {
-        // error reading value
-        console.log(e);
-      }
-    };
-
-    React.useEffect(() => {
-      get_data();
-    }, []);
-  };
-}
-export {signUp, sign_in, create_ads, all_ads};
+export {signUp, sign_in, create_ads,};

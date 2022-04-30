@@ -11,11 +11,11 @@ import {name as appName} from './app.json';
 import store from './src/redux/Index';
 import {AuthProvider} from './src/context/Auth';
 const Root = () => (
-  <AuthProvider>
-    <Provider store={store}>
+  <Provider store={store}>
+    <AuthProvider>
       <App />
-    </Provider>
-  </AuthProvider>
+    </AuthProvider>
+  </Provider>
 );
 
 AppRegistry.registerComponent(appName, () => Root);

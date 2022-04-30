@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -18,19 +18,13 @@ import firestore from '@react-native-firebase/firestore';
 import {ActivityIndicator} from 'react-native';
 
 export default function BottomNav() {
-  const state = useSelector(state => state.user);
+  // const state = useSelector(state => state.user);
   const {messageCounting} = useContext(AuthContext);
   const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    try {
-      const userDetail = JSON.stringify(state);
-      AsyncStorage.setItem('userData', userDetail);
-    } catch (e) {
-      // saving error
-    }
+  const {user} = useContext(AuthContext)
 
 
+useEffect(() => {
 
     firestore()
       .collection('Category')
@@ -51,8 +45,8 @@ export default function BottomNav() {
             .map(e => e.data())
             .filter(function (item) {
               return (
-                item.user1.uid === state?.USER_ID ||
-                item.user2.uid === state?.USER_ID
+                item.user1.uid === user?.USER_ID ||
+                item.user2.uid === user?.USER_ID
               );
             }),
             setLoading(false)
