@@ -29,35 +29,6 @@ export default function FilterData({navigation, route}) {
   const [loading, setLoading] = React.useState(false);
   const {user} = useContext(AuthContext);
 
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 100);
-
-  const StaredHandler = item => {
-    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
-    let forDeletion = [user?.USER_ID];
-
-    let arr = item?.staredUsers;
-
-    arr = arr.filter(item => !forDeletion.includes(item));
-
-    if (filterStaredData === true) {
-      firestore()
-        .collection('Category')
-        .doc(item.AUTO_ID)
-        .update({
-          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
-        });
-    } else if (filterStaredData === false) {
-      firestore()
-        .collection(`Category`)
-        .doc(item.AUTO_ID)
-        .update({
-          staredUsers: [...arr, user?.USER_ID],
-        });
-    }
-  };
-
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -72,7 +43,8 @@ export default function FilterData({navigation, route}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{color: 'black', fontSize: 20, fontFamily: 'JosefinSans-Bold'}}>
+      <Text
+        style={{color: 'black', fontSize: 20, fontFamily: 'JosefinSans-Bold'}}>
         Go to create your ads
       </Text>
       <View>
@@ -125,6 +97,7 @@ export default function FilterData({navigation, route}) {
                     LIKE: item.LIKE,
                     USER_LIKE: filterLike[0],
                     AUTO_ID: item.AUTO_ID,
+                    ZIPCODE: item.ZIPCODE,
                   })
                 }>
                 <Animatable.View style={styles.Animatable}>

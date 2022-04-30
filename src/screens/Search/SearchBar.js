@@ -76,10 +76,9 @@ export default function SearchBar({navigation}) {
       item =>
         item.CATEGORY === selectedPropertyType &&
         parseInt(item.PRICE.slice(1)) <= landArea[0] &&
-        item.CITY === address,
+        item.CITY === city || item.ZIPCODE === city,
     );
     setModalVisible(!modalVisible);
-
     navigation.navigate('FilterData', {data: filterArrayMaster});
     setFilterArray(filterArrayMaster);
   };
@@ -163,7 +162,6 @@ export default function SearchBar({navigation}) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <ScrollView style={styles.centeredView}>
@@ -180,50 +178,24 @@ export default function SearchBar({navigation}) {
           </Text>
           {/* <Text>Ayan</Text> */}
           <View style={[styles.Address_components]}>
-            <ScrollView
-              keyboardShouldPersistTaps={'always'}
-              contentContainerStyle={{
-                width: '100%',
-                flexDirection: 'row-reverse',
-              }}>
-              <GooglePlacesAutocomplete
-                nestedScrollEnabled={true}
-                autoFocus={false}
-                textInputProps={{
-                  placeholderTextColor: 'gray',
-                  color: 'gray',
-                  returnKeyType: 'next',
-                  fontSize: 14,
-                  multiline: true,
-                  // textAlign: Platform.OS === 'ios' ? 'right' : 'left',
-                  // textAlignVertical: 'center',
-                  alignContent: 'center',
-                  fontFamily: 'Roboto-Regular',
-                  value: address,
-                  onChangeText: setAddress,
-                }}
-                styles={{
-                  listView: {maxHeight: 150, width: '100%'},
-                }}
-                listViewDisplayed={false}
-                placeholder="Search City"
-                placeholderTextColor="gray"
-                onPress={(data, location = null) => {
-                  // 'details' is provided when fetchDetails = true
-                  console.log(data);
-                  console.log(location);
-                }}
-                // onPress={data => {
-                //   console.log(data.description, 'datas');
-                //   // setAddress(data.description);
-                //   // FetchCoordinates(data.description);
-                // }}
-                query={{
-                  key: 'AIzaSyD6H1cGAMzHOID3_rSUMB7Uxx1CE0SlP0c',
-                  language: 'en',
-                }}
-              />
-            </ScrollView>
+          <TextInput
+            onChangeText={val => setCity(val)}
+            value={city}
+            multiline={true}
+            placeholder={'Zipcode / City'}
+            
+            style={{
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              fontFamily: 'JosefinSans-Regular',
+              opacity: 0.7,
+              color: '#ababab',
+              fontSize: 15,
+    borderRadius: 25,
+
+              // fontFamily: 'Roboto',
+            }}
+          />
           </View>
 
           <Text
@@ -516,7 +488,7 @@ export default function SearchBar({navigation}) {
               color: 'black',
               fontFamily: 'JosefinSans-Bold',
             }}>
-            Price
+            Range of your price
           </Text>
           <View style={{paddingHorizontal: 20}}>
             <MultiSlider
@@ -776,12 +748,10 @@ const styles = StyleSheet.create({
   Address_components: {
     // marginLeft: 5,
     width: '90%',
-    flexDirection: 'row',
     // justifyContent: 'flex-start',
     borderWidth: 1,
     borderColor: '#B3AEAD',
     borderRadius: 25,
-    paddingHorizontal: 20,
     alignSelf: 'center',
     marginTop: 15,
     fontFamily: 'JosefinSans-Regular',

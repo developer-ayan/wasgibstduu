@@ -91,7 +91,7 @@ export default function Electronics({navigation}) {
         alignItems: 'center',
       }}>
       <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-        No Ads Avalaible Electronics 
+        No Ads Avalaible Electronics
       </Text>
       <View>
         <TouchableOpacity
@@ -143,6 +143,7 @@ export default function Electronics({navigation}) {
                     LIKE: item.LIKE,
                     USER_LIKE: filterLike[0],
                     AUTO_ID: item.AUTO_ID,
+                    ZIPCODE: item.ZIPCODE,
                   })
                 }>
                 <Animatable.View style={styles.Animatable}>
@@ -164,7 +165,7 @@ export default function Electronics({navigation}) {
                       </Text>
                       <Text style={styles.price}>{item.PRICE}</Text>
                       <View style={styles.Icon_view}>
-                      {item.UID === user?.USER_ID ? (
+                        {item.UID === user?.USER_ID ? (
                           <View
                             style={{
                               flexDirection: 'row',
@@ -175,7 +176,7 @@ export default function Electronics({navigation}) {
                             <Text
                               style={[
                                 styles.Versand,
-                                {color: 'black', fontWeight: 'bold'},
+                                {color: 'black', fontFamily: 'JosefinSans-Regular'},
                               ]}>
                               Owned Ad
                             </Text>

@@ -63,6 +63,7 @@ const sign_in = user => {
 function create_ads(user) {
   return dispatch => {
     const User_data = user;
+
     firestore()
       .collection(`Category`)
       .add({
@@ -78,6 +79,7 @@ function create_ads(user) {
         TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date()),
         EMAIL: User_data.EMAIL,
         staredUsers: ['123456'],
+        ZIPCODE: User_data.ZIPCODE,
       });
   };
 }

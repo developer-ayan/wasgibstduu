@@ -24,7 +24,7 @@ import {
 import {ActivityIndicator} from 'react-native-paper';
 import {AuthContext} from '../../context/Auth';
 import {firebase} from '@react-native-firebase/auth';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function Jobs({navigation}) {
   const [data, setData] = React.useState([]);
@@ -36,22 +36,20 @@ export default function Jobs({navigation}) {
   };
 
   useFocusEffect(
-
-  React.useCallback(() => {
-    firestore()
-      .collection('Category')
-      .orderBy('TIME_ADS')
-      .onSnapshot(documentSnapshot => {
-        setData(
-          documentSnapshot.docs
-            .map(e => e.data())
-            .filter(item => item.CATEGORY === 'Jobs'),
-        );
-        setLoading(false);
-      });
-  }, [])
-  )
-
+    React.useCallback(() => {
+      firestore()
+        .collection('Category')
+        .orderBy('TIME_ADS')
+        .onSnapshot(documentSnapshot => {
+          setData(
+            documentSnapshot.docs
+              .map(e => e.data())
+              .filter(item => item.CATEGORY === 'Jobs'),
+          );
+          setLoading(false);
+        });
+    }, []),
+  );
 
   const StaredHandler = item => {
     const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
@@ -61,7 +59,6 @@ export default function Jobs({navigation}) {
 
     arr = arr.filter(item => !forDeletion.includes(item));
 
-
     if (filterStaredData === true) {
       firestore()
         .collection('Category')
@@ -69,13 +66,12 @@ export default function Jobs({navigation}) {
         .update({
           staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
         });
-      
     } else if (filterStaredData === false) {
       firestore()
         .collection(`Category`)
         .doc(item.AUTO_ID)
         .update({
-          staredUsers: [...arr , user?.USER_ID],
+          staredUsers: [...arr, user?.USER_ID],
         });
     }
   };
@@ -95,7 +91,7 @@ export default function Jobs({navigation}) {
         alignItems: 'center',
       }}>
       <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-        No Ads Avalaible Jobs 
+        No Ads Avalaible Jobs
       </Text>
       <View>
         <TouchableOpacity
@@ -146,7 +142,6 @@ export default function Jobs({navigation}) {
             );
             const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
-
             return (
               <View key={ind} style={styles.main_view_map}>
                 <TouchableOpacity
@@ -162,6 +157,7 @@ export default function Jobs({navigation}) {
                       LIKE: item.LIKE,
                       USER_LIKE: filterLike[0],
                       AUTO_ID: item.AUTO_ID,
+                      ZIPCODE: item.ZIPCODE,
                     })
                   }>
                   <Animatable.View style={styles.Animatable}>
@@ -173,63 +169,63 @@ export default function Jobs({navigation}) {
                         />
                       </View>
                       <View style={styles.Animatable_Para}>
-                        {item.UID === user?.USER_ID ?
-                        <Text style={styles.username}>{'Your Ad'}</Text>
-                        :
-                        <Text style={styles.username}>{item.NAME}</Text>
-                        
-                      }
+                        {item.UID === user?.USER_ID ? (
+                          <Text style={styles.username}>{'Your Ad'}</Text>
+                        ) : (
+                          <Text style={styles.username}>{item.NAME}</Text>
+                        )}
                         <Text numberOfLines={2} style={styles.title}>
                           {item.TITLE}
                         </Text>
                         <Text style={styles.price}>{item.PRICE}</Text>
                         <View style={styles.Icon_view}>
-                        {item.UID === user?.USER_ID ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              width: '100%',
-                            }}>
-                            <Text
-                              style={[
-                                styles.Versand,
-                                {color: 'black', fontWeight: 'bold'},
-                              ]}>
-                              Owned Ad
-                            </Text>
-                            <FontAwesome
-                              style={[styles.staro, {color: 'gray'}]}
-                              name="user-circle-o"
-                              size={20}
-                            />
-                          </View>
-                        ) : (
-                          <Text style={styles.Versand}>Versand moglich</Text>
-                        )}
-
-                          {item.UID === user?.USER_ID ? 
-                          <Text style = {{color :'white'}}>Ayan</Text>
-                          :
-                          <Pressable onPress={() => StaredHandler(item)}>
-                            {filterStaredData === true ? (
-                              <AntDesign
-                                style={[styles.staro, {color: 'gold'}]}
-                                name="star"
-                                size={18}
+                          {item.UID === user?.USER_ID ? (
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                              }}>
+                              <Text
+                                style={[
+                                  styles.Versand,
+                                  {
+                                    color: 'black',
+                                    fontFamily: 'JosefinSans-Regular',
+                                  },
+                                ]}>
+                                Owned Ad
+                              </Text>
+                              <FontAwesome
+                                style={[styles.staro, {color: 'gray'}]}
+                                name="user-circle-o"
+                                size={20}
                               />
-                            ) : (
-                              <AntDesign
-                                style={styles.staro}
-                                name="staro"
-                                size={18}
-                              />
-                            )}
-                          </Pressable>
+                            </View>
+                          ) : (
+                            <Text style={styles.Versand}>Versand moglich</Text>
+                          )}
 
-                        } 
-
+                          {item.UID === user?.USER_ID ? (
+                            <Text style={{color: 'white'}}>Ayan</Text>
+                          ) : (
+                            <Pressable onPress={() => StaredHandler(item)}>
+                              {filterStaredData === true ? (
+                                <AntDesign
+                                  style={[styles.staro, {color: 'gold'}]}
+                                  name="star"
+                                  size={18}
+                                />
+                              ) : (
+                                <AntDesign
+                                  style={styles.staro}
+                                  name="staro"
+                                  size={18}
+                                />
+                              )}
+                            </Pressable>
+                          )}
                         </View>
                       </View>
                     </View>

@@ -141,7 +141,8 @@ export default function Fashion({navigation}) {
               item => item === user?.USER_ID,
             );
             const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
-            console.log(item?.LIKE)
+
+
 
             return (
               <View key={ind} style={styles.main_view_map}>
@@ -158,6 +159,7 @@ export default function Fashion({navigation}) {
                       LIKE: item.LIKE,
                       USER_LIKE: filterLike[0],
                       AUTO_ID: item.AUTO_ID,
+                      ZIPCODE : item.ZIPCODE
                     })
                   }>
                   <Animatable.View style={styles.Animatable}>
@@ -190,7 +192,7 @@ export default function Fashion({navigation}) {
                               <Text
                                 style={[
                                   styles.Versand,
-                                  {color: 'black', fontWeight: 'bold'},
+                                  {color: 'black', fontFamily: 'JosefinSans-Regular',}
                                 ]}>
                                 Owned Ad
                               </Text>

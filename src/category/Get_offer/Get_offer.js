@@ -11,7 +11,7 @@ import {
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput} from 'react-native-gesture-handler';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -112,6 +112,32 @@ function Get_offer() {
       size={'large'}
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
     />
+  ) : unseen.length === 0 && BidsData.length === 0 ? (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        No Have Bids
+      </Text>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            backgroundColor: 'green',
+            padding: 20,
+            borderRadius: 50,
+            marginTop: 20,
+          }}>
+          <Text style={{color: 'white', fontSize: 20}}>
+            <Feather name="arrow-left" size={25} color="white" />
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   ) : (
     <ScrollView>
       <View
@@ -174,14 +200,16 @@ function Get_offer() {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() =>
+                  onPress={() => {
                     firestore()
                       .collection('Bids')
                       .doc('Your all bids here !')
                       .collection(user?.USER_ID)
                       .doc(autoId)
-                      .delete()
-                  }
+                      .delete();
+
+                    setModalVisible(false);
+                  }}
                   activeOpacity={0.9}
                   style={{
                     backgroundColor: 'red',

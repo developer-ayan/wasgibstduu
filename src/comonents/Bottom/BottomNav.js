@@ -15,10 +15,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 import {AuthContext} from '../../context/Auth';
 import firestore from '@react-native-firebase/firestore';
+import {ActivityIndicator} from 'react-native';
 
 export default function BottomNav() {
   const state = useSelector(state => state.user);
   const {messageCounting} = useContext(AuthContext);
+  const [loading, setLoading] = React.useState(true);
+
   React.useEffect(() => {
     try {
       const userDetail = JSON.stringify(state);
@@ -26,6 +29,9 @@ export default function BottomNav() {
     } catch (e) {
       // saving error
     }
+
+
+
     firestore()
       .collection('Category')
       .get()
@@ -36,9 +42,31 @@ export default function BottomNav() {
           });
         });
       });
+
+      firestore()
+      .collection('Inbox')
+      .onSnapshot(documentSnapshop => {
+        console.log(
+          documentSnapshop.docs
+            .map(e => e.data())
+            .filter(function (item) {
+              return (
+                item.user1.uid === state?.USER_ID ||
+                item.user2.uid === state?.USER_ID
+              );
+            }),
+            setLoading(false)
+        );
+      });
   }, []);
   const Tab = createMaterialBottomTabNavigator();
-  return (
+  return loading ? (
+    <ActivityIndicator
+      color={'black'}
+      size={'large'}
+      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+    />
+  ) : (
     <Tab.Navigator
       initialRouteName="Drawer"
       activeColor="black"
@@ -73,30 +101,30 @@ export default function BottomNav() {
           ),
         }}
       />
-      {messageCounting === 0 ?
+      {messageCounting === 0 ? (
         <Tab.Screen
-        name="Inbox"
-        component={Inbox}
-        options={{
-          tabBarLabel: <Entypo name="dot-single" size={15} />,
-          tabBarIcon: ({color}) => (
-            <Fontisto name="email" color={color} size={23} />
-          ),
-        }}
-      />
-      :
-      <Tab.Screen
-      name="Inbox"
-      component={Inbox}
-      options={{
-        tabBarBadge: messageCounting,
-        tabBarLabel: <Entypo name="dot-single" size={15} />,
-        tabBarIcon: ({color}) => (
-          <Fontisto name="email" color={color} size={23} />
-        ),
-      }}
-    />
-    }
+          name="Inbox"
+          component={Inbox}
+          options={{
+            tabBarLabel: <Entypo name="dot-single" size={15} />,
+            tabBarIcon: ({color}) => (
+              <Fontisto name="email" color={color} size={23} />
+            ),
+          }}
+        />
+      ) : (
+        <Tab.Screen
+          name="Inbox"
+          component={Inbox}
+          options={{
+            tabBarBadge: messageCounting,
+            tabBarLabel: <Entypo name="dot-single" size={15} />,
+            tabBarIcon: ({color}) => (
+              <Fontisto name="email" color={color} size={23} />
+            ),
+          }}
+        />
+      )}
       <Tab.Screen
         name="Profile"
         component={Profile}

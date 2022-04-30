@@ -1,12 +1,12 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   ScrollView,
   Image,
-  ActivityIndicator,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -19,29 +19,145 @@ import firestore from '@react-native-firebase/firestore';
 // import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../../context/Auth';
+import {firebase} from '@react-native-firebase/auth';
+import {Colors} from '../../comonents/Constant/Constant';
 
-export default function StaredChat() {
+export default function Inbox() {
   const navigation = useNavigation();
   const [data, setData] = React.useState([]);
   const [chats, setChats] = React.useState([]);
   const [msg, setMsg] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
   const [allResultsVisible, setAllResultsVisible] = React.useState(false);
   const [messages, setMessages] = React.useState([]);
   const {user} = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+  const ChatInbox = () => {
+    setLoading(true);
+    firestore()
+      .collection('Inbox')
+      .orderBy('date')
+      .onSnapshot(documentSnapshop => {
+        // setMessages(
+        //   documentSnapshop.docs
+        //     .map(e => e.data())
+        //     .filter(function (item) {
+        //       return (
+        //         item.user1.uid === user?.USER_ID ||
+        //         item.user2.uid === user?.USER_ID
+        //       );
+        //     }),
+        // );
+        setMessages(
+          documentSnapshop.docs
+            .map(e => e.data())
+            .filter(item => item?.staredUsers?.includes(user.USER_ID)),
+        );
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
+      });
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      ChatInbox();
+    }, [deleteChat, user?.USER_ID]),
+  );
+
+  const deleteChat = uid => {
+    firestore().collection('Inbox').doc(uid).delete();
+  };
+
+  const deleteChatting = uid => {
+    firestore()
+      .collection('chatting')
+      .doc(uid)
+      .collection(uid)
+      .get()
+      .then(querySnapshot => {
+        Promise.all(querySnapshot.docs.map(d => d.ref.delete()));
+      });
+  };
+
+  const DeleteStaredChat = uid => {
     firestore()
       .collection('Stared Chat')
       .doc('user stared chats')
-      .collection(user?.USER_ID)
-      .onSnapshot(
-        document => setMessages(document.docs.map(item => item.data().item)),
-        setLoading(false),
-      );
-  }, [user?.USER_ID]);
+      .collection(user.USER_ID)
+      .doc(uid)
+      .delete();
+  };
 
-  console.log(messages);
+  const combineFunction = uid => {
+    deleteChatting(uid);
+    deleteChat(uid);
+    DeleteStaredChat(uid);
+  };
+
+  const Stared = (uid, data, toggleIcon) => {
+    if (toggleIcon === true) {
+      firestore()
+        .collection('Stared Chat')
+        .doc('user stared chats')
+        .collection(user?.USER_ID)
+        .doc(uid)
+        .delete();
+
+      setTimeout(() => {
+        firestore().collection('Inbox').doc(uid).update({
+          toggle: false,
+        });
+      }, 50);
+    } else {
+      firestore()
+        .collection('Stared Chat')
+        .doc('user stared chats')
+        .collection(user?.USER_ID)
+        .doc(uid)
+        .set({
+          item: data,
+          toggle: true,
+          date: firebase.firestore.Timestamp.fromDate(new Date()),
+          // dat
+        });
+
+      setTimeout(() => {
+        firestore().collection('Inbox').doc(uid).update({
+          toggle: true,
+        });
+      }, 500);
+    }
+
+    alert('success');
+  };
+
+  const StaredHandler = item => {
+    // console.log('item ', item);
+
+    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+    let forDeletion = [user?.USER_ID];
+
+    let arr = item?.staredUsers;
+
+    arr = arr.filter(item => !forDeletion.includes(item));
+
+    if (filterStaredData === true) {
+      firestore()
+        .collection('Inbox')
+        .doc(item.uid)
+        .update({
+          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
+        });
+    } else if (filterStaredData === false) {
+      firestore()
+        .collection(`Inbox`)
+        .doc(item.uid)
+        .update({
+          staredUsers: [...arr, user?.USER_ID],
+        });
+    }
+  };
 
   return loading ? (
     <ActivityIndicator
@@ -51,8 +167,13 @@ export default function StaredChat() {
     />
   ) : messages?.length === 0 ? (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-        No Have Stared Chats
+      <Text
+        style={{
+          color: 'black',
+          fontSize: 20,
+          fontFamily: 'JosefinSans-Regular',
+        }}>
+        Empty Inbox
       </Text>
     </View>
   ) : (
@@ -64,9 +185,11 @@ export default function StaredChat() {
         paddingRight: 13,
       }}>
       <View>
-        <View style={{marginTop: 10}}>
-          <Feather name="arrow-left" size={25} color="black" />
-        </View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View style={{marginTop: 10}}>
+            <Feather name="arrow-left" size={25} color="black" />
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
@@ -82,14 +205,15 @@ export default function StaredChat() {
             <Text
               style={{
                 color: '#7d7d7d',
-                fontWeight: 'bold',
                 fontSize: 12,
                 textAlign: 'center',
+                fontFamily: 'JosefinSans-Bold',
               }}>
               Inbox
             </Text>
           </View>
         </TouchableOpacity>
+
         <View
           style={{
             margin: 5,
@@ -101,9 +225,10 @@ export default function StaredChat() {
           <Text
             style={{
               color: 'white',
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
               fontSize: 12,
               textAlign: 'center',
+              fontFamily: 'JosefinSans-Bold',
             }}>
             Started
           </Text>
@@ -115,6 +240,7 @@ export default function StaredChat() {
           let filter1 = item.user.filter(
             item => item.user.USER_ID !== user.USER_ID,
           );
+          const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
           const miliseconds = item.date.seconds;
 
@@ -202,20 +328,29 @@ export default function StaredChat() {
                       justifyContent: 'flex-end',
                       paddingRight: 10,
                     }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        firestore().collection('Inbox').doc(item.uid).update({
-                          toggle: false,
-                        });
+                    <TouchableOpacity onPress={() => combineFunction(item.uid)}>
+                      <AntDesign
+                        name="delete"
+                        size={20}
+                        color="#b1b1b1"
+                        style={{paddingVertical: 2, marginRight: 5}}
+                      />
+                    </TouchableOpacity>
 
-                        firestore()
-                          .collection('Stared Chat')
-                          .doc('user stared chats')
-                          .collection(user?.USER_ID)
-                          .doc(item.uid)
-                          .delete();
-                      }}>
-                      <AntDesign name="star" size={20} color="gold" />
+                    <TouchableOpacity onPress={() => StaredHandler(item)}>
+                      {filterStaredData === true ? (
+                        <AntDesign
+                          style={[{color: 'gold'}]}
+                          name="star"
+                          size={18}
+                        />
+                      ) : (
+                        <AntDesign
+                          color={Colors.card_username}
+                          name="staro"
+                          size={18}
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
                 </View>

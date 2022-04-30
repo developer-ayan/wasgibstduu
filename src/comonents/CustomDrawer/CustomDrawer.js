@@ -44,7 +44,6 @@ function CustomDrawer(props) {
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
         <ImageBackground
-        
           // source={{
           //   uri: 'https://media.istockphoto.com/photos/the-gray-and-silver-are-light-black-with-white-the-gradient-is-the-picture-id1322292759?b=1&k=20&m=1322292759&s=170667a&w=0&h=FtcK2R11RjeMUkMUWu5kxFmYR8pY-G8OLs99PnWIJpE=',
           // }}
@@ -52,10 +51,8 @@ function CustomDrawer(props) {
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {data?.PROFILE === '' ? (
               <Image
-                style={{borderRadius: 100, height: 60, width: 60}}
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU',
-                }}
+                style={{borderRadius: 100, height: 80, width: 80}}
+                source={require('../../assets/premiumImages/user.png')}
               />
             ) : (
               <Image

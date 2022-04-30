@@ -11,6 +11,7 @@ import {
   Modal,
   ActivityIndicator,
   ToastAndroid,
+  Pressable,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Toast from 'react-native-simple-toast';
-
+import ImageViewer from 'react-native-image-zoom-viewer';
 export default function Ads({navigation}) {
   const [uri, setUri] = React.useState(null);
   const [category, setCategory] = React.useState('');
@@ -38,7 +39,9 @@ export default function Ads({navigation}) {
   const [uploading, setUploading] = React.useState(false);
   const [render, setRender] = React.useState(false);
   const [transeferred, setTranseferred] = React.useState(0);
+  const [zipCode, setZipCode] = React.useState(null);
   const dispatch = useDispatch();
+
   const countries = [
     'Fashion',
     'Auto Mobiles',
@@ -53,7 +56,15 @@ export default function Ads({navigation}) {
   const [state, setState] = useState({});
   const [image, setImage] = useState([]);
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalVisibleImage, setModalVisibleImage] = React.useState(false);
+  const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
+
   const [modalText, setModalText] = React.useState('');
+  const images = [
+    {
+      url: urlSelectedImage,
+    },
+  ];
 
   const getData = async () => {
     const value = await AsyncStorage.getItem('uid');
@@ -161,6 +172,8 @@ export default function Ads({navigation}) {
       Toast.show('Price Is Required ...', Toast.LONG);
     } else if (!REGEXP.test(city)) {
       Toast.show('City Is Required ...', Toast.LONG);
+    } else if (!REGEXP.test(zipCode)) {
+      Toast.show('ZipCode Is Required ', Toast.LONG);
     } else if (image.length === 0) {
       Toast.show('Images Is Required ', Toast.LONG);
     } else {
@@ -179,6 +192,7 @@ export default function Ads({navigation}) {
         name: state.NAME,
         UID: state.USER_ID,
         EMAIL: state?.EMAIL,
+        ZIPCODE: zipCode,
       };
       dispatch(create_ads(user));
       setTitle('');
@@ -187,6 +201,7 @@ export default function Ads({navigation}) {
       setCity('');
       setCategory('');
       setImage([]);
+      setZipCode(null);
       navigation.goBack();
 
       // setData({
@@ -291,11 +306,21 @@ export default function Ads({navigation}) {
               color="#525252"
               style={{marginRight: 10}}
             />
-            <Text style={{color: '#525252', fontFamily: 'JosefinSans-Regular',}}>
+            <Text style={{color: '#525252', fontFamily: 'JosefinSans-Regular'}}>
               Configuring Image ...
             </Text>
           </View>
         </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleImage}
+        onRequestClose={() => {
+          setModalVisibleImage(!modalVisibleImage);
+        }}>
+        <ImageViewer imageUrls={images} />
       </Modal>
 
       <View style={styles.MainView}>
@@ -431,39 +456,20 @@ export default function Ads({navigation}) {
 
         <View style={{marginTop: 20}}>
           <Text style={styles.AdTitle}>CITY</Text>
-
-          {/* <GooglePlacesAutocomplete
-            placeholder="Search your city"
-            minLength={2}
-            autoFocus={false}
-            query={{
-              key: 'AIzaSyD-Kn_zmf_zUgSKaJ-tcTTeZT7Ap3mXOTY',
-              language: 'en',
-              // type: '(cities)',
-            }}
-            returnKeyType={'default'}
-            fetchDetails={true}
-            styles={{
-              textInputContainer: {
-                paddingVertical: 4,
-                backgroundColor: '#f7f7f7',
-              },
-              textInput: {
-                color: '#ababab',
-                fontSize: 15,
-                backgroundColor: '#f7f7f7',
-                fontWeight: 'bold',
-                opacity: 0.7,
-              },
-              predefinedPlacesDescription: {
-                color: '#1faadb',
-              },
-            }}
-          /> */}
-
           <TextInput
             onChangeText={val => setCity(val)}
             value={city}
+            multiline={true}
+            style={styles.Input}
+          />
+        </View>
+
+        <View style={{marginTop: 20}}>
+          <Text style={styles.AdTitle}>ZIPCODE</Text>
+          <TextInput
+            onChangeText={val => setZipCode(val)}
+            value={zipCode}
+            keyboardType="number-pad"
             multiline={true}
             style={styles.Input}
           />
@@ -495,31 +501,43 @@ export default function Ads({navigation}) {
             </View>
           </TouchableOpacity>
 
-          <View>
-            {/* <Image
-              style={{height: 80, width: 80, borderRadius: 2, marginTop: 1}}
-              source={{uri: uri === null ? data.ADS_IMAGES : uri}}
-            /> */}
-          </View>
+          <View></View>
           {image?.length === 0
             ? null
             : image.map((item, ind) => {
                 return (
-                  <View key={ind} style={{marginHorizontal: 6, marginTop: 20}}>
-                    <Image
-                      style={{
-                        height: 60,
-                        width: 60,
-                        borderRadius: 10,
-                        marginTop: 1,
-                        marginHorizontal: 3,
-                        borderWidth: 1,
-                      }}
-                      source={{uri: item}}
-                    />
-                  </View>
+                  <TouchableOpacity
+                    style={{marginHorizontal: 6, marginTop: 20}}
+                    onPress={() => {
+                      setUrlSelectedImage(item);
+                      setModalVisibleImage(true);
+                    }}>
+                    <View key={ind}>
+                      <Image
+                        style={{
+                          height: 60,
+                          width: 60,
+                          borderRadius: 10,
+                          marginTop: 1,
+                          marginHorizontal: 3,
+                          borderWidth: 1,
+                        }}
+                        source={{uri: item}}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 );
               })}
+          {image.length === 0 ? null : (
+            <TouchableOpacity onPress={() => setImage([])}>
+              <Entypo
+                style={{marginHorizontal: 20}}
+                name="circle-with-cross"
+                size={40}
+                color="red"
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
         <TouchableOpacity onPress={CreateAds}>
@@ -535,7 +553,14 @@ export default function Ads({navigation}) {
               paddingVertical: 25,
               marginVertical: 10,
             }}>
-            <Text style={{fontSize: 14, color: '#1d1900' , fontFamily: 'JosefinSans-Regular',}}>Create Ads</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: '#1d1900',
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              Create Ads
+            </Text>
             <Feather name="arrow-right" size={20} color="#1d1900" />
           </View>
         </TouchableOpacity>

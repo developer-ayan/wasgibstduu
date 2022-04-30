@@ -30,7 +30,6 @@ export default function manageAds({navigation}) {
     firestore()
       .collection('Category')
       .orderBy('TIME_ADS')
-
       .onSnapshot(documentSnapshot => {
         setData(
           documentSnapshot.docs
@@ -101,7 +100,7 @@ export default function manageAds({navigation}) {
       }}>
       <View>
         {/* icon back */}
-        <TouchableOpacity onPress={navigation.goBack}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={{color: 'white', fontSize: 20, marginTop: 10}}>
             <Feather name="arrow-left" size={25} color="black" />
           </Text>
@@ -151,96 +150,123 @@ export default function manageAds({navigation}) {
               marginTop: 5,
               fontFamily: 'JosefinSans-Regular',
             }}>
-            Manage your free and premium advertisement
+            Manage your free advertisement
           </Text>
         </View>
-        {data.map((e, index) => {
-          return (
-            <View key={index}>
-              <View
-                style={{
-                  padding: 10,
-                  borderRadius: 10,
-                  marginTop: 20,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    marginVertical: 20,
-                  }}>
-                  <Image
-                    style={{width: 200, height: 200}}
-                    source={{uri: e.ADS_IMAGES[0]}}
-                  />
-                </View>
+        <View style={{flexDirection: 'column-reverse'}}>
+          {data.map((e, index) => {
+            const filterLike = e?.LIKE?.filter(item => item === user?.USER_ID);
 
-                <View style={{paddingHorizontal: 10}}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 16,
-                      fontFamily: 'JosefinSans-Regular',
-                    }}>
-                    {e.TITLE}
-                  </Text>
-                  <Text
-                    style={{
-                      color: '#7d7d7d',
-                      fontSize: 14,
-                      marginTop: 2,
-                      opacity: 0.5,
-                      fontFamily: 'JosefinSans-Regular',
-                    }}>
-                    {e.CATEGORY}
-                  </Text>
-                </View>
+            return (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                key={index}
+                onPress={() =>
+                  navigation.navigate('Categories_detail', {
+                    IMAGE: e.ADS_IMAGES,
+                    PRICE: e.PRICE,
+                    DISCRIPTION: e.DISCRIPTION,
+                    CITY: e.CITY,
+                    CATEGORY: e.CATEGORY,
+                    TITLE: e.TITLE,
+                    UID: e.UID,
+                    LIKE: e.LIKE,
+                    USER_LIKE: filterLike[0],
+                    AUTO_ID: e.AUTO_ID,
+                    ZIPCODE: e.ZIPCODE,
+                  })
+                }>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginTop: 15,
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 10,
+                    padding: 10,
+                    borderRadius: 10,
+                    marginTop: 20,
                   }}>
-                  <Text
+                  <View
                     style={{
-                      fontSize: 25,
-                      color: 'black',
-                      fontFamily: 'JosefinSans-Regular',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      marginVertical: 20,
                     }}>
-                    {e.PRICE}
-                  </Text>
-                  <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('EditAds', {data: e})}>
-                      <AntDesign
-                        name="edit"
-                        size={22}
-                        color="#b1b1b1"
-                        style={{color: 'black', paddingVertical: 2, width: 40}}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() =>
-                        firestore()
-                          .collection('Category')
-                          .doc(e.AUTO_ID)
-                          .delete()
-                      }>
-                      <AntDesign
-                        name="delete"
-                        size={22}
-                        color="#b1b1b1"
-                        style={{color: 'black', paddingVertical: 2}}
-                      />
-                    </TouchableOpacity>
+                    <Image
+                      style={{width: 200, height: 200}}
+                      source={{uri: e.ADS_IMAGES[0]}}
+                    />
+                  </View>
+
+                  <View style={{paddingHorizontal: 10}}>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontSize: 16,
+                        fontFamily: 'JosefinSans-Regular',
+                      }}>
+                      {e.TITLE}
+                    </Text>
+                    <Text
+                      style={{
+                        color: '#7d7d7d',
+                        fontSize: 14,
+                        marginTop: 2,
+                        opacity: 0.5,
+                        fontFamily: 'JosefinSans-Regular',
+                      }}>
+                      {e.CATEGORY}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginTop: 15,
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        color: 'black',
+                        fontFamily: 'JosefinSans-Regular',
+                      }}>
+                      {e.PRICE}
+                    </Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('EditAds', {data: e})
+                        }>
+                        <AntDesign
+                          name="edit"
+                          size={22}
+                          color="#b1b1b1"
+                          style={{
+                            color: 'black',
+                            paddingVertical: 2,
+                            width: 40,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          firestore()
+                            .collection('Category')
+                            .doc(e.AUTO_ID)
+                            .delete()
+                        }>
+                        <AntDesign
+                          name="delete"
+                          size={22}
+                          color="#b1b1b1"
+                          style={{color: 'black', paddingVertical: 2}}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </View>
-          );
-        })}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
     </ScrollView>
   );

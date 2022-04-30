@@ -19,7 +19,8 @@ import firestore from '@react-native-firebase/firestore';
 // import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContext} from '../../context/Auth';
-import { firebase } from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/auth';
+import {Colors} from '../../comonents/Constant/Constant';
 
 export default function Inbox() {
   const navigation = useNavigation();
@@ -126,6 +127,33 @@ export default function Inbox() {
     alert('success');
   };
 
+  const StaredHandler = item => {
+    // console.log('item ', item);
+
+    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
+    let forDeletion = [user?.USER_ID];
+
+    let arr = item?.staredUsers;
+
+    arr = arr.filter(item => !forDeletion.includes(item));
+
+    if (filterStaredData === true) {
+      firestore()
+        .collection('Inbox')
+        .doc(item.uid)
+        .update({
+          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
+        });
+    } else if (filterStaredData === false) {
+      firestore()
+        .collection(`Inbox`)
+        .doc(item.uid)
+        .update({
+          staredUsers: [...arr, user?.USER_ID],
+        });
+    }
+  };
+
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -152,9 +180,11 @@ export default function Inbox() {
         paddingRight: 13,
       }}>
       <View>
-        <View style={{marginTop: 10}}>
-          <Feather name="arrow-left" size={25} color="black" />
-        </View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View style={{marginTop: 10}}>
+            <Feather name="arrow-left" size={25} color="black" />
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
@@ -205,6 +235,7 @@ export default function Inbox() {
           let filter1 = item.user.filter(
             item => item.user.USER_ID !== user.USER_ID,
           );
+          const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
 
           const miliseconds = item.date.seconds;
 
@@ -301,12 +332,19 @@ export default function Inbox() {
                       />
                     </TouchableOpacity>
 
-                    <TouchableOpacity
-                      onPress={() => Stared(item.uid, item, item.toggle)}>
-                      {item.toggle === true ? (
-                        <AntDesign name="star" size={20} color="gold" />
+                    <TouchableOpacity onPress={() => StaredHandler(item)}>
+                      {filterStaredData === true ? (
+                        <AntDesign
+                          style={[{color: 'gold'}]}
+                          name="star"
+                          size={18}
+                        />
                       ) : (
-                        <AntDesign name="staro" size={20} color="#b1b1b1" />
+                        <AntDesign
+                          color={Colors.card_username}
+                          name="staro"
+                          size={18}
+                        />
                       )}
                     </TouchableOpacity>
                   </View>

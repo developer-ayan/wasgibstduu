@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -14,6 +15,7 @@ import {AuthContext} from '../../context/Auth';
 
 export default function Premium({navigation}) {
   const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
   const {user} = useContext(AuthContext);
   React.useEffect(() => {
     firestore()
@@ -26,9 +28,73 @@ export default function Premium({navigation}) {
             .map(e => e.data())
             .filter(item => item.EMAIL === 'Info@wasgibstdu.de'),
         );
+        setLoading(false);
       });
   }, []);
-  return (
+  return loading ? (
+    <ScrollView
+      horizontal={true}
+      style={{
+        flex: 1,
+      }}>
+      <View
+        style={{
+          backgroundColor: '#D6D6D6',
+          width: 120,
+          marginRight: 20,
+          borderTopRightRadius: 5,
+          borderTopLeftRadius: 5,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: 120,
+            height: 120,
+            borderTopRightRadius: 5,
+            borderTopLeftRadius: 5,
+          }}></View>
+      </View>
+
+      <View
+        style={{
+          backgroundColor: '#D6D6D6',
+          width: 120,
+          marginRight: 20,
+          borderTopRightRadius: 5,
+          borderTopLeftRadius: 5,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: 120,
+            height: 120,
+            borderTopRightRadius: 5,
+            borderTopLeftRadius: 5,
+          }}></View>
+      </View>
+
+      <View
+        style={{
+          backgroundColor: '#D6D6D6',
+          width: 120,
+          marginRight: 20,
+          borderTopRightRadius: 5,
+          borderTopLeftRadius: 5,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: 120,
+            height: 120,
+            borderTopRightRadius: 5,
+            borderTopLeftRadius: 5,
+          }}></View>
+      </View>
+    </ScrollView>
+  ) : (
     <View>
       {data.length > 0 ? (
         <ScrollView
@@ -115,8 +181,9 @@ export default function Premium({navigation}) {
             alignItems: 'center',
             paddingHorizontal: 5,
             borderRadius: 5,
+            paddingVertical : 10
           }}>
-          <Text style={{color: '#b1b1b1', fontSize: 16}}>
+          <Text style={{color: '#b1b1b1', fontSize: 16 , fontFamily: 'JosefinSans-Regular', paddingLeft : 10}}>
             Premium ads not avalaible today
           </Text>
           <Entypo

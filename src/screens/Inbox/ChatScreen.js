@@ -100,6 +100,7 @@ export default function ChatScreen({route, navigation}) {
           message: message,
           uid: merge,
           date: firebase.firestore.Timestamp.fromDate(new Date()),
+          staredUsers : [''],
           user1: {
             uid: user.USER_ID,
             status: 'seen',
@@ -120,6 +121,7 @@ export default function ChatScreen({route, navigation}) {
           },
 
           user: [{user: e}, {user: user}],
+
         });
       setMessage('');
       setUri(null);
@@ -222,7 +224,7 @@ export default function ChatScreen({route, navigation}) {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <TouchableOpacity onPress={navigation.goBack}>
+        <TouchableOpacity onPress={() =>  navigation.goBack()}>
           <Text>
             <Feather name="arrow-left" size={30} color="#343434" />
           </Text>
@@ -333,7 +335,7 @@ export default function ChatScreen({route, navigation}) {
                             <Image
                               source={{uri: item}}
                               style={{
-                                height: 70,
+                                height: 100,
                                 // width: '100%',
                                 borderRadius: 5,
                                 marginBottom: 5,
@@ -425,6 +427,7 @@ export default function ChatScreen({route, navigation}) {
 
                 return (
                   <TouchableOpacity
+                  key={index}
                     onPress={() => image.filter(item => item !== index + 1)}>
                     <Image
                       key={index}

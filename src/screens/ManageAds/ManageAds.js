@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,24 +26,23 @@ import {Colors, Sizes} from '../../comonents/Constant/Constant';
 export default function manageAds({navigation}) {
   const [data, setData] = React.useState([]);
   const {user} = useContext(AuthContext);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
-    React.useEffect(() => {
-      firestore()
-        .collection('Category')
-        .onSnapshot(documentSnapshot => {
-          setData(
-            documentSnapshot.docs
-              .map(e => e.data())
-              .filter(item => item?.staredUsers?.includes(user.USER_ID)),
-          );
-          setLoading(false);
-        });
-    }, []);
-
+  React.useEffect(() => {
+    firestore()
+      .collection('Category')
+      .onSnapshot(documentSnapshot => {
+        setData(
+          documentSnapshot.docs
+            .map(e => e.data())
+            .filter(item => item?.staredUsers?.includes(user.USER_ID)),
+        );
+        setLoading(false);
+      });
+  }, []);
 
   const StaredHandler = (uid, data) => {
-    console.log(data)
+    console.log(data);
     const filterStared = data?.filter(function (item) {
       return item !== user?.USER_ID;
     });
@@ -88,7 +87,14 @@ export default function manageAds({navigation}) {
             backgroundColor: '#FAFAFA',
             borderRadius: 10,
           }}>
-          <Text style={{fontSize: 20, color: 'black' , fontFamily: 'JosefinSans-Regular',}}>Your Stared Ads</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: 'black',
+              fontFamily: 'JosefinSans-Regular',
+            }}>
+            Your Stared Ads
+          </Text>
           <AntDesign style={{color: '#f7b217'}} name="star" size={30} />
         </View>
       </View>
@@ -104,7 +110,13 @@ export default function manageAds({navigation}) {
               alignItems: 'center',
             }}>
             <View>
-              <Text style={{color: 'black', fontSize: 20, marginTop: 220 , fontFamily: 'JosefinSans-Regular',}}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 20,
+                  marginTop: 220,
+                  fontFamily: 'JosefinSans-Regular',
+                }}>
                 No Have Your Stared Ads
               </Text>
               {/* <Text style={{ color: '#7d7d7d', fontSize: 14, marginTop: 5 }}>Go To See Ads And get in stared Store</Text> */}
@@ -118,10 +130,26 @@ export default function manageAds({navigation}) {
       ) : (
         data.map((item, ind) => {
           // const filterLike = item.LIKE.filter(item => item === user?.USER_ID);
+          const filterLike = item?.LIKE?.filter(item => item === user?.USER_ID);
 
           return (
             <View key={ind} style={styles.main_view_map}>
-              <TouchableOpacity onPress={() => console.log('item ', item)}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Categories_detail', {
+                    IMAGE: item.ADS_IMAGES,
+                    PRICE: item.PRICE,
+                    DISCRIPTION: item.DISCRIPTION,
+                    CITY: item.CITY,
+                    CATEGORY: item.CATEGORY,
+                    TITLE: item.TITLE,
+                    UID: item.UID,
+                    LIKE: item.LIKE,
+                    USER_LIKE: filterLike[0],
+                    AUTO_ID: item.AUTO_ID,
+                    ZIPCODE: item.ZIPCODE,
+                  })
+                }>
                 <Animatable.View style={styles.Animatable}>
                   <View style={styles.Animatable_child}>
                     <View style={styles.Animatable_child_to_child}>

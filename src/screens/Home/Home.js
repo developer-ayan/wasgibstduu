@@ -39,10 +39,7 @@ export default function Home({navigation}) {
                 item.user2.uid === user?.USER_ID
               );
             }),
-          setLoading(false),
         );
-
-      
       });
   };
   const filter1 = messages?.filter(item => item.user1.uid !== user.USER_ID);
@@ -79,13 +76,7 @@ export default function Home({navigation}) {
           });
   }, []);
 
-  return loading ? (
-    <ActivityIndicator
-      color={'black'}
-      size={'large'}
-      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-    />
-  ) : (
+  return  (
     <ScrollView
       style={{
         flex: 1,
@@ -169,7 +160,7 @@ export default function Home({navigation}) {
                 paddingLeft: 10,
                 lineHeight: 50,
                 color: '#b1b1b1',
-                fontFamily: 'JosefinSans-Regular',
+                fontFamily: 'JosefinSans-Bold',
               }}>
               Type your search here
             </Text>
@@ -249,6 +240,7 @@ export default function Home({navigation}) {
                       LIKE: item.LIKE,
                       USER_LIKE: filterLike[0],
                       AUTO_ID: item.AUTO_ID,
+                      ZIPCODE : item.ZIPCODE
                     })
                   }>
                   <Image

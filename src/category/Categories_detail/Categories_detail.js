@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import {SliderBox} from 'react-native-image-slider-box';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { AuthContext } from '../../context/Auth';
+import {AuthContext} from '../../context/Auth';
 
 export default function Categories_detail({route, navigation}) {
   const {
@@ -35,11 +35,14 @@ export default function Categories_detail({route, navigation}) {
     LIKE,
     AUTO_ID,
     USER_LIKE,
+    ZIPCODE,
   } = route.params;
   // const [user, setUser] = useState({});
   const [like, setLike] = React.useState(0);
-  const [submited , setSubmited] = useState([]) 
-  const {user} = useContext(AuthContext)
+  const [submited, setSubmited] = useState([]);
+  const {user} = useContext(AuthContext);
+
+  console.log('ZIPCODE ', LIKE);
 
   const onShare = async () => {
     try {
@@ -80,31 +83,27 @@ export default function Categories_detail({route, navigation}) {
         .onSnapshot(documentSnapshot => {
           setE(documentSnapshot.data());
         });
-
-      
-
-      
     }, []),
   );
 
   useEffect(() => {
     firestore()
-    .collection('Bids')
-    .doc('Your all bids here !')
-    .collection(user?.USER_ID)
-    .orderBy('date')
-    .onSnapshot(documentSnapshot => {
-      setSubmited(
-        documentSnapshot.docs
-          .map(e => e.data())
-          ?.filter(item => item.AUTO_ID === TITLE + user?.USER_ID + DISCRIPTION),
-      );
-    });
-  },[])
+      .collection('Bids')
+      .doc('Your all bids here !')
+      .collection(user?.USER_ID)
+      .orderBy('date')
+      .onSnapshot(documentSnapshot => {
+        setSubmited(
+          documentSnapshot.docs
+            .map(e => e.data())
+            ?.filter(
+              item => item.AUTO_ID === TITLE + user?.USER_ID + DISCRIPTION,
+            ),
+        );
+      });
+  }, []);
 
-
-
-  console.log("submited ",submited)
+  console.log('submited ', submited);
 
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
 
@@ -168,6 +167,7 @@ export default function Categories_detail({route, navigation}) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={toggle}>
+          
           <Text style={{marginVertical: 15}}>
             {show ? (
               <AntDesign name="heart" size={25} color="red" />
@@ -237,6 +237,17 @@ export default function Categories_detail({route, navigation}) {
                 fontFamily: 'JosefinSans-Regular',
               }}>
               {CITY}
+            </Text>
+
+            <Text
+              style={{
+                color: '#CECECE',
+                fontSize: 13,
+                paddingVertical: 5,
+                marginLeft: 5,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+            ( ZipCode {ZIPCODE} )
             </Text>
           </View>
         </View>

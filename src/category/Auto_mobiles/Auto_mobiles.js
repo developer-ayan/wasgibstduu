@@ -149,6 +149,7 @@ export default function Auto_Mobiles({navigation}) {
                     LIKE: item.LIKE,
                     USER_LIKE: filterLike[0],
                     AUTO_ID: item.AUTO_ID,
+                    ZIPCODE: item.ZIPCODE,
                   })
                 }>
                 <Animatable.View style={styles.Animatable}>
@@ -181,7 +182,10 @@ export default function Auto_Mobiles({navigation}) {
                             <Text
                               style={[
                                 styles.Versand,
-                                {color: 'black', fontWeight: 'bold'},
+                                {
+                                  color: 'black',
+                                  fontFamily: 'JosefinSans-Regular',
+                                },
                               ]}>
                               Owned Ad
                             </Text>

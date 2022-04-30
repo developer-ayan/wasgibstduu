@@ -24,6 +24,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 export default function EditAds({navigation, route}) {
   const {data} = route.params;
@@ -34,10 +35,13 @@ export default function EditAds({navigation, route}) {
   const [discription, setDiscription] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [city, setCity] = React.useState('');
+  const [zipCode, setZipCode] = React.useState('');
   const [id, setId] = React.useState(null);
   const [uploading, setUploading] = React.useState(false);
   const [render, setRender] = React.useState(false);
   const [transeferred, setTranseferred] = React.useState(0);
+  const [modalVisibleImage, setModalVisibleImage] = React.useState(false);
+  const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
   const dispatch = useDispatch();
   const countries = [
     'Fashion',
@@ -63,6 +67,11 @@ export default function EditAds({navigation, route}) {
       getData();
     }, [state.USER_ID]),
   );
+  const images = [
+    {
+      url: urlSelectedImage,
+    },
+  ];
 
   const CreateAds = async () => {
     firestore()
@@ -78,8 +87,9 @@ export default function EditAds({navigation, route}) {
         UID: data.UID,
         NAME: data.NAME,
         LIKE: data.LIKE,
-        TIME_ADS: data.TIME_ADS,
+        TIME_ADS: firebase.firestore.Timestamp.fromDate(new Date()),
         EMAIL: data.EMAIL,
+        ZIPCODE: zipCode === '' ? data.ZIPCODE : zipCode,
       });
     navigation.goBack();
     setTitle('');
@@ -87,6 +97,7 @@ export default function EditAds({navigation, route}) {
     setPrice('');
     setCity('');
     setCategory('');
+    setZipCode('');
   };
 
   const ImageGallery = () => {
@@ -185,6 +196,16 @@ export default function EditAds({navigation, route}) {
             </Text>
           </View>
         </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleImage}
+        onRequestClose={() => {
+          setModalVisibleImage(!modalVisibleImage);
+        }}>
+        <ImageViewer imageUrls={images} />
       </Modal>
 
       <View style={styles.MainView}>
@@ -319,6 +340,17 @@ export default function EditAds({navigation, route}) {
             style={styles.Input}
           />
         </View>
+
+        <View style={{marginTop: 20}}>
+          <Text style={styles.AdTitle}>ZIPCODE</Text>
+          <TextInput
+            onChangeText={text => setZipCode(text)}
+            defaultValue={data.ZIPCODE}
+            // value={city}
+            placeholder="Select City"
+            style={styles.Input}
+          />
+        </View>
         <View
           style={{
             marginTop: 20,
@@ -350,37 +382,60 @@ export default function EditAds({navigation, route}) {
                 console.log(item);
                 return (
                   <View style={{marginHorizontal: 6, marginTop: 20}}>
-                    <Image
-                      style={{
-                        height: 60,
-                        width: 60,
-                        borderRadius: 10,
-                        marginTop: 1,
-                        marginHorizontal: 3,
-                        borderWidth: 1,
-                      }}
-                      source={{uri: item}}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        setUrlSelectedImage(item);
+                        setModalVisibleImage(true);
+                      }}>
+                      <Image
+                        style={{
+                          height: 60,
+                          width: 60,
+                          borderRadius: 10,
+                          marginTop: 1,
+                          marginHorizontal: 3,
+                          borderWidth: 1,
+                        }}
+                        source={{uri: item}}
+                      />
+                    </TouchableOpacity>
                   </View>
                 );
               })
             : image.map((item, ind) => {
                 return (
-                  <View style={{marginHorizontal: 6, marginTop: 20}}>
-                    <Image
-                      style={{
-                        height: 60,
-                        width: 60,
-                        borderRadius: 10,
-                        marginTop: 1,
-                        marginHorizontal: 3,
-                        borderWidth: 1,
-                      }}
-                      source={{uri: item}}
-                    />
+                  <View key={ind} style={{marginHorizontal: 6, marginTop: 20}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setUrlSelectedImage(item);
+                        setModalVisibleImage(true);
+                      }}>
+                      <Image
+                        style={{
+                          height: 60,
+                          width: 60,
+                          borderRadius: 10,
+                          marginTop: 1,
+                          marginHorizontal: 3,
+                          borderWidth: 1,
+                        }}
+                        source={{uri: item}}
+                      />
+                    </TouchableOpacity>
                   </View>
                 );
               })}
+
+          {image.length === 0 ? null : (
+            <TouchableOpacity onPress={() => setImage([])}>
+              <Entypo
+                style={{marginHorizontal: 20}}
+                name="circle-with-cross"
+                size={40}
+                color="red"
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
         <TouchableOpacity onPress={CreateAds}>

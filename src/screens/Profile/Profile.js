@@ -242,7 +242,8 @@ function Profile({navigation}) {
                 color="#525252"
                 style={{marginRight: 10}}
               />
-              <Text style={{color: '#525252', fontFamily: 'JosefinSans-Regular',}}>
+              <Text
+                style={{color: '#525252', fontFamily: 'JosefinSans-Regular'}}>
                 Please wait...
               </Text>
             </View>
@@ -285,7 +286,14 @@ function Profile({navigation}) {
                 <Feather name="arrow-left" size={25} color="white" />
               </Text>
             </TouchableOpacity>
-            <Text style={{color: 'white', fontSize: 16 , fontFamily: 'JosefinSans-Regular',}}>My Profile</Text>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              My Profile
+            </Text>
             <Octicons name="verified" size={20} color="white" />
           </View>
 
@@ -297,12 +305,10 @@ function Profile({navigation}) {
                 paddingBottom: 70,
               }}>
               <View>
-                {data?.PROFILE === '' && data?.PROFILE === undefined ? (
+                {data?.PROFILE === '' ? (
                   <Image
                     style={{borderRadius: 100, height: 100, width: 100}}
-                    source={{
-                      uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU',
-                    }}
+                    source={require('../../assets/premiumImages/user.png')}
                   />
                 ) : (
                   <Image
@@ -340,7 +346,7 @@ function Profile({navigation}) {
                   fontSize: 15,
                   color: 'white',
                   paddingTop: 10,
-                  fontFamily: 'JosefinSans-Regular'
+                  fontFamily: 'JosefinSans-Regular',
                 }}>
                 {user?.NAME}
               </Text>
@@ -367,10 +373,23 @@ function Profile({navigation}) {
               borderRadius: 10,
               marginTop: 20,
             }}>
-            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 50 , fontFamily: 'JosefinSans-Regular'}}>
+            <Text
+              style={{
+                fontSize: 10,
+                color: '#b3b3b3',
+                marginRight: 50,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
               Username
             </Text>
-            <Text style={{fontSize: 10, color: '#b3b3b3' , fontFamily: 'JosefinSans-Regular'}}>{data?.NAME}</Text>
+            <Text
+              style={{
+                fontSize: 10,
+                color: '#b3b3b3',
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              {data?.NAME}
+            </Text>
           </View>
           <View
             style={{
@@ -384,10 +403,23 @@ function Profile({navigation}) {
               borderRadius: 10,
               marginTop: 10,
             }}>
-            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 70 , fontFamily: 'JosefinSans-Regular'}}>
+            <Text
+              style={{
+                fontSize: 10,
+                color: '#b3b3b3',
+                marginRight: 70,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
               Phone
             </Text>
-            <Text style={{fontSize: 10, color: '#b3b3b3' , fontFamily: 'JosefinSans-Regular'}}>{data?.PHONE}</Text>
+            <Text
+              style={{
+                fontSize: 10,
+                color: '#b3b3b3',
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              {data?.PHONE}
+            </Text>
           </View>
           <View
             style={{
@@ -401,10 +433,23 @@ function Profile({navigation}) {
               borderRadius: 10,
               marginTop: 10,
             }}>
-            <Text style={{fontSize: 10, color: '#b3b3b3', marginRight: 30 , fontFamily: 'JosefinSans-Regular'}}>
+            <Text
+              style={{
+                fontSize: 10,
+                color: '#b3b3b3',
+                marginRight: 30,
+                fontFamily: 'JosefinSans-Regular',
+              }}>
               Email Address
             </Text>
-            <Text style={{fontSize: 10, color: '#b3b3b3' , fontFamily: 'JosefinSans-Regular'}}>{data?.EMAIL}</Text>
+            <Text
+              style={{
+                fontSize: 10,
+                color: '#b3b3b3',
+                fontFamily: 'JosefinSans-Regular',
+              }}>
+              {data?.EMAIL}
+            </Text>
           </View>
         </View>
 
