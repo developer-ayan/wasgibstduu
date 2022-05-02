@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ import * as Animatable from 'react-native-animatable';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../../context/Auth';
+import {AuthContext} from '../../context/Auth';
 
 export default function Login({}) {
   const navigation = useNavigation();
@@ -28,7 +28,7 @@ export default function Login({}) {
   const [modalSuccess, setModalSuccess] = React.useState('');
   const [modalFail, setModalFail] = React.useState(false);
   const [error, setError] = React.useState('');
-  const { user , setUser } = useContext(AuthContext)
+  const {user, setUser , setToken} = useContext(AuthContext);
 
   const dispatch = useDispatch();
 
@@ -113,9 +113,8 @@ export default function Login({}) {
           setModalSuccess('successfull_login');
           const userDetail = JSON.stringify(uid);
           await AsyncStorage.setItem('uid', userDetail);
-
           setUser(userDetail);
-
+          setToken(uid.USER_ID);
           // await AsyncStorage.setItem('uid', JSON.stringify(uid), err => {
           //   if (err) {
           //     console.log('an error');

@@ -8,36 +8,31 @@ export const AuthProvider = props => {
   const [bids, setBids] = useState(null);
   const [messageCounting, setMessageCounting] = useState([]);
   const [bidslength, setBidsLength] = useState(0);
+  const [token, setToken] = useState('');
 
-  firestore()
-    .collection('Category')
-    .get()
-    .then(correct => {
-      correct.forEach(snapshot => {
-        firestore().collection('Category').doc(snapshot.id).update({
-          AUTO_ID: snapshot.id,
-        });
-      });
-    });
+  console.log(token)
 
-  // const get_data = async () => {
 
-  //   try {
-  //     const value = await AsyncStorage.getItem('uid');
-  //     // console.log("Async strogare"  ,JSON.parse(value));
-  //     // setSave(JSON.parse(value))
+  const get_data = async () => {
 
-  //     if (value !== 'null' || value !== null) {
-  //       setSave(JSON.parse(value));
-  //     }
-  //   } catch (error) {
-  //     // Error retrieving data
-  //   }
-  // };
+    try {
+      const value = await AsyncStorage.getItem('uid');
+      // console.log("Async strogare"  ,JSON.parse(value));
+      // setSave(JSON.parse(value))
 
-  // useEffect(() => {
-  //   get_data();
-  // }, []);
+      if (value !== 'null' || value !== null) {
+        setUser(JSON.parse(value));
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  useEffect(() => {
+    get_data();
+  }, [token]);
+
+  console.log("token ",token)
 
   return (
     <AuthContext.Provider
@@ -46,11 +41,13 @@ export const AuthProvider = props => {
         bids,
         messageCounting,
         bidslength,
+        token,
 
         setUser,
         setBids,
         setMessageCounting,
         setBidsLength,
+        setToken
       }}>
       {props.children}
     </AuthContext.Provider>

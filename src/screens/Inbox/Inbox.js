@@ -56,6 +56,7 @@ export default function Inbox() {
       });
   };
 
+
   useFocusEffect(
     React.useCallback(() => {
       ChatInbox();
@@ -264,7 +265,7 @@ export default function Inbox() {
           const date = new Date(miliseconds * 1000);
 
           const monthNames = [
-            'Jav',
+            'Jan',
             'Feb',
             'Mar',
             'Apr',
