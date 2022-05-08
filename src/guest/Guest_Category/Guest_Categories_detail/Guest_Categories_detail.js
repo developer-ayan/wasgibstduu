@@ -39,9 +39,6 @@ export default function Guest_Categories_detail({route, navigation}) {
   } = route.params;
   // const [user, setUser] = useState({});
   const [like, setLike] = React.useState(0);
-  const [submited, setSubmited] = useState([]);
-  const {user} = useContext(AuthContext);
-
 
   const onShare = async () => {
     try {
@@ -85,50 +82,10 @@ export default function Guest_Categories_detail({route, navigation}) {
     }, []),
   );
 
-  useEffect(() => {
-    firestore()
-      .collection('Bids')
-      .doc('Your all bids here !')
-      .collection(user?.USER_ID)
-      .orderBy('date')
-      .onSnapshot(documentSnapshot => {
-        setSubmited(
-          documentSnapshot.docs
-            .map(e => e.data())
-            ?.filter(
-              item => item.AUTO_ID === TITLE + user?.USER_ID + DISCRIPTION,
-            ),
-        );
-      });
-  }, []);
-
-
-  const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
-
+  const [show, setshow] = React.useState(false);
 
   const toggle = () => {
     setshow(!show);
-    if (show === true) {
-      firestore()
-        .collection('Category')
-        .doc(AUTO_ID)
-        .update({
-          LIKE: firestore.FieldValue.arrayRemove(user?.USER_ID),
-        });
-    } else {
-      let forDeletion = [user?.USER_ID];
-
-      let arr = LIKE;
-
-      arr = arr.filter(item => !forDeletion.includes(item));
-
-      firestore()
-        .collection('Category')
-        .doc(AUTO_ID)
-        .update({
-          LIKE: [...arr, user?.USER_ID],
-        });
-    }
   };
 
   // !!! Read below about array.includes(...) support !!!
@@ -164,7 +121,6 @@ export default function Guest_Categories_detail({route, navigation}) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={toggle}>
-          
           <Text style={{marginVertical: 15}}>
             {show ? (
               <AntDesign name="heart" size={25} color="red" />
@@ -244,7 +200,7 @@ export default function Guest_Categories_detail({route, navigation}) {
                 marginLeft: 5,
                 fontFamily: 'JosefinSans-Regular',
               }}>
-            ( ZipCode {ZIPCODE} )
+              ( ZipCode {ZIPCODE} )
             </Text>
           </View>
         </View>
@@ -440,76 +396,6 @@ export default function Guest_Categories_detail({route, navigation}) {
           </TouchableOpacity>
         </View>
       </View>
-
-      {e.EMAIL !== user.EMAIL && (
-        <View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Send_offer', {
-                e,
-                current_user: user,
-                profile: e.PROFILE,
-                IMAGE,
-                PRICE,
-                DISCRIPTION,
-                CITY,
-                CATEGORY,
-                TITLE,
-                UID,
-                NAME: e.NAME,
-                LIKE: LIKE,
-              })
-            }>
-            <View
-              style={{
-                backgroundColor: '#f0f2f5',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                padding: 15,
-                margin: 10,
-                marginBottom: 0,
-                borderRadius: 5,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: 'black',
-                  fontFamily: 'JosefinSans-Bold',
-                }}>
-                Send Offer
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('chatscreen', {
-                e,
-                current_user: user,
-                title: TITLE,
-              })
-            }>
-            <View
-              style={{
-                backgroundColor: '#f0f2f5',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                padding: 15,
-                margin: 10,
-                borderRadius: 5,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: 'black',
-                  fontFamily: 'JosefinSans-Bold',
-                }}>
-                Send Message
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
     </ScrollView>
   );
 }

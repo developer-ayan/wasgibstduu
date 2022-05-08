@@ -7,30 +7,25 @@ import {
   TouchableOpacity,
   Pressable,
   StyleSheet,
-  Alert,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import firestore from '@react-native-firebase/firestore';
-import Loader from '../../comonents/Loader/Loader';
-import {useSelector} from 'react-redux';
 import {
   Categories_detail,
   Colors,
   Sizes,
-} from '../../comonents/Constant/Constant';
+} from '../../../comonents/Constant/Constant';
 import {ActivityIndicator} from 'react-native-paper';
-import {AuthContext} from '../../context/Auth';
-import {firebase} from '@react-native-firebase/auth';
 import {useFocusEffect} from '@react-navigation/native';
 
 export default function Guest_Services({navigation}) {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const {user} = useContext(AuthContext);
   const [show, setshow] = React.useState(false);
+
   const toggle = () => {
     setshow(!show);
   };
@@ -51,31 +46,6 @@ export default function Guest_Services({navigation}) {
     }, []),
   );
 
-  const StaredHandler = item => {
-    const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
-    let forDeletion = [user?.USER_ID];
-
-    let arr = item?.staredUsers;
-
-    arr = arr.filter(item => !forDeletion.includes(item));
-
-    if (filterStaredData === true) {
-      firestore()
-        .collection('Category')
-        .doc(item.AUTO_ID)
-        .update({
-          staredUsers: firestore.FieldValue.arrayRemove(user?.USER_ID),
-        });
-    } else if (filterStaredData === false) {
-      firestore()
-        .collection(`Category`)
-        .doc(item.AUTO_ID)
-        .update({
-          staredUsers: [...arr, user?.USER_ID],
-        });
-    }
-  };
-
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -90,12 +60,18 @@ export default function Guest_Services({navigation}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-        No Ads Avalaible Services
+      <Text
+        style={{
+          color: 'black',
+          fontSize: 20,
+          fontWeight: 'bold',
+          fontFamily: 'JosefinSans-Regular',
+        }}>
+        Go to create your ads
       </Text>
       <View>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('Ads', {screen: 'Ads'})}
           style={{
             backgroundColor: 'green',
             padding: 20,
@@ -125,14 +101,11 @@ export default function Guest_Services({navigation}) {
         </View>
 
         {data.map((item, ind) => {
-          const filterLike = item?.LIKE?.filter(item => item === user?.USER_ID);
-          const filterStaredData = item?.staredUsers?.includes(user?.USER_ID);
-
           return (
             <View key={ind} style={styles.main_view_map}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('Categories_detail', {
+                  navigation.navigate('Guest_Categories_detail', {
                     IMAGE: item.ADS_IMAGES,
                     PRICE: item.PRICE,
                     DISCRIPTION: item.DISCRIPTION,
@@ -141,7 +114,7 @@ export default function Guest_Services({navigation}) {
                     TITLE: item.TITLE,
                     UID: item.UID,
                     LIKE: item.LIKE,
-                    USER_LIKE: filterLike[0],
+                    USER_LIKE: 1,
                     AUTO_ID: item.AUTO_ID,
                     ZIPCODE: item.ZIPCODE,
                   })
@@ -155,63 +128,16 @@ export default function Guest_Services({navigation}) {
                       />
                     </View>
                     <View style={styles.Animatable_Para}>
-                      {item.UID === user?.USER_ID ? (
-                        <Text style={styles.username}>{'Your Ad'}</Text>
-                      ) : (
-                        <Text style={styles.username}>{item.NAME}</Text>
-                      )}
+                      <Text style={styles.username}>{item.NAME}</Text>
+
                       <Text numberOfLines={2} style={styles.title}>
                         {item.TITLE}
                       </Text>
                       <Text style={styles.price}>{item.PRICE}</Text>
                       <View style={styles.Icon_view}>
-                        {item.UID === user?.USER_ID ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              width: '100%',
-                            }}>
-                            <Text
-                              style={[
-                                styles.Versand,
-                                {
-                                  color: 'black',
-                                  fontFamily: 'JosefinSans-Regular',
-                                },
-                              ]}>
-                              Owned Ad
-                            </Text>
-                            <FontAwesome
-                              style={[styles.staro, {color: 'gray'}]}
-                              name="user-circle-o"
-                              size={20}
-                            />
-                          </View>
-                        ) : (
-                          <Text style={styles.Versand}>Versand moglich</Text>
-                        )}
+                        <Text style={styles.Versand}>Versand moglich</Text>
 
-                        {item.UID === user?.USER_ID ? (
-                          <Text style={{color: 'white'}}>Ayan</Text>
-                        ) : (
-                          <Pressable onPress={() => StaredHandler(item)}>
-                            {filterStaredData === true ? (
-                              <AntDesign
-                                style={[styles.staro, {color: 'gold'}]}
-                                name="star"
-                                size={18}
-                              />
-                            ) : (
-                              <AntDesign
-                                style={styles.staro}
-                                name="staro"
-                                size={18}
-                              />
-                            )}
-                          </Pressable>
-                        )}
+                        <Text style={{color: 'white'}}>Ayan</Text>
                       </View>
                     </View>
                   </View>

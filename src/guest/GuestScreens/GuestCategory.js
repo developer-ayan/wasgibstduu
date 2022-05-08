@@ -21,7 +21,6 @@ export default function GuestCategory({navigation}) {
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
               borderColor: '#F8F8F8',
               borderBottomColor: 'white',
             }}>
@@ -42,13 +41,14 @@ export default function GuestCategory({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Guest_Phone_and_Screen')}>
+          onPress={() => navigation.navigate('Guest_Phone_and_Elec')}>
           <View
             style={{
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
+              borderRightWidth: 1,
+              borderLeftWidth: 1,
               borderColor: '#F8F8F8',
             }}>
             <MaterialCommunityIcons
@@ -72,7 +72,6 @@ export default function GuestCategory({navigation}) {
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
               borderColor: '#F8F8F8',
             }}>
             <MaterialCommunityIcons
@@ -91,13 +90,13 @@ export default function GuestCategory({navigation}) {
           backgroundColor: 'white',
           justifyContent: 'center',
         }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Guest_Real_states')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Guest_Real_States')}>
           <View
             style={{
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
+              borderTopWidth: 1,
               borderColor: '#F8F8F8',
             }}>
             <MaterialCommunityIcons
@@ -147,7 +146,7 @@ export default function GuestCategory({navigation}) {
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
+              borderTopWidth: 1,
               borderColor: '#F8F8F8',
             }}>
             <Ionicons
@@ -179,7 +178,7 @@ export default function GuestCategory({navigation}) {
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
+              borderTopWidth: 1,
               borderColor: '#F8F8F8',
             }}>
             <FontAwesome
@@ -203,7 +202,7 @@ export default function GuestCategory({navigation}) {
               padding: 10,
               paddingVertical: 20,
               width: 110,
-              borderWidth: 1,
+              borderLeftWidth: 1,
               borderColor: '#F8F8F8',
             }}>
             <Entypo

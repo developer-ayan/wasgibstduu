@@ -19,7 +19,6 @@ import {
   Sizes,
 } from '../../../comonents/Constant/Constant';
 import {ActivityIndicator} from 'react-native-paper';
-import {firebase} from '@react-native-firebase/auth';
 import {useFocusEffect} from '@react-navigation/native';
 
 export default function Guest_Auto_Mobiles({navigation}) {
@@ -106,7 +105,7 @@ export default function Guest_Auto_Mobiles({navigation}) {
             <View key={ind} style={styles.main_view_map}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('Categories_detail', {
+                  navigation.navigate('Guest_Categories_detail', {
                     IMAGE: item.ADS_IMAGES,
                     PRICE: item.PRICE,
                     DISCRIPTION: item.DISCRIPTION,

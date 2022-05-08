@@ -20,6 +20,7 @@ import GuestAds from '../GuestScreens/GuestAds';
 import GuestStared from '../GuestScreens/GuestStared';
 import GuestInbox from '../GuestScreens/GuestInbox';
 import GuestProfile from '../GuestScreens/GuestProfile';
+import GuestDrawer from '../GuestDrawer/GuestDrawer';
 
 export default function GuestNav() {
   // const state = useSelector(state => state.user);
@@ -48,12 +49,12 @@ export default function GuestNav() {
     />
   ) : (
     <Tab.Navigator
-      initialRouteName="GuestHome"
+      initialRouteName="GuestDrawer"
       activeColor="black"
       barStyle={{backgroundColor: '#ffffff'}}>
       <Tab.Screen
-        name="GuestHome"
-        component={GuestHome}
+        name="GuestDrawer"
+        component={GuestDrawer}
         options={{
           tabBarLabel: <Entypo name="dot-single" size={15} />,
           tabBarIcon: ({color}) => (

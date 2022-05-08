@@ -41,14 +41,10 @@ export default function GuestStared({navigation}) {
           onPress={() => navigation.navigate('Login')}
           style={{
             color: '#525252',
-
             width: '100%',
             backgroundColor: 'gold',
             padding: 20,
             marginTop: 0,
-            // borderRadius : 20,
-            // borderTopLeftRadius: 10,
-            // borderTopRightRadius: 10,
           }}>
           <Text
             style={{

@@ -14,9 +14,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 import GuestPremium from './GuestPremium';
 import GuestCategory from './GuestCategory';
+import { useNavigation } from '@react-navigation/native';
 
-export default function GuestHome({navigation}) {
+export default function GuestHome(props) {
   const [data, setData] = React.useState([]);
+  const navigation = useNavigation()
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -47,7 +49,7 @@ export default function GuestHome({navigation}) {
         }}>
         <TouchableOpacity
           style={{flexDirection: 'row'}}
-          //   onPress={() => navigation.openDrawer()}
+            onPress={() => navigation.openDrawer()}
         >
           <Ionicons
             style={{
@@ -158,7 +160,7 @@ export default function GuestHome({navigation}) {
                 }}>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('Categories_detail', {
+                    navigation.navigate('Guest_Categories_detail', {
                       IMAGE: item.ADS_IMAGES,
                       PRICE: item.PRICE,
                       DISCRIPTION: item.DISCRIPTION,
