@@ -56,7 +56,6 @@ export default function Inbox() {
       });
   };
 
-
   useFocusEffect(
     React.useCallback(() => {
       ChatInbox();
@@ -165,6 +164,27 @@ export default function Inbox() {
     },
   ];
 
+  const CloseButton = () => {
+    setTimeout(() => {
+      return (
+        <TouchableOpacity onPress={() => setModalVisibleImage(false)}>
+          <AntDesign
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 1)',
+              textAlign: 'right',
+              color: 'white',
+              paddingHorizontal: 20,
+              paddingTop: 20,
+            }}
+            name="closecircleo"
+            size={20}
+            color="white"
+          />
+        </TouchableOpacity>
+      );
+    }, 1000);
+  };
+
   return loading ? (
     <ActivityIndicator
       color={'black'}
@@ -182,9 +202,7 @@ export default function Inbox() {
         Empty Inbox
       </Text>
     </View>
-  ) :  (
-
-   
+  ) : (
     <ScrollView
       style={{
         flex: 1,
@@ -192,16 +210,20 @@ export default function Inbox() {
         paddingLeft: 13,
         paddingRight: 13,
       }}>
-         
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisibleImage}
-      onRequestClose={() => {
-        setModalVisibleImage(!modalVisibleImage);
-      }}>
-      <ImageViewer imageUrls={images} />
-    </Modal> 
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleImage}
+        onRequestClose={() => {
+          setModalVisibleImage(!modalVisibleImage);
+        }}>
+        <ImageViewer
+          onSwipeDown={() => setModalVisibleImage(false)}
+          renderIndicator={() => null}
+          saveToLocalByLongPress={true}
+          imageUrls={images}
+        />
+      </Modal>
       <View>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={{marginTop: 10}}>
@@ -304,9 +326,9 @@ export default function Inbox() {
                   }}>
                   <TouchableOpacity
                     onPress={() => {
-                      setUrlSelectedImage(user?.USER_ID
-                        ? item.user2.profile
-                        : item.user1.profile);
+                      setUrlSelectedImage(
+                        user?.USER_ID ? item.user2.profile : item.user1.profile,
+                      );
                       setModalVisibleImage(true);
                     }}
                     style={{width: '16%', alignItems: 'center'}}>

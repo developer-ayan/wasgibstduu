@@ -42,7 +42,6 @@ export default function Categories_detail({route, navigation}) {
   const [submited, setSubmited] = useState([]);
   const {user} = useContext(AuthContext);
 
-
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -102,9 +101,7 @@ export default function Categories_detail({route, navigation}) {
       });
   }, []);
 
-
   const [show, setshow] = React.useState(USER_LIKE !== user?.USER_ID);
-
 
   const toggle = () => {
     setshow(!show);
@@ -164,7 +161,6 @@ export default function Categories_detail({route, navigation}) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={toggle}>
-          
           <Text style={{marginVertical: 15}}>
             {show ? (
               <AntDesign name="heart" size={25} color="red" />
@@ -244,7 +240,7 @@ export default function Categories_detail({route, navigation}) {
                 marginLeft: 5,
                 fontFamily: 'JosefinSans-Regular',
               }}>
-            ( ZipCode {ZIPCODE} )
+              ( ZipCode {ZIPCODE} )
             </Text>
           </View>
         </View>
@@ -441,7 +437,7 @@ export default function Categories_detail({route, navigation}) {
         </View>
       </View>
 
-      {e.EMAIL !== user.EMAIL && (
+      {e.EMAIL === user.EMAIL && (
         <View>
           <TouchableOpacity
             onPress={() =>
@@ -467,7 +463,7 @@ export default function Categories_detail({route, navigation}) {
                 justifyContent: 'center',
                 padding: 15,
                 margin: 10,
-                marginBottom: 0,
+                marginBottom: 20,
                 borderRadius: 5,
               }}>
               <Text
@@ -481,7 +477,7 @@ export default function Categories_detail({route, navigation}) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               navigation.navigate('chatscreen', {
                 e,
@@ -507,7 +503,7 @@ export default function Categories_detail({route, navigation}) {
                 Send Message
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
     </ScrollView>

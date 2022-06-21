@@ -38,17 +38,21 @@ const sign_in = user => {
         .signInWithEmailAndPassword(user.email, user.password)
         .then(async res => {
           let Mydata = res;
-        
+
           firestore()
             .collection('Users')
             .doc(res.user.uid)
             .onSnapshot(async documentSnapshot => {
               dispatch({type: 'GETUSER', user: documentSnapshot.data()});
-              resolve( (user = documentSnapshot.data()));
+              resolve((user = documentSnapshot.data()));
               // console.log("data ",documentSnapshot.data())
-              await  AsyncStorage.setItem('uid' , JSON.stringify(documentSnapshot.data()) , err => {
-                alert('success async storage')
-              }) 
+              await AsyncStorage.setItem(
+                'uid',
+                JSON.stringify(documentSnapshot.data()),
+                err => {
+                  alert('success async storage');
+                },
+              );
             });
         })
         .catch(error => {
@@ -68,14 +72,13 @@ function create_ads(user) {
   return dispatch => {
     const User_data = user;
 
-
     firestore()
       .collection(`Category`)
       .add({
         CATEGORY: User_data.category,
         TITLE: User_data.title,
         DISCRIPTION: User_data.discription,
-        PRICE: User_data.price,
+        PRICE: `${'€' + User_data.price}`,
         CITY: User_data.city,
         ADS_IMAGES: User_data.imageUrl,
         UID: User_data.UID,
@@ -89,4 +92,4 @@ function create_ads(user) {
   };
 }
 
-export {signUp, sign_in, create_ads,};
+export {signUp, sign_in, create_ads};

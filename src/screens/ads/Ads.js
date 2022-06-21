@@ -64,7 +64,7 @@ export default function Ads({navigation}) {
       url: urlSelectedImage,
     },
   ];
-  
+
   const [modalText, setModalText] = React.useState('');
   const getData = async () => {
     const value = await AsyncStorage.getItem('uid');
@@ -173,8 +173,6 @@ export default function Ads({navigation}) {
       Toast.show('City Is Required ...', Toast.LONG);
     } else if (!REGEXP.test(zipCode)) {
       Toast.show('ZipCode Is Required ', Toast.LONG);
-    } else if (image.length === 0) {
-      Toast.show('Images Is Required ', Toast.LONG);
     } else {
       let user = {
         category:
@@ -187,7 +185,10 @@ export default function Ads({navigation}) {
         discription: discription,
         price: price,
         city: city,
-        imageUrl: image,
+        imageUrl:
+          image.length === 0
+            ? ['https://removal.ai/wp-content/uploads/2021/02/no-img.png']
+            : image,
         name: state.NAME,
         UID: state.USER_ID,
         EMAIL: state?.EMAIL,
@@ -434,7 +435,7 @@ export default function Ads({navigation}) {
                 fontSize: 15,
                 fontFamily: 'JosefinSans-Regular',
               }}>
-              $
+              €
             </Text>
             <TextInput
               onChangeText={text => setPrice(text)}
@@ -443,7 +444,6 @@ export default function Ads({navigation}) {
               style={{
                 fontFamily: 'Roboto',
                 width: '86%',
-                // fontWeight: 'bold',
                 opacity: 0.7,
                 color: '#ababab',
                 fontSize: 15,
