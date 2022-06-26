@@ -15,7 +15,8 @@ export default function App() {
 
   // const get_data = async () => {
   //   setLoading(true);
-
+//ss
+// I am ali
   //   try {
   //     const value = await AsyncStorage.getItem('uid');
   //     if (value !== 'null') {
