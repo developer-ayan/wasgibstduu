@@ -11,7 +11,8 @@ import Login from '../../screens/Login/Login';
 // Display Screens
 
 import Home from '../../screens/Home/Home';
-import Ads from '../../screens/Ads/Ads';
+import Ads from '../../screens/ads/Ads';
+
 import SignUp from '../../screens/SignUp/SignUp';
 import manageAds from '../../screens/ManageAds/ManageAds';
 import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsManage';

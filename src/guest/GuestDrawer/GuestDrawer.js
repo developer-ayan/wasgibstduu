@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Ads from '../../screens/Ads/Ads';
+import Ads from '../../screens/ads/Ads';
+
 import Octicons from 'react-native-vector-icons/Octicons';
 import Login from '../../screens/Login/Login';
 import AntDesign from 'react-native-vector-icons/AntDesign';

@@ -4,7 +4,7 @@ import manageAds from '../../screens/ManageAds/ManageAds';
 import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsManage';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
-import Ads from '../../screens/Ads/Ads';
+import Ads from '../../screens/ads/Ads';
 import Octicons from 'react-native-vector-icons/Octicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 

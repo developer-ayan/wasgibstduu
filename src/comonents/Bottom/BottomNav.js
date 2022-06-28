@@ -6,7 +6,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import manageAds from '../../screens/ManageAds/ManageAds';
 import PremiumAddsManage from '../../screens/PremiumAddsManage.js/PremiumAddsManage';
-import Ads from '../../screens/Ads/Ads';
+import Ads from '../../screens/ads/Ads';
 import Inbox from '../../screens/Inbox/Inbox';
 import Home from '../../screens/Home/Home';
 import Drawer from '../Drawer/Drawer';
