@@ -32,7 +32,6 @@ export const AuthProvider = props => {
     get_data();
   }, [token]);
 
-  console.log("token ",token)
 
   return (
     <AuthContext.Provider

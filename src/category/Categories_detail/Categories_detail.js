@@ -437,7 +437,7 @@ export default function Categories_detail({route, navigation}) {
         </View>
       </View>
 
-      {e.EMAIL === user.EMAIL && (
+      {e.EMAIL !== user.EMAIL && (
         <View>
           <TouchableOpacity
             onPress={() =>

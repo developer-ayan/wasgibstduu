@@ -31,19 +31,18 @@ function CustomDrawer(props) {
   const removeData = async () => {
     await AsyncStorage.removeItem('uid');
     setToken('')
-    // setUser({})
-    // setUser(null)
+    setUser({})
 
   };
 
-  React.useEffect(() => {
-    firestore()
-      .collection('Users')
-      .doc(user?.USER_ID)
-      .onSnapshot(e => {
-        setData(e.data());
-      });
-  }, [user?.USER_ID , removeData]);
+  // React.useEffect(() => {
+  //   firestore()
+  //     .collection('Users')
+  //     .doc(user?.USER_ID)
+  //     .onSnapshot(e => {
+  //       setData(e.data());
+  //     });
+  // }, [user?.USER_ID , removeData]);
 
   const [modalVisibleImage, setModalVisibleImage] = React.useState(false);
 
