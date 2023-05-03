@@ -41,7 +41,7 @@ export default function EditAds({navigation, route}) {
   const [render, setRender] = React.useState(false);
   const [transeferred, setTranseferred] = React.useState(0);
   const [modalVisibleImage, setModalVisibleImage] = React.useState(false);
-  const [urlSelectedImage, setUrlSelectedImage] = React.useState('');
+  const [urlSelectedImage, setUrlSelectedImage] = React.useState('')
   const dispatch = useDispatch();
   const countries = [
     'Fashion',
