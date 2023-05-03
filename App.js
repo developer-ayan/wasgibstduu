@@ -47,7 +47,7 @@ export default function App() {
     // get_data()
     // get_data()
     setTimeout(() => {
-      SplashScreen.hide();
+      SplashScreen.hide()
     }, 2000);
     setLoading(false);
   }, [token]);
